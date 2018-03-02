@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Pedidos No Confirmados
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h3>Pedidos No Confirmados</h3>
+        <table class="table striped hovered border bordered">
+            <thead>
+                <tr>
+                    <th width="30px">#</th>
+                    <th>C.I.</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Cant.Material</th>
+                    <th>CostoT.</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in pedidos %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ pedido.cliente.ci }}</td>
+                        <td>{{ pedido.cliente.nombres }}</td>
+                        <td>{{ pedido.cliente.apellidos }}</td>
+                        <td>{{ pedido.detallepedido_set.count }}</td>
+                        <td>{{ pedido.costo }}</td>
+                        <td>
+                            <a href="{% url 'pedido-delete' pedido.id %}" class="btn btn-danger btn-xs" title="Eliminar Pedido">
+                                <i class="fa fa-eraser"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

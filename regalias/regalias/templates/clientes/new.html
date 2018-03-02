@@ -1,0 +1,33 @@
+{% extends '__form.html' %}
+
+{% block title %}
+Registrar Cliente
+{% endblock %}
+
+{% block legend %}
+Registrar Cliente
+{% endblock %}
+
+{% block my-script %}
+<script>
+    $(document).ready(function () {
+        $('#id_pais').change(medida);
+        function medida(){
+            if($(this).val()){
+                var id = $(this).val();
+                $.ajax({
+                    data:{'id': id},
+                    url:"{% url 'cliente-ajax-ciudades' %}",
+                    type:'GET',
+                    success: function(data){
+                        $('#id_ciudad').html(data);
+                    },
+                    failure: function(data){
+                        console.log('error')
+                    }
+                });
+            }
+        }
+    });
+</script>
+{% endblock %}

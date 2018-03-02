@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Nuestros Clientes
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <a href="javascript:pruebaDivAPdf()" class="btn btn-info">Pasar a PDF</a>
+    </div>
+</div>
+<div class="row col-md-12" id="imprimir">
+    <table class="table striped hovered border bordered">
+        <thead>
+            <tr>
+                <th width="30px">#</th>
+                <th>C.I.</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Telefono</th>
+                <th>Direccion</th>
+                <th>Pais</th>
+                <th>Ciudad</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ cliente.ci }}</td>
+                <td>{{ cliente.nombres }}</td>
+                <td>{{ cliente.apellidos }}</td>
+                <td>{{ cliente.telefono }}</td>
+                <td>{{ cliente.direccion }}</td>
+                <td>{{ cliente.ciudad.pais }}</td>
+                <td>{{ cliente.ciudad }}</td>
+                <td>
+
+                    <a href="{% url 'cliente-detail' cliente.id %}" class="btn btn-info btn-xs" title="Detalle Cliente">
+                        <i class="fa fa-info-circle"></i>
+                    </a>
+                    <a href="{% url 'cliente-update' cliente.id %}" class="btn btn-warning btn-xs" title="Editar Cliente">
+                        <i class="fa fa-pen-square"></i>
+                    </a>
+                    <a href="{% url 'cliente-baja' cliente.id %}" class="btn btn-danger btn-xs" title="Baja Cliente">
+                        <i class="fa fa-times-circle"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+function pruebaDivAPdf() {
+    var pdf = new jsPDF('p', 'pt', 'letter');
+    source = $('#imprimir')[0];
+
+    specialElementHandlers = {
+        '#bypassme': function (element, renderer) {
+            return true
+        }
+    };
+    margins = {
+        top: 80,
+        bottom: 60,
+        left: 40,
+        width: 522
+    };
+
+    pdf.fromHTML(
+        source,
+        margins.left, // x coord
+        margins.top, { // y coord
+            'width': margins.width,
+            'elementHandlers': specialElementHandlers
+        },
+
+        function (dispose) {
+            pdf.save('Prueba.pdf');
+        }, margins
+        );
+}
+</script>
+{% endblock %}

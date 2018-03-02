@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Detalle Pedido
+{% endblock %}
+
+{% block content %}
+{% include 'includes/__info_pedido.html' %}
+<div class="row">
+    <div class="col-md-6">
+        <a href="{% url 'pedido-new-add-material' pedido.id %}" class="btn btn-success">
+            <i class="fa fa-plus-circle"></i> Agregar Material
+        </a>
+    </div>
+    <div class="col-md-6">
+        <a href="{% url 'pedido-confirm' pedido.id %}" class="btn btn-primary">
+            <i class="fa fa-money-bill-alt"></i> Confirmar Pedido
+        </a>
+    </div>
+</div>
+<div class="row">
+    <h3>Materiales Agregados</h3>
+    <div class="col colspan12">
+        <table class="table striped hovered border bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Material</th>
+                    <th>Descripcion</th>
+                    <th>Cantidad</th>
+                    <th>Costo U.</th>
+                    <th>Costo T.</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for detalle in detalles %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ detalle.material }}</td>
+                        <td>{{ detalle.espesor }}</td>
+                        <td>{{ detalle.cantidad }}</td>
+                        <td>{{ detalle.costo_u }}</td>
+                        <td>{{ detalle.costo_t }}</td>
+                        <td>
+                            <a href="{% url 'pedido-new-delete-material' detalle.id %}" class="btn btn-danger btn-xs" title="Eliminar Material">
+                                <i class="fa fa-eraser"></i>
+                            </a>
+                        </td>
+                    </tr>                
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

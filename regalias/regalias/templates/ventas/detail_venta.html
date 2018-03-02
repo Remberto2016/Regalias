@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Detalle Venta
+{% endblock %}
+
+{% block content %}
+{% include 'includes/__info_venta.html' %}
+<div class="row">
+    <h3>Materiales Agregados</h3>
+    <div class="col-md-12">
+        <table class="table striped hovered table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Material</th>
+                    <th>Descripcion</th>
+                    <th>Cantidad</th>
+                    <th>Costo U.</th>
+                    <th>Costo T.</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for detalle in detalles %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ detalle.material }}</td>
+                        <td>{{ detalle.espesor }}</td>
+                        <td>{{ detalle.cantidad }}</td>
+                        <td>{{ detalle.costo_u }}</td>
+                        <td>{{ detalle.costo_t }}</td>
+                    </tr>                
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

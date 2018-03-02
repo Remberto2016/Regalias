@@ -1,0 +1,19 @@
+<div class="app-bar" data-role="appbar">
+    <a class="app-bar-element" href="/">Regalias</a>
+    <span class="app-bar-divider"></span>
+    <ul class="app-bar-menu place-right" data-flexdirection="reverse">
+        {% if user.is_authenticated %}
+            <li data-flexorderorigin="2" data-flexorder="3">
+                <a href="{% url 'logout' %}">
+                    <span class="mif-user icon"></span> Cerrar Sesion
+                </a>
+            </li>
+        {% else %}
+            <li data-flexorderorigin="2" data-flexorder="3">
+                <a href="{% url 'login' %}">
+                    <span class="mif-user icon"></span> Iniciar Sesion
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</div>

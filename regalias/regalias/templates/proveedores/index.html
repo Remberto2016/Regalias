@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Nuestros Proveedores
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <table class="table striped hovered border bordered">
+            <thead>
+                <tr>
+                    <th width="30px">#</th>
+                    <th>Proveedor</th>
+                    <th>Telefono</th>
+                    <th>Direccion</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for proveedor in proveedores %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ proveedor.proveedor }}</td>
+                        <td>{{ proveedor.telefono }}</td>
+                        <td>{{ proveedor.direccion }}</td>
+                        <td>{{ proveedor.email }}</td>
+                        <td>
+                            <a href="{% url 'proveedor-update' proveedor.id %}" class="btn btn-warning btn-xs" title="Editar Proveedor">
+                                <i class="fa fa-pen-square"></i>
+                            </a>
+                            <a href="{% url 'proveedor-detail' proveedor.id %}" class="btn btn-info btn-xs" title="Detalle Proveedor">
+                                <i class="fa fa-info-circle"></i>
+                            </a>
+                            <a href="{% url 'proveedor-baja' proveedor.id %}" class="btn btn-danger btn-xs" title="Baja Proveedor">
+                                <i class="fa fa-times-circle"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

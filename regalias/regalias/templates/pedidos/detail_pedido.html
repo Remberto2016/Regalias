@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Detalle Pedido
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <a href="javascript:pruebaDivAPdf()" class="btn btn-info">Pasar a PDF</a>
+    </div>
+</div>
+{% include 'includes/__info_pedido.html' %}
+<div class="row" id="">
+    <h3>Materiales Agregados</h3>
+    <div class="col colspan12">
+        <table class="table striped hovered border bordered" width="100%">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Material</th>
+                    <th>Descripcion</th>
+                    <th>Cantidad</th>
+                    <th>Costo U.</th>
+                    <th>Costo T.</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for detalle in detalles %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ detalle.material }}</td>
+                        <td>{{ detalle.espesor }}</td>
+                        <td>{{ detalle.cantidad }}</td>
+                        <td>{{ detalle.costo_u }}</td>
+                        <td>{{ detalle.costo_t }}</td>
+                    </tr>                
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    {% include 'includes/__print.html' %}
+{% endblock %}

@@ -1,0 +1,25 @@
+<div class="row">
+    <h3>Informacion Pedido # {{ pedido.id }} </h3>
+    <div class="col-md-6">
+        <p>
+            <strong>Cliente: </strong>{{ pedido.cliente.nombres }} {{ pedido.cliente.apellidos }}
+        </p>
+        <p>
+            <strong>Cedula de Identidad: </strong>{{ pedido.cliente.ci }}
+        </p>
+        <p>
+            <strong>Pais / Ciudad: </strong>{{ pedido.cliente.ciudad.pais }} / {{ pedido.cliente.ciudad }}
+        </p>
+    </div>
+    <div class="col-md-6">
+        <p>
+            <strong>Fecha Pedido: </strong>{{ pedido.fecha }}
+        </p>
+        <p>
+            <strong>Costo Total: </strong>{{ pedido.costo }}  Bs.
+        </p>
+        <p>
+            <strong>Cantidad Materiales: </strong>{{ pedido.detalleventa_set.select_related.count }}
+        </p>
+    </div>
+</div>

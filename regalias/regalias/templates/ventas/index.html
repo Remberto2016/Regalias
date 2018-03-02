@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Nuestras Ventas
+{% endblock %}
+
+{% block content %}
+<div class="cell colspan12">
+<h3>Nuestras Ventas</h3>
+    <table class="table striped hovered border bordered table-bordered">
+        <thead>
+            <tr>
+                <th width="30px">#</th>
+                <th>Fecha Venta</th>
+                <th>C.I.</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Cant.Material</th>
+                <th>CostoT.</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venta in ventas %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ venta.fecha|date:"M Y d" }}</td>
+                    <td>{{ venta.cliente.ci }}</td>
+                    <td>{{ venta.cliente.nombres }}</td>
+                    <td>{{ venta.cliente.apellidos }}</td>
+                    <td>{{ venta.detallepedido_set.count }}</td>
+                    <td>{{ venta.costo }}</td>
+                    <td>
+                        <a href="{% url 'venta-detail' venta.id %}" class="btn btn-info btn-xs" title="Detalle Venta">
+                            <i class="fa fa-info-circle"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Detalle Cliente
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <h1>Detalle Cliente</h1>
+    <div class="col-md-6">
+        <p class="lead">
+            <strong>Nombre Completo: </strong>{{ cliente.nombres }} {{ cliente.apellidos }}
+        </p>
+        <p class="lead">
+            <strong>Cedula de Identidad: </strong>{{ cliente.ci }}
+        </p>
+        <p class="lead">
+            <strong>Telefono: </strong>{{ cliente.telefono }}
+        </p>
+    </div>
+    <div class="col-md-6">
+        <p class="lead">
+            <strong>Pais / Ciudad: </strong>{{ cliente.ciudad.pais }} / {{ cliente.ciudad }}
+        </p>
+        <p class="lead">
+            <strong>Email: </strong>{{ cliente.email }}
+        </p>
+        <p class="lead">
+            <strong>Direccion: </strong>{{ cliente.direccion }}
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <a href="{% url 'cliente-baja' cliente.id %}" class="btn btn-danger">
+            <span class="fa fa-times-circle"></span> Baja Cliente
+        </a>
+    </div>
+</div>
+{% endblock %}

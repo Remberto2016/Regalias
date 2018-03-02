@@ -1,0 +1,22 @@
+@media print {
+    @page { margin: 1cm; }
+    body {
+
+        font-size: 11px;
+    }
+    .row{
+        font-size: 12px;
+    }
+    form{
+        display: none !important;
+    }
+    nav{
+        display: none !important;
+    }
+    footer{
+        display: none;
+    }
+    a{
+        display: none !important;
+    }
+}

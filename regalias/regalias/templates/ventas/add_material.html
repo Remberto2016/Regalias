@@ -1,0 +1,29 @@
+{% extends '__form.html' %}
+
+{% block title %}
+Agregar Material
+{% endblock %}
+
+{% block info-form %}
+{% include 'includes/__info_venta.html' %}
+{% endblock %}
+
+{% block legend %}
+Agregar Material
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).ready(function () {
+        $('#id_costo_u').keyup(function () {
+            var costo = $('#id_costo_u').val();
+            var cantidad = $('#id_cantidad').val();
+
+            if(costo && cantidad){
+                var costo_t = costo * cantidad;
+                $('#id_costo_t').val(costo_t);
+            }
+        });
+    });
+</script>
+{% endblock %}

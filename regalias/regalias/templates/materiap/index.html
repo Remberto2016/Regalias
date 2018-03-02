@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Materias Primas
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <table class="table striped hovered border bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Marca</th>
+                    <th>Espesor</th>
+                    <th>Ancho</th>
+                    <th>Peso</th>
+                    <th>T. Superficie</th>
+                    <th>Estandar</th>
+                    <th>Certificacion</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for material in materiales %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ material.marca }}</td>
+                        <td>{{ material.espesor }}</td>
+                        <td>{{ material.ancho }}</td>
+                        <td>{{ material.peso }}</td>
+                        <td>{{ material.superficie }}</td>
+                        <td>{{ material.estandar }}</td>
+                        <td>{{ material.certificacion }}</td>
+                        <td>
+                            <a href="{% url 'materia-update' material.id %}" class="btn btn-warning btn-xs" title="Editar Materia Prima">
+                                <i class="fa fa-pen-square"></i>
+                            </a>
+                            <a href="{% url 'materia-detail' material.id %}" class="btn btn-info btn-xs" title="Detalle Materia Prima">
+                                <i class="fa fa-info-circle"></i>
+                            </a>
+                            <a href="{% url 'materia-baja' material.id %}" class="btn btn-danger btn-xs" title="Baja Materia Prima">
+                                <i class="fa fa-times-circle"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

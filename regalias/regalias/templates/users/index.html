@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ request.user.username|upper }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-12 col-xs-12">
+		<div class="x_panel">
+			<div class="x_title">
+				<h2>Bienvenido {{ request.user.username }}</h2>
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link" href=""><i class="fa fa-chevron-up"></i></a>
+					</li>
+					<li><a class="close-link" href=""><i class="fa fa-close"></i></a>
+					</li>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

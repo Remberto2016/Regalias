@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Detalle Materia Prima
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <h1>Detalle Materia Prima</h1>
+    <div class="col-md-6">
+        <p class="lead">
+            <strong>Nro. de Serie: </strong>{{ materia.nro_serie }}
+        </p>
+        <p class="lead">
+            <strong>Marca: </strong>{{ materia.marca }}
+        </p>
+        <p class="lead">
+            <strong>Ancho(mm): </strong>{{ materia.ancho }}
+        </p>
+        <p class="lead">
+            <strong>Espesor(mm): </strong>{{ materia.espesor }}
+        </p>
+        <p class="lead">
+            <strong>Peso(Tm): </strong>{{ materia.peso }}
+        </p>
+    </div>
+    <div class="col-md-6">
+        <p class="lead">
+            <strong>Superficie: </strong>{{ materia.superficie }}
+        </p>
+        <p class="lead">
+            <strong>Estandares: </strong>{{ materia.estandar }}
+        </p>
+        <p class="lead">
+            <strong>Certificaciones: </strong>{{ materia.certificacion }}
+        </p>
+        <p class="lead">
+            <strong>Proveedor: </strong>{{ materia.proveedor }}
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <a href="{% url 'materia-baja' materia.id %}" class="btn btn-danger">
+            <span class="fa fa-times-circle"></span> Material Usado
+        </a>
+        <a href="{% url 'materia-update' materia.id %}" class="btn btn-warning">
+            <span class="fa fa-pen-square"></span> Editar Material
+        </a>
+    </div>
+</div>
+{% endblock %}

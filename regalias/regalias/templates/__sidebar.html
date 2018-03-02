@@ -1,0 +1,134 @@
+<!-- sidebar menu -->
+<div id="sidebar-menu" class="main_menu_side hidden-print main_menu" style="background-color:#0f1126;">
+    <div class="menu_section">
+        <h3>General</h3>
+        <ul class="nav side-menu">
+            {% if 'clientes' in perms %}
+                <li>
+                    <a><i class="fa fa-users"></i> Clientes<span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li>
+                            <a href="{% url 'cliente-new' %}">Registrar Cliente</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'cliente-index' %}">Lista Clientes</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'cliente-new-pais' %}">Registrar Pais</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'cliente-new-ciudad' %}">Registrar Ciudad</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'cliente-list-bajas' %}">Clientes Baja</a>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
+            {% if 'materiales' in perms %}
+                <li>
+                    <a><i class="fa fa-sitemap"></i> Proveedor <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li>
+                            <a href="{% url 'proveedor-new' %}">Registrar Proveedor</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'proveedor-index' %}">Lista Proveedor</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'proveedor-list-bajas' %}">Baja Proveedores</a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a><i class="fa fa-briefcase"></i> Materiales <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li>
+                            <a href="{% url 'materia-new' %}">Nuevo Material</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'materia-index' %}">Lista Materiales</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'materia-usada' %}">Materiales Usados</a>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
+            {% if 'pedidos' in perms %}
+                <li>
+                    <a><i class="fa fa-archive"></i> Pedidos <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li>
+                            <a href="{% url 'pedido-index' %}">Pedidos</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'pedido-list-clientes' %}">Registrar Pedido</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'pedido-no-confirmados' %}">Pedidos No Confirmados</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'pedido-vendidos' %}">Pedidos Vendidos</a>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
+            {% if 'ventas' in perms %}
+                <li>
+                    <a><i class="fa fa-shopping-cart"></i> Ventas <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li>
+                            <a href="{% url 'venta-index' %}">Lista Ventas</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'venta-list-clientes' %}">Nueva Venta</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'venta-no-confirmados' %}">Ventas sin Confirmar</a>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
+            <!--li><a><i class="fa fa-list"></i> Reportes <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+            <li><a href="#">Clientes</a></li>
+            <li><a href="#">Proveedor</a></li>
+            <li><a href="#">Productos</a></li>
+            <li><a href="#">Pedidos</a></li>
+            <li><a href="#">Inventario</a></li>
+            <li><a href="#">Ventas</a></li>
+            <li><a href="#">Usuarios</a></li>
+            </ul>
+            </li>
+            <li><a><i class="fa fa-bar-chart"></i> Estadisticas <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+            <li><a href="chartjs.html">Chart JS</a></li>
+            <li><a href="chartjs2.html">Chart JS2</a></li>
+            <li><a href="other_charts.html">Other Charts</a></li>
+            </ul>
+            </li-->
+            <li>
+                <a><i class="fa fa-user"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    {% if user.is_superuser %}
+                        <li>
+                            <a href="{% url 'user-new' %}">Registrar Usuario</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'user-list' %}">Lista Usuarios</a>
+                        </li>
+                    {% endif %}
+                    <li>
+                        <a href="{% url 'user-change-username' %}">Modificar Nombre Usuario</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'user-reset-pass' %}">Modificar Contraseña</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'logout' %}">Cerrar Sesion</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
