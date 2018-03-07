@@ -10,9 +10,10 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, Admi
 from django.conf import settings
 from django.db.models import ProtectedError
 
-from regalias.utility import admin_log_addition, admin_log_change
+from regalias.utility import admin_log_addition, admin_log_change, render_pdf
 
 from clientes.models import Cliente
+from pedidos.models import Pedido, DetallePedido
 from ventas.models import Venta, DetalleVenta
 
 from ventas.form import DetalleVentaForm
@@ -86,7 +87,7 @@ def delete_material(request, detalle_id):
     return HttpResponseRedirect(reverse(new_detail_venta, args={venta.id, }))
 
 @login_required(login_url='/login/')
-def confirm_pedido(request, venta_id):
+def confirm_venta(request, venta_id):
     venta = get_object_or_404(Venta, pk = venta_id)
     venta.estado = True
     venta.save()
@@ -119,3 +120,57 @@ def detail_venta(request, venta_id):
         'venta': venta,
         'detalles': detalles,
     })
+
+@login_required(login_url='/login/')
+def list_pedidos(request):
+    pedidos = Pedido.objects.filter(estado=True, venta=False)
+
+    return render(request, 'ventas/pedidos_confirm.html', {
+        'pedidos':pedidos,
+    })
+
+@login_required(login_url='/login/')
+def detail_pedido_venta(request, pedido_id):
+    pedido = get_object_or_404(Pedido, pk = pedido_id)
+    detalles = DetallePedido.objects.filter(pedido=pedido)
+    return render(request, 'ventas/detail_pedido.html', {
+        'pedido': pedido,
+        'detalles': detalles,
+    })
+
+@login_required(login_url='/login/')
+def venta_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, pk=pedido_id)
+    detalles = DetallePedido.objects.filter(pedido=pedido)
+    venta = Venta.objects.create(
+        cliente=pedido.cliente,
+        costo=pedido.costo,
+        estado=True,
+    )
+    admin_log_addition(request, venta, 'Venta Pedido')
+    venta.save()
+    for d in detalles:
+        detalle = DetalleVenta.objects.create(
+            material=d.material,
+            descripcion=d.descripcion,
+            cantidad=d.cantidad,
+            costo_u=d.costo_u,
+            costo_t=d.costo_t,
+            venta=venta,
+        )
+        detalle.save()
+        admin_log_addition(request, detalle, 'Material Agregado')
+        admin_log_change(request, venta, 'Material Agregado')
+    pedido.venta = True
+    pedido.save()
+    return HttpResponseRedirect(reverse(detail_venta, args={venta.id, }))
+
+@login_required(login_url='/login/')
+def pdf_detail_venta(request, venta_id):
+    venta = get_object_or_404(Venta, pk=venta_id)
+    detalles = DetalleVenta.objects.filter(venta=venta)
+    html = render_to_string('ventas/pdf/detail.html', {
+        'venta': venta,
+        'detalles': detalles,
+    })
+    return render_pdf(html)

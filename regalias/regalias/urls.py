@@ -15,9 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.static import serve
+from django.conf import settings
+
 from users.views import home
 
+
 urlpatterns = [
+    path('media/(<path>)', serve, {'document_root': settings.MEDIA_ROOT, }),
+    path('static/(<path>)', serve, {'document_root': settings.STATIC_ROOT}),
     path('', home, name='index'),
     path('admin/', admin.site.urls),
     path('', include('users.urls')),
@@ -25,4 +31,5 @@ urlpatterns = [
     path('materia/prima/', include('materiales.urls')),
     path('pedido/', include('pedidos.urls')),
     path('venta/', include('ventas.urls')),
+    path('reporte/', include('reportes.urls')),
 ]

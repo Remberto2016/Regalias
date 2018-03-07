@@ -7,7 +7,9 @@ Detalle Pedido
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-        <a href="javascript:pruebaDivAPdf()" class="btn btn-info">Pasar a PDF</a>
+        <a href="{% url 'pedido-pdf-detail' pedido.id %}" class="btn btn-info" target="_blank">
+            <i class="far fa-file-pdf"></i> Pasar a PDF
+        </a>
     </div>
 </div>
 {% include 'includes/__info_pedido.html' %}
@@ -30,7 +32,7 @@ Detalle Pedido
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>{{ detalle.material }}</td>
-                        <td>{{ detalle.espesor }}</td>
+                        <td>{{ detalle.descripcion }}</td>
                         <td>{{ detalle.cantidad }}</td>
                         <td>{{ detalle.costo_u }}</td>
                         <td>{{ detalle.costo_t }}</td>
@@ -40,8 +42,4 @@ Detalle Pedido
         </table>
     </div>
 </div>
-{% endblock %}
-
-{% block js %}
-    {% include 'includes/__print.html' %}
 {% endblock %}

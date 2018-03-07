@@ -15,6 +15,16 @@ Agregar Material
 {% block js %}
 <script>
     $(document).ready(function () {
+        var option = '';
+        $('#id_materiaprima').change(function () {
+            var select = $('#id_materiaprima').val();
+            option = $('option[value='+select+']').html();
+            $('#id_descripcion').val(option);
+        });
+        $('#id_largo').change(function () {
+            var large = $('#id_largo').val();
+            $('#id_descripcion').val(option + ' - Largo: '+large+' mm');
+        });
         $('#id_costo_u').keyup(function () {
             var costo = $('#id_costo_u').val();
             var cantidad = $('#id_cantidad').val();

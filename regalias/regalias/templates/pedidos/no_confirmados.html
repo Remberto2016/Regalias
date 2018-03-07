@@ -33,6 +33,9 @@ Pedidos No Confirmados
                             <a href="{% url 'pedido-delete' pedido.id %}" class="btn btn-danger btn-xs" title="Eliminar Pedido">
                                 <i class="fa fa-eraser"></i>
                             </a>
+                            <a href="{% url 'pedido-new-detail' pedido.id %}" class="btn btn-warning btn-xs" title="Editar Pedido">
+                                <i class="fa fa-edit"></i>
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}

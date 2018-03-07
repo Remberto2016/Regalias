@@ -1,0 +1,43 @@
+{% extends 'report.html' %}
+
+{% block title %}
+Ventas en la Gestion: {{ fecha.year }} Mes: {{ fecha|date:"F" }}
+{% endblock %}
+
+{% block cuerpo %}
+{% load helper_ventas %}
+<h1 class="center">Reporte Ventas</h1>
+<h2>Ventas en la Gestion: {{ fecha.year }} Mes: {{ fecha|date:"F" }}</h2>
+<div class="col-md-12">
+    <table class="table striped hovered">
+        <thead>
+            <tr>
+                <th width="30px">#</th>
+                <th>Fecha</th>
+                <th width="">Cliente</th>
+                <th>Cedula Identidad</th>
+                <th>Cantidad Materiales</th>
+                <th width="20%">Total Precio(Bs)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venta in ventas %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ venta.fecha|date:"d-M-Y" }}</td>
+                    <td>{{ venta.cliente }}</td>
+                    <td>{{ venta.cliente.ci }}</td>
+                    <td class="center">{{ venta.detalleventa_set.select_related.count }}</td>
+                    <td class="right">{{ venta.costo }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table class="table" width="100%">
+        <tr>
+            <th width="84%">TOTALES</th>
+            <td width="16%" class="right">{% sum_ventas ventas %}</td>
+        </tr>
+    </table>
+</div>
+{% endblock %}

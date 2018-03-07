@@ -14,9 +14,20 @@ from django.contrib.auth.models import Permission, Group, User
 from regalias.utility import admin_log_change, admin_log_addition
 
 from users.form import UsernameForm
+from pedidos.models import Pedido
+from ventas.models import Venta
+
+import datetime
 
 def home(request):
-    return render(request, 'base.html')
+    hoy = datetime.datetime.now()
+    ventas = Venta.objects.filter(fecha__year=hoy.year, estado=True)
+    pedidos = Pedido.objects.filter(fecha__year=hoy.year, estado=True, venta=False)
+    return render(request, 'home.html', {
+        'hoy':hoy,
+        'ventas':ventas,
+        'pedidos':pedidos,
+    })
 
 def user_login(request):
     if request.user.is_authenticated:

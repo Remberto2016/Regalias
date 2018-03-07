@@ -11,6 +11,8 @@ urlpatterns = [
     path('<int:cliente_id>/activate', views.activate_cliente, name='cliente-activate'),
     path('<int:cliente_id>/detail', views.detail_cliente, name='cliente-detail'),
     path('list/bajas', views.baja_clientes, name='cliente-list-bajas'),
+    path('pdf/clientes', views.pdf_clientes, name='cliente-pdf'),
+
 
     path('ajax/ciudades', views.ajax_ciudades, name='cliente-ajax-ciudades'),
 ]

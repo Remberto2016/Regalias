@@ -1,12 +1,31 @@
 #encoding:utf-8
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.contenttypes.models import ContentType
-
+from django.http import HttpResponse
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE
 from django.conf import settings
 
 import os
 import random
+
+from io import BytesIO
+from xhtml2pdf import pisa
+
+def render_pdf(html):
+    result = BytesIO()
+    #links = lambda uri, rel: os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ''))
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result, link_callback=fetch_resources)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
+
+def fetch_resources(uri, rel):
+    import os.path
+    BASE_DIR = settings.BASE_DIR
+    path = os.path.join(
+            os.path.join(BASE_DIR, 'static'),
+            uri.replace(settings.STATIC_URL, ""))
+    return path
 
 def create_code_activation():
     li = ['Q','W','E','R','T','Y','U','I','O','P','A','S','D','F','G','H','J','K','L','Z','X','C','V','B','N','M','1','2','3','4','5','6','7','8','9','0']
@@ -15,7 +34,6 @@ def create_code_activation():
     for i in range(50):
          code += random.choice(li)
     return code
-
 
 def send_email(email, html, subject = 'Codigo De Activacion'):
     text_content = 'Mensaje...nLinea 2nLinea3'

@@ -15,4 +15,6 @@ urlpatterns = [
     path('<int:pedido_id>/delete', views.delete_pedido, name='pedido-delete'),
     path('vendidos/', views.pedidos_vendidos, name='pedido-vendidos'),
 
+    path('pdf/detail/<int:pedido_id>', views.pdf_detail_pedido, name='pedido-pdf-detail'),
+
 ]

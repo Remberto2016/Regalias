@@ -1,34 +1,35 @@
-{% extends 'base_reporte.html' %}
+{% extends 'report.html' %}
 
-{% block content %}
-{% include 'includes/__info_pedido.html' %}
-<div class="row" style="border: solid 1px black">
-    <h3>Materiales Agregados</h3>
-    <div class="col colspan12">
-        <table class="table striped hovered border bordered" width="100%">
-            <thead>
-                <tr style="height: 10px;">
-                    <th>#</th>
-                    <th>Material</th>
-                    <th>Descripcion</th>
-                    <th>Cantidad</th>
-                    <th>Costo U.</th>
-                    <th>Costo T.</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for detalle in detalles %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ detalle.material }}</td>
-                        <td>{{ detalle.espesor }}</td>
-                        <td>{{ detalle.cantidad }}</td>
-                        <td>{{ detalle.costo_u }}</td>
-                        <td>{{ detalle.costo_t }}</td>
-                    </tr>                
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+{% block title %}
+Detalle Pedido {{ pedido.id }}
+{% endblock %}
+
+{% block cuerpo %}
+{% include 'pedidos/pdf/__info_pedido.html' %}
+<h2>Materiales Agregados</h2>
+
+<table class="table striped hovered border bordered">
+    <thead>
+        <tr>
+            <th width="30px">#</th>
+            <th width="150">Material</th>
+            <th>Descripcion</th>
+            <th width="120px">Cantidad</th>
+            <th width="120px">Costo U.(Bs)</th>
+            <th width="120px">Costo T.(Bs)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for detalle in detalles %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ detalle.material }}</td>
+                <td>{{ detalle.descripcion }}</td>
+                <td>{{ detalle.cantidad }}</td>
+                <td>{{ detalle.costo_u }}</td>
+                <td>{{ detalle.costo_t }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

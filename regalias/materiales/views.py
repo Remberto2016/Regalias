@@ -10,7 +10,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, Admi
 from django.conf import settings
 from django.db.models import ProtectedError
 
-from regalias.utility import admin_log_addition, admin_log_change
+from regalias.utility import admin_log_addition, admin_log_change, render_pdf
 
 from materiales.models import MateriaPrima, Proveedor
 
@@ -150,3 +150,19 @@ def baja_proveedores(request):
     return render(request, 'proveedores/baja_proveedores.html', {
         'proveedores':proveedores,
     })
+
+@login_required(login_url='/login/')
+def pdf_proveedores(request):
+    proveedores = Proveedor.objects.filter(estado=True)
+    html = render_to_string('proveedores/pdf_proveedores.html', {
+        'proveedores':proveedores,
+    })
+    return render_pdf(html)
+
+@login_required(login_url='/login/')
+def pdf_materia_prima(request):
+    materiales = MateriaPrima.objects.filter(estado = True)
+    html = render_to_string('materiap/pdf_materiap.html', {
+        'materiales':materiales,
+    })
+    return render_pdf(html)

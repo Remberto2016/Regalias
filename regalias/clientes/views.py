@@ -10,7 +10,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, Admi
 from django.conf import settings
 from django.db.models import ProtectedError
 
-from regalias.utility import admin_log_addition, admin_log_change
+from regalias.utility import admin_log_addition, admin_log_change, render_pdf
 
 from clientes.models import Pais, Ciudad, Cliente
 from clientes.form import ClienteForm, CiudadForm, PaisForm
@@ -126,3 +126,11 @@ def activate_cliente(request, cliente_id):
     admin_log_change(request, cliente, 'Cliente Activado')
     messages.info(request, 'Cliente Activado')
     return HttpResponseRedirect(reverse(baja_clientes))
+
+@login_required(login_url='/login/')
+def pdf_clientes(request):
+    clientes = Cliente.objects.filter(estado=True)
+    html = render_to_string('clientes/pdf_clientes.html ', {
+        'clientes':clientes,
+    })
+    return render_pdf(html)

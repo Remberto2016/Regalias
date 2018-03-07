@@ -30,9 +30,9 @@ class MateriaPrima(models.Model):
     estado = models.BooleanField(default=True)
     proveedor = models.ForeignKey(Proveedor, null=True, on_delete=models.PROTECT)
     def __unicode__(self):
-        return '%s - %s'%(self.marca, self.peso)
+        return 'Marca: %s - Superficie: %s - Espesor: %s mm - Ancho: %s mm'%(self.marca, self.superficie, self.espesor, self.ancho)
     def __str__(self):
-        return '%s - %s' % (self.marca, self.peso)
+        return 'Marca: %s - Superficie: %s - Espesor: %s mm - Ancho: %s mm' % (self.marca, self.superficie, self.espesor, self.ancho)
     class Meta:
         verbose_name = 'Materia Prima Calamina'
         verbose_name_plural = 'Materia Prima Calaminas'

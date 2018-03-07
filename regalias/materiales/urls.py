@@ -8,6 +8,7 @@ urlpatterns = [
     path('<int:materia_id>/baja', views.baja_material, name='materia-baja'),
     path('<int:materia_id>/detail', views.detail_materia, name='materia-detail'),
     path('usada', views.materia_usada, name='materia-usada'),
+    path('pdf', views.pdf_materia_prima, name='materia-pdf'),
 
 
     path('proveedor', views.index_proveedor, name='proveedor-index'),
@@ -17,5 +18,6 @@ urlpatterns = [
     path('proveedor/<int:proveedor_id>/activate', views.activate_proveedor, name='proveedor-activate'),
     path('proveedor/<int:proveedor_id>/detail', views.detail_proveedor, name='proveedor-detail'),
     path('proveedor/bajas', views.baja_proveedores, name='proveedor-list-bajas'),
+    path('proveedores/pdf/', views.pdf_proveedores, name='proveedor-pdf'),
 
 ]

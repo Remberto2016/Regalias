@@ -19,6 +19,7 @@ class Pedido(models.Model):
 
 MATERIALCHOICES = (
     ('Calamina', 'Calamina'),
+    ('Clavo', 'Clavo'),
 )
 
 class DetallePedido(models.Model):

@@ -10,7 +10,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, Admi
 from django.conf import settings
 from django.db.models import ProtectedError
 
-from regalias.utility import admin_log_addition, admin_log_change
+from regalias.utility import admin_log_addition, admin_log_change, render_pdf
 
 from clientes.models import Cliente
 from pedidos.models import Pedido, DetallePedido
@@ -91,7 +91,7 @@ def confirm_pedido(request, pedido_id):
     pedido.estado = True
     pedido.save()
     messages.success(request, 'Pedido Confirmado Correctamente')
-    return HttpResponseRedirect(reverse(index))
+    return HttpResponseRedirect(reverse(detail_pedido, args={pedido.id, }))
 
 @login_required(login_url='/login/')
 def pedidos_no_confirmados(request):
@@ -130,3 +130,13 @@ def detail_pedido(request, pedido_id):
         'detalles': detalles,
         'html':html,
     })
+
+@login_required(login_url='/login/')
+def pdf_detail_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, pk=pedido_id)
+    detalles = DetallePedido.objects.filter(pedido=pedido)
+    html = render_to_string('pedidos/pdf/detail.html', {
+        'pedido': pedido,
+        'detalles': detalles,
+    })
+    return render_pdf(html)

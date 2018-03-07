@@ -1,0 +1,27 @@
+<h1>Informacion de Venta # {{ venta.id }} </h1>
+<table class="table1">
+    <tr>
+        <td>
+            <p>
+                <strong>Cliente: </strong>{{ venta.cliente.nombres }} {{ venta.cliente.apellidos }}
+            </p>
+            <p>
+                <strong>Cedula de Identidad: </strong>{{ venta.cliente.ci }}
+            </p>
+            <p>
+                <strong>Pais / Ciudad: </strong>{{ venta.cliente.ciudad.pais }} / {{ venta.cliente.ciudad }}
+            </p>
+        </td>
+        <td>
+            <p>
+                <strong>Fecha de Venta: </strong>{{ venta.fecha }}
+            </p>
+            <p>
+                <strong>Costo Total: </strong>{{ venta.costo }}  Bs.
+            </p>
+            <p>
+                <strong>Cantidad Materiales: </strong>{{ venta.detalleventa_set.select_related.count }}
+            </p>
+        </td>
+    </tr>
+</table>

@@ -86,6 +86,31 @@
                         <li>
                             <a href="{% url 'venta-no-confirmados' %}">Ventas sin Confirmar</a>
                         </li>
+                        <li>
+                            <a href="{% url 'venta-list-pedidos' %}">Venta Pedido</a>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
+            {% if 'reportes' in perms %}
+                <li>
+                    <a><i class="fa fa-list-alt"></i> Reportes <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li>
+                            <a href="{% url 'reporte-venta-fecha' %}">
+                                Ventas por Fechas
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'reporte-venta-mes' %}">
+                                Ventas Mesuales
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'reporte-venta-year' %}">
+                                Ventas Anuales
+                            </a>
+                        </li>
                     </ul>
                 </li>
             {% endif %}
