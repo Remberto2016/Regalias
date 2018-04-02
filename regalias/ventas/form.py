@@ -25,4 +25,4 @@ class DetalleVentaForm(ModelForm):
     largo = forms.ChoiceField(label='Seleccione Largo', help_text='En Milimetros', choices=CHOICE_LARGE)
     class Meta:
         model = DetalleVenta
-        fields = ['materiaprima', 'largo', 'material', 'descripcion', 'cantidad', 'costo_u', 'costo_t']
+        fields = ['materiaprima', 'unidad', 'largo', 'material', 'descripcion', 'cantidad', 'costo_u', 'costo_t']

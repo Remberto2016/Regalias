@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Salida de Material
+{% endblock %}
+
+{% block content %}
+<div class="row">
+<div class="col-md-12">
+    <a href="{% url 'reporte-pdf-salida-material' fecha.year fecha.month fecha.day material %}" class="btn btn-primary" target="_blank">
+        <i class="fa fa-file-pdf"></i> Pasar a PDF
+    </a>
+</div>
+{% include 'includes/__form_get.html' %}
+</div>
+<div class="row">
+<h1>Salida de Material en fecha: {{ fecha|date }}</h1>
+<h3>Tipo de Material: {{ material }}</h3>
+<div class="col-md-12">
+    <table class="table hovered striped table-bordered table-responsive">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Fecha Salida</th>
+                <th>Material</th>
+                <th>Unidad</th>
+                <th>Cantidad</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detalle in detalles %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ detalle.venta.fecha|date }}</td>
+                    <td>{{ detalle.material }}</td>
+                    <td>{{ detalle.unidad }}</td>
+                    <td>{{ detalle.cantidad }}</td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+{% endblock %}

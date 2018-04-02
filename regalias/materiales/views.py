@@ -12,9 +12,11 @@ from django.db.models import ProtectedError
 
 from regalias.utility import admin_log_addition, admin_log_change, render_pdf
 
-from materiales.models import MateriaPrima, Proveedor
+from materiales.models import MateriaPrima, Proveedor, Precio
 
-from materiales.form import MateriaPForm, ProveedorForm
+from materiales.form import MateriaPForm, ProveedorForm, SearchProveedor, PrecioForm
+
+import datetime
 
 @login_required(login_url='/login/')
 def index(request):
@@ -30,6 +32,7 @@ def new(request):
         if form.is_valid():
             m = form.save(commit=False)
             m.user = request.user
+            m.stock = m.longitud
             m.save()
             admin_log_addition(request, m, 'Materia Prima Creada')
             messages.success(request, 'Materia Prima Creada Correctamente')
@@ -166,3 +169,104 @@ def pdf_materia_prima(request):
         'materiales':materiales,
     })
     return render_pdf(html)
+
+@login_required(login_url='/login/')
+def materiap_proveedor(request):
+    hoy = datetime.datetime.now()
+    proveedor = Proveedor.objects.filter(estado=True).first()
+    year = hoy.year
+    mes = hoy.month
+    form = SearchProveedor(request.GET or None)
+    if form.is_valid():
+        year = form.cleaned_data['year']
+        mes = form.cleaned_data['month']
+        hoy = datetime.date(int(year), int(mes), 1)
+        proveedor = form.cleaned_data['proveedor']
+    materiales = MateriaPrima.objects.filter(proveedor=proveedor, fecha__month=mes, fecha__year=year)
+    return render(request, 'materiap/materia_proveedor.html', {
+        'materiales':materiales,
+        'form':form,
+        'proveedor':proveedor,
+        'mes':mes,
+        'year':year,
+        'fecha':hoy,
+    })
+
+@login_required(login_url='/login/')
+def pdf_materiap_proveedor(request, proveedor_id, mes, year):
+    hoy = datetime.date(int(year), int(mes), 1)
+    proveedor = get_object_or_404(Proveedor, pk = proveedor_id)
+    materiales = MateriaPrima.objects.filter(proveedor=proveedor, fecha__month=mes, fecha__year=year)
+    html = render_to_string('materiap/pdf_materiap_proveedor.html', {
+        'materiales':materiales,
+        'proveedor':proveedor,
+        'fecha': hoy,
+    })
+    return render_pdf(html)
+
+@login_required(login_url='/login/')
+def index_precios(request):
+    precios = Precio.objects.filter(estado=True)
+    return render(request, 'materiap/index_precio.html', {
+        'precios':precios,
+    })
+
+@login_required(login_url='/login/')
+def new_precio(request):
+    if request.method == 'POST':
+        form = PrecioForm(request.POST)
+        if form.is_valid():
+            precio = form.save()
+            admin_log_addition(request, precio, 'Precio Creado')
+            sms = 'Precio Creado Correctamente'
+            messages.success(request, sms)
+            return HttpResponseRedirect(reverse(index_precios))
+    else:
+        form = PrecioForm()
+    return render(request, 'materiap/new_precio.html', {
+        'form':form,
+    })
+
+@login_required(login_url='/login/')
+def update_precio(request, precio_id):
+    precio = get_object_or_404(Precio, pk = precio_id)
+    if request.method == 'POST':
+        form = PrecioForm(request.POST, instance=precio)
+        if form.is_valid():
+            precio = form.save()
+            admin_log_change(request, precio, 'Precio Modificado')
+            sms = 'Precio Modificado Correctamente'
+            messages.warning(request, sms)
+            return HttpResponseRedirect(reverse(index_precios))
+    else:
+        form = PrecioForm(instance=precio)
+    return render(request, 'materiap/update_precio.html', {
+        'form':form,
+    })
+
+@login_required(login_url='/login/')
+def baja_precio(request, precio_id):
+    precio = get_object_or_404(Precio, pk = precio_id)
+    precio.estado = False
+    precio.save()
+    admin_log_change(request, precio, 'Precio Dado De Baja')
+    sms = 'Precio dado de baja correctamente'
+    messages.error(request, sms)
+    return HttpResponseRedirect(reverse(index_precios))
+
+@login_required(login_url='/login/')
+def precios_baja(request):
+    precios = Precio.objects.filter(estado=False)
+    return render(request, 'materiap/index_precio_baja.html', {
+        'precios':precios,
+    })
+
+@login_required(login_url='/login/')
+def active_precio(request, precio_id):
+    precio = get_object_or_404(Precio, pk=precio_id)
+    precio.estado = True
+    precio.save()
+    admin_log_change(request, precio, 'Precio Activado Correctamente')
+    sms = 'Precio activado correctamente'
+    messages.success(request, sms)
+    return HttpResponseRedirect(reverse(precios_baja))

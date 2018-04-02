@@ -18,10 +18,17 @@ class Venta(models.Model):
 
 MATERIALCHOICES = (
     ('Calamina', 'Calamina'),
+    ('Clavos', 'Clavos'),
+)
+
+MATERIALUNIDAD = (
+    ('Unidad', 'Unidad'),
+    ('Kilos', 'Kilos'),
 )
 
 class DetalleVenta(models.Model):
     material = models.TextField(verbose_name='Material', choices=MATERIALCHOICES)
+    unidad = models.CharField(max_length=50, verbose_name='Unidad de Medida', default='Unidad', choices=MATERIALUNIDAD)
     descripcion = models.TextField(verbose_name='Descripcion Pedido')
     cantidad = models.IntegerField()
     costo_u = models.FloatField(default=0, verbose_name='Costo Unitario')

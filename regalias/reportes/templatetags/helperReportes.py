@@ -19,3 +19,10 @@ def count_pedidos(pedidos, month):
         return vent.count()
     else:
         return 0
+
+@register.simple_tag
+def sum_cant_salidas(detalle):
+    suma = detalle.aggregate(Sum('cantidad'))
+    if suma['cantidad__sum']:
+        return suma['cantidad__sum']
+    return 0

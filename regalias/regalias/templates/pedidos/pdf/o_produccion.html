@@ -1,0 +1,76 @@
+{% extends 'report.html' %}
+
+{% block title %}
+Detalle Pedido {{ pedido.id }}
+{% endblock %}
+
+{% block cuerpo %}
+<h1>Orden De Produccion </h1>
+<table class="">
+    <tr>
+        <td width="80%"></td>
+        <td class="table" width="10%">Nro.Prod.</td>
+        <td width="10%">{{ pedido.id }}/{{ pedido.fecha.year }}</td>
+    </tr>
+</table>
+<table class="table">
+    <tr>
+        <td width="17%"><strong>Lugar y Fecha:</strong> </td>
+        <td width="50%">Potosí, {{ pedido.fecha }}</td>
+        <td width="25%">Plazo de Entrega(Dias): </td>
+        <td width="5%">{{ pedido.plazo }}</td>
+    </tr>
+</table>
+<h2>Materiales Agregados</h2>
+
+<table class="table striped hovered border bordered">
+    <thead>
+        <tr>
+            <th width="30px">#</th>
+            <th width="80px">Cantidad</th>
+            <th width="80px">Unidad</th>
+            <th width="300px">Descripcion</th>
+            <th width="70px">Color</th>
+            <th width="90px">Largo(ML)</th>
+            <th width="90px">Ancho(ML)</th>
+            <th width="90px">Total(ML)</th>
+            <th width="100px">ConMateriaP.</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for detalle in detalles %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ detalle.cantidad }}</td>
+                <td>{{ detalle.unidad }}</td>
+                <td>{{ detalle.descripcion }}</td>
+                <td>{{ detalle.color }}</td>
+                <td>{{ detalle.largo }}</td>
+                <td>{{ detalle.ancho }}</td>
+                <td>{{ detalle.totalm }}</td>
+                <td>
+                    {% for materia in detalle.material.all %}
+                        <p>Bobina: {{ materia.nro_serie }}</p>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<hr>
+<table>
+    <tr>
+        <th width="70%">
+            <p style="font-size: 14px">
+                <strong>Usuario Solicitante:</strong> {{ request.user }}
+            </p>
+        </th>
+        <th width="30%">
+            <br><br><br>
+            <hr>
+            Firma(Sello de Pie)
+        </th>
+    </tr>
+</table>
+{% include 'pedidos/pdf/__info_produccion.html' %}
+{% endblock %}

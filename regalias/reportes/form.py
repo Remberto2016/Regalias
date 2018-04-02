@@ -1,6 +1,8 @@
 from django import forms
 from django.forms import ModelForm
 
+from ventas.models import MATERIALCHOICES
+
 from datetime import datetime
 
 class MonthSelect(forms.Form):
@@ -61,6 +63,17 @@ class EntreFechasSearchForm(forms.Form):
     def clean_fin(self):
         today = datetime.now()
         data = self.cleaned_data['fin']
+        if data.strftime('%Y-%m-%d') > today.strftime('%Y-%m-%d'):
+            raise forms.ValidationError('No Puede Seleccionar Una Fecha Mayor a la Actual')
+        return data
+
+class FechaMaterialSearchForm(forms.Form):
+    material = forms.ChoiceField(label='Seleccione Material', choices=MATERIALCHOICES)
+    fecha = forms.DateField(label='Seleccione Una Fecha', widget=forms.TextInput(attrs={'type': 'date', 'required': 'required'}))
+
+    def clean_fecha(self):
+        today = datetime.now()
+        data = self.cleaned_data['fecha']
         if data.strftime('%Y-%m-%d') > today.strftime('%Y-%m-%d'):
             raise forms.ValidationError('No Puede Seleccionar Una Fecha Mayor a la Actual')
         return data

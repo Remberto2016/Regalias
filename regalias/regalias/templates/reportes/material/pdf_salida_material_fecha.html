@@ -1,0 +1,42 @@
+{% extends 'report.html' %}
+
+{% block title %}
+Ventas Fecha {{ fecha|date }}
+{% endblock %}
+
+{% block cuerpo %}
+{% load helperReportes %}
+<h1 class="center">Reporte Materiales</h1>
+<h2>Salida de Material en fecha: {{ fecha|date }}</h2>
+<h2>Tipo de Material: {{ material }}</h2>
+<div class="col-md-12">
+    <table class="table hovered striped">
+        <thead>
+            <tr>
+                <th width="30px">#</th>
+                <th>Fecha Salida</th>
+                <th>Material</th>
+                <th>Unidad</th>
+                <th>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detalle in detalles %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ detalle.venta.fecha|date }}</td>
+                    <td>{{ detalle.material }}</td>
+                    <td>{{ detalle.unidad }}</td>
+                    <td width="24%">{{ detalle.cantidad }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table class="table" width="100%">
+        <tr>
+            <th width="76%">TOTALES</th>
+            <td width="24%" class="right">{% sum_cant_salidas detalles %}</td>
+        </tr>
+    </table>
+</div>
+{% endblock %}

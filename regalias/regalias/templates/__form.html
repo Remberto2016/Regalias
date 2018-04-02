@@ -11,51 +11,46 @@
 
                     {% endblock %}
                 </h2>
-                
                 <ul class="nav navbar-right panel_toolbox">
-                   <li><a class="collapse-link" href=""><i class="fa fa-chevron-up"></i></a>
-                   </li>
-                   <li><a class="close-link" href=""><i class="fa fa-close"></i></a>
-                   </li>
-               </ul>
-               <div class="clearfix"></div>
-           </div>
-
-           <form action="" method="post" class="form-horizontal">{% csrf_token %}
+                 <li><a class="collapse-link" href=""><i class="fa fa-chevron-up"></i></a>
+                 </li>
+                 <li><a class="close-link" href=""><i class="fa fa-close"></i></a>
+                 </li>
+             </ul>
+             <div class="clearfix"></div>
+         </div>
+         <form action="" method="post" class="form-horizontal">{% csrf_token %}
             <div class=" col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3" >
                 <fieldset>
-
                     {% block cuerpo-form %}
                     {% for field in form %}
                     <div class="form-group">
                         {% if field.errors %}
                         <div class="mypadding2 bg-red fg-white margin10 no-margin-right no-margin-left">
-                            {{ field.errors }}
-                        </div>
+                           <i class="fa fa-exclamation-triangle"></i>{{ field.errors }}
+                       </div>
+                       {% endif %}
+                       {{ field.label_tag }}
+                       <div class="col-sm-9">
+                        {{ field }}
+                        {% if field.help_text %}
+                        <small class="fg-green block padding10 no-padding-top">
+                            <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+                        </small>
                         {% endif %}
-                        {{ field.label_tag }}
-                        <div class="col-sm-9">
-                            {{ field }}
-                            {% if field.help_text %}
-                            <small class="fg-green block padding10 no-padding-top">
-                                {{ field.help_text|safe }}
-                            </small>
-                            {% endif %}
-                        </div>
                     </div>
-                    {% endfor %}
-                    {% endblock %}
-                    <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-9">
-                            <button class="btn btn-success">{% block submit %}Guardar{% endblock %}</button>
-                            <a href="{% block cancel %}javascript:history.go(-1){% endblock %}" class="btn btn-danger">Cancelar</a>
-                        </div>
+                </div>
+                {% endfor %}
+                {% endblock %}
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <button class="btn btn-success">{% block submit %}Guardar{% endblock %}</button>
+                        <a href="{% block cancel %}javascript:history.go(-1){% endblock %}" class="btn btn-danger">Cancelar</a>
                     </div>
-                </fieldset>
-            </div>
-        </form>
-
-    </div>
+                </div>
+            </fieldset>
+        </div>
+    </form>
 </div>
 </div>
 </div>

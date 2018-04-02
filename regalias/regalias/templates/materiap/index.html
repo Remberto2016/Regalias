@@ -19,8 +19,7 @@ Materias Primas
                 <tr>
                     <th>#</th>
                     <th>Marca</th>
-                    <th>Espesor</th>
-                    <th>Ancho</th>
+                    <th>Detalle</th>
                     <th>Peso</th>
                     <th>T. Superficie</th>
                     <th>Estandar</th>
@@ -33,9 +32,8 @@ Materias Primas
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>{{ material.marca }}</td>
-                        <td>{{ material.espesor }}</td>
-                        <td>{{ material.ancho }}</td>
-                        <td>{{ material.peso }}</td>
+                        <td>{{ material.detalle }}</td>
+                        <td>{{ material.peso }} {{ material.medida }}</td>
                         <td>{{ material.superficie }}</td>
                         <td>{{ material.estandar }}</td>
                         <td>{{ material.certificacion }}</td>

@@ -14,7 +14,7 @@ from xhtml2pdf import pisa
 def render_pdf(html):
     result = BytesIO()
     #links = lambda uri, rel: os.path.join(settings.MEDIA_ROOT, uri.replace(settings.MEDIA_URL, ''))
-    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result, link_callback=fetch_resources)
+    pdf = pisa.pisaDocument(BytesIO(html.encode("utf-8")), result, link_callback=fetch_resources)
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None

@@ -25,11 +25,14 @@ Detalle Pedido
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Material</th>
-                    <th>Descripcion</th>
                     <th>Cantidad</th>
-                    <th>Costo U.</th>
-                    <th>Costo T.</th>
+                    <th>Unidad</th>
+                    <th>Descripcion</th>
+                    <th>Color</th>
+                    <th>Largo(ML)</th>
+                    <th>Ancho(ML)</th>
+                    <th>Total(ML)</th>
+                    <th>ConMateriaP.</th>
                     <th></th>
                 </tr>
             </thead>
@@ -37,11 +40,19 @@ Detalle Pedido
                 {% for detalle in detalles %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ detalle.material }}</td>
-                        <td>{{ detalle.descripcion }}</td>
                         <td>{{ detalle.cantidad }}</td>
-                        <td>{{ detalle.costo_u }}</td>
-                        <td>{{ detalle.costo_t }}</td>
+                        <td>{{ detalle.unidad }}</td>
+                        <td>{{ detalle.descripcion }}</td>
+                        <td>{{ detalle.color }}</td>
+                        <td>{{ detalle.largo }}</td>
+                        <td>{{ detalle.ancho }}</td>
+                        <td>{{ detalle.totalm }}</td>
+                        <td>
+                            {% for materia in detalle.material.all %}
+                                <p>Bobina: {{ materia.nro_serie }}</p>
+                            {% endfor %}
+
+                        </td>
                         <td>
                             <a href="{% url 'pedido-new-delete-material' detalle.id %}" class="btn btn-danger btn-xs" title="Eliminar Material">
                                 <i class="fa fa-eraser"></i>

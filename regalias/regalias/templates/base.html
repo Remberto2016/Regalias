@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{% static 'css/print.css' %}">
     <link rel="stylesheet" href="{% static 'style.css' %}">
 
-    
+
     {% block css %}{% endblock css %}
 
     <!-- jQuery -->
@@ -65,9 +65,8 @@
                     <br />
                     {% if user.is_authenticated %}
                     {% include '__sidebar.html' %}
-                    
 
-                    <!--/menu footer buttons -->
+                    <!-- /menu footer buttons -->
                     <div class="sidebar-footer hidden-small" style="background-color:#0f1126;">
                         <a data-toggle="tooltip" data-placement="top" title="Settings" style="background-color:#0f1126;">
                             <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
@@ -82,7 +81,6 @@
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                         </a>
                     </div>
-
                     {% else %}
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu" style="background-color:#0f1126;">
                         <div class="menu_section">
@@ -124,15 +122,14 @@
                                         </a>
                                     </li>
                                     {% endif %}
-
-                            </ul>
-                             <li> <a> 
-                                        {% if user.is_superuser %}
-                                        Administrador(a):
-                                        {% else %}
-                                        {% endif %}
-                                    </a>
-                                </li>
+                                </ul>
+                                <li> <a> 
+                                    {% if user.is_superuser %}
+                                    Administrador(a):
+                                    {% else %}
+                                    {% endif %}
+                                </a>
+                            </li>
                         </li>
                     </ul>
                 </nav>

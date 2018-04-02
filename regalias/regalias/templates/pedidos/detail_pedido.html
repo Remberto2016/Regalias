@@ -8,7 +8,7 @@ Detalle Pedido
 <div class="row">
     <div class="col-md-12">
         <a href="{% url 'pedido-pdf-detail' pedido.id %}" class="btn btn-info" target="_blank">
-            <i class="far fa-file-pdf"></i> Pasar a PDF
+            <i class="fa fa-file-pdf"></i> Orden De Produccion
         </a>
     </div>
 </div>
@@ -16,26 +16,43 @@ Detalle Pedido
 <div class="row" id="">
     <h3>Materiales Agregados</h3>
     <div class="col colspan12">
-        <table class="table striped hovered border bordered" width="100%">
+        <table class="table striped hovered border bordered">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Material</th>
-                    <th>Descripcion</th>
                     <th>Cantidad</th>
-                    <th>Costo U.</th>
-                    <th>Costo T.</th>
+                    <th>Unidad</th>
+                    <th>Descripcion</th>
+                    <th>Color</th>
+                    <th>Largo(ML)</th>
+                    <th>Ancho(ML)</th>
+                    <th>Total(ML)</th>
+                    <th>ConMateriaP.</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {% for detalle in detalles %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ detalle.material }}</td>
-                        <td>{{ detalle.descripcion }}</td>
                         <td>{{ detalle.cantidad }}</td>
-                        <td>{{ detalle.costo_u }}</td>
-                        <td>{{ detalle.costo_t }}</td>
+                        <td>{{ detalle.unidad }}</td>
+                        <td>{{ detalle.descripcion }}</td>
+                        <td>{{ detalle.color }}</td>
+                        <td>{{ detalle.largo }}</td>
+                        <td>{{ detalle.ancho }}</td>
+                        <td>{{ detalle.totalm }}</td>
+                        <td>
+                            {% for materia in detalle.material.all %}
+                                <p>Bobina: {{ materia.nro_serie }}</p>
+                            {% endfor %}
+
+                        </td>
+                        <td>
+                            <a href="{% url 'pedido-new-delete-material' detalle.id %}" class="btn btn-danger btn-xs" title="Eliminar Material">
+                                <i class="fa fa-eraser"></i>
+                            </a>
+                        </td>
                     </tr>                
                 {% endfor %}
             </tbody>

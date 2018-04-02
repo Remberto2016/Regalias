@@ -13,7 +13,7 @@ from django.db.models import ProtectedError
 from regalias.utility import admin_log_addition, admin_log_change, render_pdf
 
 from ventas.models import Venta, DetalleVenta
-from reportes.form import FechaSearchForm, MonthSelect, YearForm, EntreFechasSearchForm
+from reportes.form import FechaSearchForm, MonthSelect, YearForm, EntreFechasSearchForm, FechaMaterialSearchForm
 
 import datetime
 
@@ -95,5 +95,34 @@ def pdf_ventas_gestion(request, year):
     html = render_to_string('reportes/ventas/pdf_ventasyear.html', {
         'ventas':ventas,
         'fecha':fecha,
+    })
+    return render_pdf(html)
+
+@login_required(login_url='/login/')
+def salida_material(request):
+    material = 'Calamina'
+    fecha = datetime.datetime.now()
+    form = FechaMaterialSearchForm(request.GET or None)
+    if form.is_valid():
+        fecha = form.cleaned_data['fecha']
+        material = form.cleaned_data['material']
+    ventas = Venta.objects.filter(estado=True, fecha=fecha)
+    detalles = DetalleVenta.objects.filter(material=material, venta_id__in = ventas.values('id')).order_by('venta__fecha', 'material')
+    return render(request, 'reportes/material/salida_material_fecha.html', {
+        'detalles':detalles,
+        'fecha':fecha,
+        'material':material,
+        'form':form,
+    })
+
+@login_required(login_url='/login/')
+def pdf_salida_material(request, year, month, day, material):
+    fecha = datetime.date(int(year), int(month), int(day))
+    ventas = Venta.objects.filter(estado=True, fecha=fecha)
+    detalles = DetalleVenta.objects.filter(material=material, venta_id__in=ventas.values('id')).order_by('venta__fecha', 'material')
+    html = render_to_string('reportes/material/pdf_salida_material_fecha.html', {
+        'detalles': detalles,
+        'fecha': fecha,
+        'material':material,
     })
     return render_pdf(html)

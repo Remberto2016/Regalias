@@ -157,6 +157,7 @@ def venta_pedido(request, pedido_id):
             costo_u=d.costo_u,
             costo_t=d.costo_t,
             venta=venta,
+            unidad=d.unidad,
         )
         detalle.save()
         admin_log_addition(request, detalle, 'Material Agregado')

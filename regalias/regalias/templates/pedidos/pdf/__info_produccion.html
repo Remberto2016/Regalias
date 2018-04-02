@@ -1,0 +1,32 @@
+<hr>
+<table class="table1">
+    <tr>
+        <td>
+            <p>
+                <strong>Sr(a): </strong>{{ pedido.cliente.nombres }} {{ pedido.cliente.apellidos }}
+            </p>
+            <p>
+                <strong>Cedula de Identidad: </strong>{{ pedido.cliente.ci }}
+            </p>
+        </td>
+        <td>
+            <p>
+                <strong>NIT: </strong>{{ pedido.cliente.nit }}
+            </p>
+            <p>
+                <strong>Celular/Telefono: </strong>{{ pedido.cliente.telefono }}
+            </p>
+        </td>
+    </tr>
+</table>
+
+<table class="table">
+    <tr>
+        <td width="150px">
+            <strong>Lugar de Entrega: </strong>
+        </td>
+        <td>
+            {{ pedido.entrega }}
+        </td>
+    </tr>
+</table>

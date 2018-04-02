@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Precios Dado de Baja
+{% endblock %}
+
+{% block content %}
+<div class="row">
+<!--div class="col-md-12">
+    <a href="{% url 'materia-pdf' %}" class="btn btn-info" target="_blank">
+        <i class="fa fa-file-pdf"></i> Pasar a PDF
+    </a>
+</div-->
+</div>
+<div class="row">
+<h2>Precios Dado de Baja</h2>
+    <div class="col-md-12">
+        <table class="table striped hovered border bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Codigo</th>
+                    <th>Descripcion</th>
+                    <th>Precio</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for precio in precios %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ precio.codigo }}</td>
+                        <td>{{ precio.descripcion }}</td>
+                        <td>{{ precio }}</td>
+                        <td>
+                            <a href="{% url 'precio-active' precio.id %}" class="btn btn-success btn-xs" title="Activar Precio">
+                            <i class="fa fa-check-square"></i>
+                        </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

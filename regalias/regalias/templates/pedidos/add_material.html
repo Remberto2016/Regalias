@@ -15,23 +15,74 @@ Agregar Material
 {% block js %}
 <script>
     $(document).ready(function () {
-        var option = '';
-        $('#id_materiaprima').change(function () {
-            var select = $('#id_materiaprima').val();
-            option = $('option[value='+select+']').html();
-            $('#id_descripcion').val(option);
+        var html = '';
+        {% for material in materiales %}
+            html = html + '<option value="{{ material.color }}">{{ material.color }}</option>';
+        {% endfor %}
+        $('#id_color').html(html);
+        var precio = 0;
+        var cantidad = 0;
+        var large = 0;
+        var tmetros = 0;
+        $('#id_calamina').change(function () {
+            var precio_id = $(this).val();
+            if(precio_id){
+                $.ajax({
+                    data:{'precio_id': precio_id},
+                    url:"{% url 'pedido-ajax-precio' %}",
+                    type:'GET',
+                    success: function(data){
+                        $('#id_costo_u').val(data);
+                        precio = data;
+                    },
+                    failure: function(data){
+                        console.log('error')
+                    }
+                });
+            }else{
+                $('#id_costo_u').val(0)
+            }
         });
-        $('#id_largo').change(function () {
-            var large = $('#id_largo').val();
-            $('#id_descripcion').val(option + ' - Largo: '+large+' mm');
+        $('#id_color').change(function () {
+            var color = $(this).val();
+            if(color){
+                $.ajax({
+                    data:{'color': color},
+                    url:"{% url 'pedido-ajax-material' %}",
+                    type:'GET',
+                    success: function(data){
+                        $('#id_ancho').html(data);
+                    },
+                    failure: function(data){
+                        console.log('error')
+                    }
+                });
+            }
         });
-        $('#id_costo_u').keyup(function () {
-            var costo = $('#id_costo_u').val();
-            var cantidad = $('#id_cantidad').val();
-
-            if(costo && cantidad){
-                var costo_t = costo * cantidad;
+        $('#id_cantidad').keyup(function () {
+            if($(this).val()){
+                cantidad = $(this).val();
+                tmetros = large * cantidad;
+                var costo_t = tmetros * precio;
                 $('#id_costo_t').val(costo_t);
+                $('#id_total_m').val(tmetros);
+            }
+            else{
+                cantidad = 0;
+            }
+        });
+        $('#id_largo').keyup(function () {
+            large = $('#id_largo').val();
+            if(large!=null){
+                tmetros = large * cantidad;
+                var costo_t = tmetros * precio;
+            $('#id_costo_t').val(costo_t);
+                $('#id_total_m').val(large * cantidad);
+            }else{
+                tmetros = 0 * cantidad;
+                var costo_t = tmetros * precio;
+            $('#id_costo_t').val(costo_t);
+                $('#id_total_m').val(0 * cantidad);
             }
         });
     });

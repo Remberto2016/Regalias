@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Materias Primas
+{% endblock %}
+
+{% block content %}
+<div class="row">
+<div class="col-md-12">
+    <a href="{% url 'materia-proveedor-pdf' proveedor.id mes year %}" class="btn btn-info" target="_blank">
+        <i class="fa fa-file-pdf"></i> Pasar a PDF
+    </a>
+</div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        {% include 'includes/__form_get.html' %}
+    </div>
+</div>
+<div class="row">
+<h2>Gestion: {{ fecha.year }} - Mes: {{ fecha|date:"F" }}</h2>
+    <div class="col-md-6">
+        <p class="">
+            <strong>Proveedor: </strong>{{ proveedor.proveedor }}
+        </p>
+        <p>
+            <strong>Telefono: </strong>{{ proveedor.telefono }}
+        </p>
+    </div>
+    <div class="col-md-6">
+        <p>
+            <strong>Direccion: </strong>{{ proveedor.direccion }}
+        </p>
+        <p><strong>Email: </strong>{{ proveedor.email }}</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table striped hovered border bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Marca</th>
+                    <th>Detalle</th>
+                    <th>Peso</th>
+                    <th>T. Superficie</th>
+                    <th>Estandar</th>
+                    <th>Certificacion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for material in materiales %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ material.marca }}</td>
+                        <td>{{ material.detalle }}</td>
+                        <td>{{ material.peso }} {{ material.medida }}</td>
+                        <td>{{ material.superficie }}</td>
+                        <td>{{ material.estandar }}</td>
+                        <td>{{ material.certificacion }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

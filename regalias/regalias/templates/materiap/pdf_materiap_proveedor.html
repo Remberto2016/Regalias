@@ -1,0 +1,71 @@
+{% extends 'report.html' %}
+
+{% block title %}
+Materia Prima
+{% endblock %}
+
+{% block cuerpo %}
+<h1>Materia Prima</h1>
+<table>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+            <h3 class="left" align="left">NºPOTOSI/{{ fecha.month }}/{{ fecha.year }}</h3>
+        </td>
+    </tr>
+</table>
+
+
+<table>
+    <tr>
+        <td class="">
+            <strong>Proveedor: </strong>{{ proveedor.proveedor }}
+        </td>
+        <td>
+            <strong>Telefono: </strong>{{ proveedor.telefono }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>Direccion: </strong>{{ proveedor.direccion }}
+        </td>
+        <td>
+            <strong>Email: </strong>{{ proveedor.email }}
+        </td>
+    </tr>
+</table>
+<table class="table">
+<tr>
+        <td>Detalle de Materiales</td>
+    </tr>
+</table>
+<table class="table striped hovered border bordered">
+    <thead>
+        <tr>
+            <th width="30px">#</th>
+            <th>Marca</th>
+            <th>Detalle</th>
+            <th>Peso</th>
+            <th>T. Superficie</th>
+            <th>Estandar</th>
+            <th>Certificacion</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for material in materiales %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ material.marca }}</td>
+                <td>{{ material.detalle }}</td>
+                <td>{{ material.peso }} {{ material.medida }}</td>
+                <td>{{ material.superficie }}</td>
+                <td>{{ material.estandar }}</td>
+                <td>{{ material.certificacion }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

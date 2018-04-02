@@ -39,6 +39,7 @@ class Ciudad(models.Model):
 
 class Cliente(models.Model):
     ci = models.CharField(validators=[validate_ci], max_length=10,unique=True, verbose_name='Cedula de Identidad')
+    nit = models.CharField(max_length=20, verbose_name='NIT', null=True)
     nombres = models.CharField(max_length=50, verbose_name='Nombres')
     apellidos = models.CharField(max_length=100, verbose_name='Apellidos')
     direccion = models.CharField(max_length=50, verbose_name='Direccion')

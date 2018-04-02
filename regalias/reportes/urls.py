@@ -10,4 +10,7 @@ urlpatterns = [
     path('ventas/gestion', views.ventas_gestion, name='reporte-venta-year'),
     path('pdf/ventas/<int:year>/gestion/', views.pdf_ventas_gestion, name='reporte-pdf-ventas-year'),
 
+    path('salida/material', views.salida_material, name='reporte-salida-material'),
+    path('pdf/salida/<int:year>/<int:month>/<int:day>/<str:material>/', views.pdf_salida_material, name='reporte-pdf-salida-material'),
+
 ]

@@ -33,7 +33,7 @@ Ventas por Gestiones
                 {% for venta in ventas %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ venta.fecha|date:"d-M-Y" }}</td>
+                        <td><td>{{ venta.fecha|date:"d-M-Y" }}</td></td>
                         <td>{{ venta.cliente }}</td>
                         <td>{{ venta.cliente.ci }}</td>
                         <td>{{ venta.detalleventa_set.select_related.count }}</td>

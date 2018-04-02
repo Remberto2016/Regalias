@@ -2,25 +2,31 @@
 from django.forms import ModelForm, TextInput
 from django import forms
 
-from pedidos.models import DetallePedido
-from materiales.models import MateriaPrima
+from pedidos.models import DetallePedido, Pedido
+from materiales.models import MateriaPrima, Precio
 
-CHOICE_LARGE = (
-    ('', '---------'),
-    ('500', '500'),
-    ('1000', '1000'),
-    ('1500', '1500'),
-    ('2000', '2000'),
-    ('2500', '2500'),
-    ('3000', '3000'),
-    ('3500', '3500'),
-    ('4000', '4000'),
-    ('4500', '4500'),
-    ('5000', '5000'),
+COLORCHOICE = (
+    ('Azul', 'Azul'),
+    ('Rojo', 'Rojo'),
+    ('Naranja', 'Naranja'),
+    ('Verde', 'Verde'),
 )
+
 class DetallePedidoForm(ModelForm):
-    materiaprima = forms.ModelChoiceField(label='Seleccione Materia Prima', queryset=MateriaPrima.objects.filter(estado=True), required=True)
-    largo = forms.ChoiceField(label='Seleccione Largo', help_text='En Milimetros', choices=CHOICE_LARGE)
+    calamina = forms.ModelChoiceField(label='Tipo Calamina', queryset=Precio.objects.filter(estado=True), required=True)
+    largo = forms.FloatField(label='Largo', help_text='En Metros Lineales', min_value=1)
+    ancho = forms.ModelChoiceField(label='Ancho', help_text='En Metros Lineales', queryset=MateriaPrima.objects.filter(estado=True))
+    color = forms.ChoiceField(label='Color', choices=COLORCHOICE, required=False)
+    total_m = forms.FloatField(label='Total Metros', help_text='En Metros Lineales')
     class Meta:
         model = DetallePedido
-        fields = ['materiaprima', 'largo', 'material', 'descripcion', 'cantidad', 'costo_u', 'costo_t']
+        fields = ['calamina', 'color', 'ancho', 'unidad', 'largo', 'cantidad', 'total_m', 'costo_u', 'costo_t']
+        widgets = {
+            'costo_u':TextInput(attrs={'readonly': 'readonly'}),
+            'costo_t': TextInput(attrs={'readonly': 'readonly'}),
+        }
+
+class ConfirmForm(ModelForm):
+    class Meta:
+        model = Pedido
+        fields = ['plazo', 'entrega']

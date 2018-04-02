@@ -40,6 +40,19 @@
                         </li>
                     </ul>
                 </li>
+                <li><a><i class="fa fa-briefcase"></i> Precios <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li>
+                            <a href="{% url 'precio-new' %}">Nuevo Precio</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'precio-index' %}">Lista Precios</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'precio-list-baja' %}">Precios Baja</a>
+                        </li>
+                    </ul>
+                </li>
                 <li><a><i class="fa fa-briefcase"></i> Materiales <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li>
@@ -50,6 +63,9 @@
                         </li>
                         <li>
                             <a href="{% url 'materia-usada' %}">Materiales Usados</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'materia-proveedor' %}">Material por Proveedor</a>
                         </li>
                     </ul>
                 </li>
@@ -110,6 +126,9 @@
                             <a href="{% url 'reporte-venta-year' %}">
                                 Ventas Anuales
                             </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'reporte-salida-material' %}">Salida de Material</a>
                         </li>
                     </ul>
                 </li>

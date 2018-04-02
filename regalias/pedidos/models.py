@@ -1,6 +1,7 @@
 from django.db import models
 
 from clientes.models import Cliente
+from materiales.models import MateriaPrima
 
 class Pedido(models.Model):
     fecha = models.DateField(auto_now_add=True)
@@ -8,6 +9,8 @@ class Pedido(models.Model):
     costo = models.FloatField(default=0)
     estado = models.BooleanField(default=False)
     venta = models.BooleanField(default=False)
+    entrega = models.CharField(max_length=300, null=True, verbose_name='Lugar de Entrega', help_text='Direccion' )
+    plazo = models.IntegerField(default=1, verbose_name='Plazo de Entrega', help_text='En Dias')
     def __unicode__(self):
         return '%s %s'%(self.fecha, self.cliente)
     def __str__(self):
@@ -19,16 +22,26 @@ class Pedido(models.Model):
 
 MATERIALCHOICES = (
     ('Calamina', 'Calamina'),
-    ('Clavo', 'Clavo'),
+    ('Clavos', 'Clavos'),
+)
+
+MATERIALUNIDAD = (
+    ('Pieza', 'Pieza'),
+    ('Kilos', 'Kilos'),
 )
 
 class DetallePedido(models.Model):
-    material = models.TextField(verbose_name='Material', choices=MATERIALCHOICES)
+    unidad = models.CharField(max_length=50, verbose_name='Unidad de Medida', default='Unidad', choices=MATERIALUNIDAD)
     descripcion = models.TextField(verbose_name='Descripcion Pedido')
     cantidad = models.IntegerField()
-    costo_u = models.FloatField(default=0, verbose_name='Costo Unitario')
-    costo_t = models.FloatField(verbose_name='Costo Total')
+    largo = models.FloatField(null=True)
+    costo_u = models.FloatField(default=0, verbose_name='Costo Unitario', help_text='En Bolivianos')
+    costo_t = models.FloatField(verbose_name='Costo Total', help_text='En Bolivianos')
     pedido = models.ForeignKey(Pedido, models.PROTECT)
+    material = models.ManyToManyField(MateriaPrima)
+    color = models.CharField(max_length=100, null=True)
+    ancho = models.CharField(max_length=10, null=True)
+    totalm = models.FloatField(null=True)
     def __unicode__(self):
         return '%s: %s'%(self.pedido.id, self.cantidad)
     def __str__(self):
@@ -36,4 +49,4 @@ class DetallePedido(models.Model):
     class Meta:
         verbose_name = 'Detalle Pedido'
         verbose_name_plural = 'Detalles Pedidos'
-        ordering = ['pedido', 'material']
+        ordering = ['pedido']
