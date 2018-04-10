@@ -24,7 +24,8 @@ Materias Primas
                     <th>T. Superficie</th>
                     <th>Estandar</th>
                     <th>Certificacion</th>
-                    <th></th>
+                    <th>Metros Lineales</th>
+                    <th>Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,9 +38,10 @@ Materias Primas
                         <td>{{ material.superficie }}</td>
                         <td>{{ material.estandar }}</td>
                         <td>{{ material.certificacion }}</td>
+                        <td><span class="label label-success">{{ material.longitud }}</span> M.</td>
                         <td>
                             <a href="{% url 'materia-update' material.id %}" class="btn btn-warning btn-xs" title="Editar Materia Prima">
-                                <i class="fa fa-pen-square"></i>
+                                <i class="fa fa-pencil-square"></i>
                             </a>
                             <a href="{% url 'materia-detail' material.id %}" class="btn btn-info btn-xs" title="Detalle Materia Prima">
                                 <i class="fa fa-info-circle"></i>

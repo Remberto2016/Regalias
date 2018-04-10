@@ -18,11 +18,12 @@ class Proveedor(models.Model):
 
 CHOICEUNIDAD = (
     ('Kilos', 'Kilos'),
+    ('Piezas', 'Piezas'),
 )
 
 class Precio(models.Model):
     codigo = models.CharField(max_length=10, verbose_name='Codigo')
-    descripcion = models.CharField(max_length=200, verbose_name='Descripcion')
+    descripcion = models.CharField(max_length=200, verbose_name='Descripcion', help_text='Descripccion del material')
     precio = models.FloatField(verbose_name='Precio Metro L.', help_text='En Bolivianos')
     estado = models.BooleanField(default=True)
     def __unicode__(self):

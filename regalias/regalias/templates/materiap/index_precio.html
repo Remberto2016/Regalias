@@ -6,11 +6,11 @@ Nuestros Precios
 
 {% block content %}
 <div class="row">
-<!--div class="col-md-12">
+<div class="col-md-12">
     <a href="{% url 'materia-pdf' %}" class="btn btn-info" target="_blank">
         <i class="fa fa-file-pdf"></i> Pasar a PDF
     </a>
-</div-->
+</div>
 </div>
 <div class="row">
 <h2>Nuestros Precios</h2>
@@ -31,10 +31,10 @@ Nuestros Precios
                         <td>{{ forloop.counter }}</td>
                         <td>{{ precio.codigo }}</td>
                         <td>{{ precio.descripcion }}</td>
-                        <td>{{ precio }}</td>
+                        <td>{{ precio.precio }}</td>
                         <td>
                             <a href="{% url 'precio-update' precio.id %}" class="btn btn-warning btn-xs" title="Editar Precio">
-                                <i class="fa fa-pen-square"></i>
+                                <i class="fa fa-pencil-square"></i>
                             </a>
                             <a href="{% url 'precio-baja' precio.id %}" class="btn btn-danger btn-xs" title="Baja Precio">
                                 <i class="fa fa-times-circle"></i>

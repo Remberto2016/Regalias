@@ -15,8 +15,8 @@
     <link rel="stylesheet" href="{% static "css/alertify.core.css" %}">
     <link rel="stylesheet" href="{% static "css/alertify.default.css" %}">
     <link rel="stylesheet" href="{% static "css/custom.min.css" %}">
-    <link rel="stylesheet" href="{% static 'css/print.css' %}">
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static "css/print.css" %}">
+    <link rel="stylesheet" href="{% static "style.css" %}">
 
 
     {% block css %}{% endblock css %}
@@ -128,6 +128,10 @@
                                     Administrador(a):
                                     {% else %}
                                     {% endif %}
+                                </a>
+                            </li>
+                                 <li> <a> 
+                                    {{request.user.last_login|date:"d M Y " }}
                                 </a>
                             </li>
                         </li>
