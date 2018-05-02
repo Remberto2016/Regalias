@@ -3,6 +3,23 @@
     <div class="menu_section">
         <h3>General</h3>
         <ul class="nav side-menu">
+            {% if user.is_superuser %}
+                <li>
+                    <a>
+                        <i class="fa fa-file"></i>Informacion <span class="fa fa-chevron-down"></span>
+                    </a>
+                    <ul class="nav child_menu">
+                        <li>
+                            <a href="{% url 'empresa_info' %}">Informacion de Empresa</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'color-index' %}">
+                                Colores
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
             {% if 'clientes' in perms %}
                 <li>
                     <a><i class="fa fa-users"></i> Clientes<span class="fa fa-chevron-down"></span></a>
@@ -51,6 +68,17 @@
                         <li>
                             <a href="{% url 'precio-list-baja' %}">Precios Baja</a>
                         </li>
+
+                        <li>
+                            <a href="{% url 'precio-new-clavo' %}">Nuevo Precio Clavo</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'precio-index-clavos' %}">Lista Precios Clavos</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'precio-list-baja-clavo' %}">Precios Clavos Baja</a>
+                        </li>
+
                     </ul>
                 </li>
                 <li><a><i class="fa fa-briefcase"></i> Materiales <span class="fa fa-chevron-down"></span></a>
@@ -61,9 +89,9 @@
                         <li>
                             <a href="{% url 'materia-index' %}">Lista Materiales</a>
                         </li>
-                        <li>
+                        <!--li>
                             <a href="{% url 'materia-usada' %}">Materiales Usados</a>
-                        </li>
+                        </li-->
                         <li>
                             <a href="{% url 'materia-proveedor' %}">Material por Proveedor</a>
                         </li>
@@ -99,9 +127,9 @@
                         <li>
                             <a href="{% url 'venta-list-clientes' %}">Nueva Venta</a>
                         </li>
-                        <li>
+                        <!--li>
                             <a href="{% url 'venta-no-confirmados' %}">Ventas sin Confirmar</a>
-                        </li>
+                        </li-->
                         <li>
                             <a href="{% url 'venta-list-pedidos' %}">Venta Pedido</a>
                         </li>

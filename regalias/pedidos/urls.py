@@ -16,6 +16,7 @@ urlpatterns = [
     path('vendidos/', views.pedidos_vendidos, name='pedido-vendidos'),
 
     path('pdf/detail/<int:pedido_id>', views.pdf_detail_pedido, name='pedido-pdf-detail'),
+    path('pdf/proforma/<int:pedido_id>', views.pdf_proforma, name='pedido-pdf-proforma'),
 
 
     path('ajax/precio/', views.ajax_get_precio, name='pedido-ajax-precio'),

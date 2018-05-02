@@ -4,6 +4,7 @@
 Ventas Fecha {{ fecha|date }}
 {% endblock %}
 
+{% block cuerpo %}
 {% load helperReportes %}
 <h1 class="center">Reporte Materiales</h1>
 <h2>Salida de Material en fecha: {{ fecha|date }}</h2>
@@ -30,6 +31,12 @@ Ventas Fecha {{ fecha|date }}
                 </tr>
             {% endfor %}
         </tbody>
+    </table>
+    <table class="table" width="100%">
+        <tr>
+            <th width="76%">TOTALES</th>
+            <td width="24%" class="right">{% sum_cant_salidas detalles %}</td>
+        </tr>
     </table>
 </div>
 {% endblock %}

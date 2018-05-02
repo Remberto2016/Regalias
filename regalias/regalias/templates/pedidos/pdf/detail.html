@@ -1,20 +1,22 @@
 {% extends 'report.html' %}
 
 {% block title %}
-Detalle Pedido {{ pedido.id }}
+Detalle Pedido
 {% endblock %}
 
 {% block cuerpo %}
 {% include 'pedidos/pdf/__info_pedido.html' %}
 <h2>Materiales Agregados</h2>
-
+{% load helper_pedido %}
 <table class="table striped hovered border bordered">
     <thead>
         <tr>
             <th width="30px">#</th>
-            <th width="150">Material</th>
             <th>Descripcion</th>
+            <th>Unidad</th>
             <th width="120px">Cantidad</th>
+            <th>Largo(ml)</th>
+            <th>Color</th>
             <th width="120px">Costo U.(Bs)</th>
             <th width="120px">Costo T.(Bs)</th>
         </tr>
@@ -23,13 +25,21 @@ Detalle Pedido {{ pedido.id }}
         {% for detalle in detalles %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ detalle.material }}</td>
                 <td>{{ detalle.descripcion }}</td>
+                <td>{{ detalle.unidad }}</td>
                 <td>{{ detalle.cantidad }}</td>
+                <td>{{ detalle.largo }}</td>
+                <td>{{ detalle.color }}</td>
                 <td>{{ detalle.costo_u }}</td>
                 <td>{{ detalle.costo_t }}</td>
             </tr>
         {% endfor %}
     </tbody>
 </table>
+    <table class="table">
+    <tr>
+        <th width="89%">Costo Total</th>
+        <th width="11%">{% sum_pedidos detalles %}</th>
+    </tr>
+    </table>
 {% endblock %}

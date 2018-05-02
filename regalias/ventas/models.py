@@ -7,6 +7,7 @@ class Venta(models.Model):
     cliente = models.ForeignKey(Cliente, models.PROTECT)
     costo = models.FloatField(default=0)
     estado = models.BooleanField(default=False)
+    nro_venta = models.IntegerField(null=True)
     def __unicode__(self):
         return '%s %s'%(self.fecha, self.cliente)
     def __str__(self):

@@ -11,9 +11,8 @@ Nuestros Clientes
         <thead>
             <tr>
                 <th width="30px">#</th>
-                <th>C.I.</th>
-                <th>Nombres</th>
-                <th>Apellidos</th>
+                <th>NIT/C.I.</th>
+                <th>Razon Social</th>
                 <th>Telefono</th>
                 <th>Direccion</th>
                 <th>Pais</th>
@@ -25,9 +24,8 @@ Nuestros Clientes
             {% for cliente in clientes %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td>{{ cliente.ci }}</td>
-                    <td>{{ cliente.nombres }}</td>
-                    <td>{{ cliente.apellidos }}</td>
+                    <td>{{ cliente.nit }}</td>
+                    <td>{{ cliente.razon }}</td>
                     <td>{{ cliente.telefono }}</td>
                     <td>{{ cliente.direccion }}</td>
                     <td>{{ cliente.ciudad.pais }}</td>

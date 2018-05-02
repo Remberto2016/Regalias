@@ -9,24 +9,24 @@ Detalle Venta {{ venta.id }}
 <div class="row">
     <h2>Materiales Agregados</h2>
     <div class="col-md-12">
-        <table class="table">
+        <table class="table" width="100%">
             <thead>
                 <tr>
-                    <th width="30px">#</th>
-                    <th width="80px">Cantidad</th>
-                    <th width="80">Material</th>
-                    <th width="150">Descripcion</th>
-                    <th width="120px">Costo U.(Bs)</th>
-                    <th width="120px">Costo T.(Bs)</th>
+                    <th width="5%">#</th>
+                    <th width="25%">Material</th>
+                    <th width="25%">Descripcion</th>
+                    <th width="10%">Cantidad</th>
+                    <th width="15%">Costo U.(Bs)</th>
+                    <th width="20%">Costo T.(Bs)</th>
                 </tr>
             </thead>
             <tbody>
                 {% for detalle in detalles %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ detalle.cantidad }}</td>
-                        <td>{{ detalle.unidad }}</td>
+                        <td>{{ detalle.material }}</td>
                         <td>{{ detalle.descripcion }}</td>
+                        <td>{{ detalle.cantidad }}</td>
                         <td>{{ detalle.costo_u }}</td>
                         <td>{{ detalle.costo_t }}</td>
                     </tr>

@@ -7,17 +7,23 @@ Detalle Venta
 {% block content %}
 {% include 'includes/__info_venta.html' %}
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
+        <a href="{% url 'venta-pdf-detail' venta.id %}" class="btn btn-info" target="_blank">
+            <i class="fa fa-camera-retro"></i> Proforma
+        </a>
+    </div>
+
+    <div class="col-md-3">
         <a href="{% url 'venta-new-add-material' venta.id %}" class="btn btn-success">
             <i class="fa fa-plus-circle"></i> Agregar Material
         </a>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <a href="{% url 'venta-confirm' venta.id %}" class="btn btn-primary">
             <i class="fa fa-money-bill-alt"></i> Confirmar Venta
         </a>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <a href="{% url 'venta-delete' venta.id %}" class="btn btn-danger">
             <i class="fa fa-money-bill-alt"></i> Cancelar Venta
         </a>

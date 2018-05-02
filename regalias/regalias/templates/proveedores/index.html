@@ -19,6 +19,7 @@ Nuestros Proveedores
                 <tr>
                     <th width="30px">#</th>
                     <th>Proveedor</th>
+                    <th>Origen</th>
                     <th>Telefono</th>
                     <th>Direccion</th>
                     <th>Email</th>
@@ -30,6 +31,7 @@ Nuestros Proveedores
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>{{ proveedor.proveedor }}</td>
+                        <td>{{ proveedor.origen.pais }}-{{ proveedor.origen }}</td>
                         <td>{{ proveedor.telefono }}</td>
                         <td>{{ proveedor.direccion }}</td>
                         <td>{{ proveedor.email }}</td>

@@ -28,11 +28,12 @@ Detalle Pedido {{ pedido.id }}
         <tr>
             <th width="30px">#</th>
             <th width="80px">Cantidad</th>
+            <th width="80px">Unidad</th>
             <th width="300px">Descripcion</th>
+            <th width="70px">Color</th>
             <th width="90px">Largo(ML)</th>
             <th width="90px">Ancho(ML)</th>
             <th width="90px">Total(ML)</th>
-            <th width="100px">Costo T.</th>
             <th width="100px">ConMateriaP.</th>
         </tr>
     </thead>
@@ -41,11 +42,12 @@ Detalle Pedido {{ pedido.id }}
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ detalle.cantidad }}</td>
-                <td>{{ detalle.unidad }}  {{ detalle.descripcion }} de color: {{ detalle.color }}</td>
+                <td>{{ detalle.unidad }}</td>
+                <td>{{ detalle.descripcion }}</td>
+                <td>{{ detalle.color }}</td>
                 <td>{{ detalle.largo }}</td>
                 <td>{{ detalle.ancho }}</td>
                 <td>{{ detalle.totalm }}</td>
-                <td> <strong> {{detalle.costo_t}}</strong></td>
                 <td>
                     {% for materia in detalle.material.all %}
                         <p>Bobina: {{ materia.nro_serie }}</p>

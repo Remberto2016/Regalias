@@ -8,15 +8,18 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, AdminPasswordChangeForm
 from django.conf import settings
-from django.db.models import ProtectedError
+from django.db.models import ProtectedError, Max
 
 from regalias.utility import admin_log_addition, admin_log_change, render_pdf
 
+from users.models import Empresa
 from clientes.models import Cliente
 from pedidos.models import Pedido, DetallePedido
 from ventas.models import Venta, DetalleVenta
+from materiales.models import PrecioClavos
 
 from ventas.form import DetalleVentaForm
+
 
 @login_required(login_url='/login/')
 def index(request):
@@ -75,6 +78,15 @@ def add_material(request, venta_id):
         'form':form,
     })
 
+@login_required(login_url='/login')
+def ajax_get_precio(request):
+    if request.is_ajax():
+        id = request.GET['precio_id']
+        precio = get_object_or_404(PrecioClavos, pk = id)
+        return JsonResponse(precio.precio, safe=False)
+    else:
+        raise Http404
+
 @login_required(login_url='/login/')
 def delete_material(request, detalle_id):
     detalle = get_object_or_404(DetalleVenta, pk = detalle_id)
@@ -90,10 +102,17 @@ def delete_material(request, detalle_id):
 def confirm_venta(request, venta_id):
     venta = get_object_or_404(Venta, pk = venta_id)
     venta.estado = True
+    ventas = Venta.objects.exclude(nro_venta=None)
+    nro = 1
+    if ventas:
+        max = ventas.aggregate(Max('nro_venta'))
+        if max['nro_venta__max']:
+            nro = max['nro_venta__max'] + 1
+    venta.nro_venta = nro
     venta.save()
     messages.success(request, 'Venta Confirmada Correctamente')
     '''Redireccionar al reporte detalle venta'''
-    return HttpResponseRedirect(reverse(index))
+    return HttpResponseRedirect(reverse(detail_venta, args={venta.id, }))
 
 @login_required(login_url='/login/')
 def ventas_no_confirmados(request):
@@ -142,16 +161,23 @@ def detail_pedido_venta(request, pedido_id):
 def venta_pedido(request, pedido_id):
     pedido = get_object_or_404(Pedido, pk=pedido_id)
     detalles = DetallePedido.objects.filter(pedido=pedido)
+    ventas = Venta.objects.exclude(nro_venta=None)
+    nro = 1
+    if ventas:
+        max = ventas.aggregate(Max('nro_venta'))
+        if max['nro_venta__max']:
+            nro = max['nro_venta__max'] + 1
     venta = Venta.objects.create(
         cliente=pedido.cliente,
         costo=pedido.costo,
         estado=True,
+        nro_venta=nro,
     )
     admin_log_addition(request, venta, 'Venta Pedido')
     venta.save()
     for d in detalles:
         detalle = DetalleVenta.objects.create(
-            material=d.material,
+            material='%s %s'%(d.largo, d.ancho),
             descripcion=d.descripcion,
             cantidad=d.cantidad,
             costo_u=d.costo_u,
@@ -175,3 +201,44 @@ def pdf_detail_venta(request, venta_id):
         'detalles': detalles,
     })
     return render_pdf(html)
+
+
+from regalias.factura import get_code_control, build_string_qr, get_decimal_amount
+from num2words import num2words
+from datetime import timedelta
+from regalias.fact import controlCode
+
+@login_required(login_url='/login/')
+def factura_pdf(request, venta_id):
+    venta = get_object_or_404(Venta, pk = venta_id)
+    detalles = DetalleVenta.objects.filter(venta=venta)
+    empresa = Empresa.objects.all().first()
+    #articles = Article.objects.filter(billing_id=billing_id)
+    #get_sum_total_of_billing(billing_id)
+    cliente = Cliente.objects.get(pk=venta.cliente_id)
+
+    code = controlCode(str(empresa.nro), str(venta.nro_venta), str(venta.cliente.nit), str(venta.fecha.strftime('%Y%m%d')), str(int(venta.costo)), str(empresa.key))
+
+    qr_text = build_string_qr(venta, code)
+
+    literal_amount = num2words(int(venta.costo), lang='es')
+    #DECIMALESRESIDUO
+    decimal_amount = get_decimal_amount(venta)
+
+    limit_date = venta.fecha + timedelta(days=90)
+
+    html_string = render_to_string('ventas/pdf_factura.html', {
+        'empresa':empresa,
+        'pagesize': 'letter',
+        'cliente': cliente,
+        'venta': venta,
+        'detalles': detalles,
+        'code_control': code,
+        'qr_text': qr_text,
+        'literal_amount': literal_amount,
+        'decimal_amount': decimal_amount,
+        'limit_date': limit_date,
+    })
+
+    return render_pdf(html_string)
+

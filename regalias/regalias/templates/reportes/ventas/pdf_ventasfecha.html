@@ -14,7 +14,7 @@ Ventas Fecha {{ fecha|date }}
             <tr>
                 <th width="30px">#</th>
                 <th>Cliente</th>
-                <th>Cedula Identidad</th>
+                <th>NIT/CI</th>
                 <th>Cantidad Materiales</th>
                 <th>Total Precio(Bs)</th>
             </tr>
@@ -23,8 +23,8 @@ Ventas Fecha {{ fecha|date }}
             {% for venta in ventas %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td>{{ venta.cliente }}</td>
-                    <td class="center">{{ venta.cliente.ci }}</td>
+                    <td>{{ venta.cliente.razon }}</td>
+                    <td class="center">{{ venta.cliente.nit }}</td>
                     <td class="center">{{ venta.detalleventa_set.select_related.count }}</td>
                     <td width="20%" class="right">{{ venta.costo }}</td>
                 </tr>

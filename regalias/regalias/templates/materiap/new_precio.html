@@ -7,3 +7,15 @@ Registrar Precio
 {% block legend %}
 Registrar Precio
 {% endblock %}
+
+{% block js %}
+<script>
+$(document).ready(function () {
+    var html = '<option>------</option>';
+    {% for color in colores %}
+        html += '<option value="{{ color.color }}">{{ color.color }}</option>';
+    {% endfor %}
+    $('#id_color').html(html);
+});
+</script>
+{% endblock %}

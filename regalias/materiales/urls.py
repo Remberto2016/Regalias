@@ -29,4 +29,10 @@ urlpatterns = [
     path('precio/<int:precio_id>/baja', views.baja_precio, name='precio-baja'),
     path('precio/<int:precio_id>/activate', views.active_precio, name='precio-active'),
 
+    path('clavo/precio', views.index_precios_clavos, name='precio-index-clavos'),
+    path('clavo/precio/precio', views.new_precio_clavo, name='precio-new-clavo'),
+    path('clavo/precio/<int:precio_id>/update', views.update_precio_clavo, name='precio-update-clavo'),
+    path('clavo/precio/bajas', views.precios_baja_clavo, name='precio-list-baja-clavo'),
+    path('clavo/precio/<int:precio_id>/baja', views.baja_precio_clavo, name='precio-baja-clavo'),
+    path('clavo/precio/<int:precio_id>/activate', views.active_precio_clavo, name='precio-active-clavo'),
 ]

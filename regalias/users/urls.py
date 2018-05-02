@@ -16,4 +16,12 @@ urlpatterns = [
     path('<int:user_id>/permission/', views.permisos, name='user-permission'),
     path('add/<int:grupo_id>/<int:user_id>/permission/', views.add_grupo, name='user-add-permission'),
     path('remove/<int:grupo_id>/<int:user_id>/permission/', views.remove_grupo, name='user-remove-permission'),
+
+    path('empresa', views.info_empresa, name='empresa_info'),
+    path('empresa/new', views.new_empresa, name='empresa_new'),
+    path('empresa/update', views.update_empresa, name='empresa_update'),
+
+    path('color', views.index_colores, name='color-index'),
+    path('color/new', views.new_color, name='color-new'),
+    path('color/<int:color_id>/update', views.update_color, name='color-update'),
 ]

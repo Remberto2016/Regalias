@@ -18,4 +18,4 @@ class ClienteForm(ModelForm):
     pais = forms.ModelChoiceField(label='Seleccione Pais', queryset=Pais.objects.all(), required=True)
     class Meta:
         model = Cliente
-        fields = ['ci', 'nombres', 'apellidos', 'pais', 'ciudad', 'direccion', 'telefono', 'email']
+        fields = ['nit', 'razon', 'pais', 'ciudad', 'direccion', 'telefono', 'email']

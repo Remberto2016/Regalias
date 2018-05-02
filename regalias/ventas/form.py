@@ -2,7 +2,8 @@
 from django.forms import ModelForm, TextInput
 from django import forms
 
-from materiales.models import MateriaPrima
+
+from materiales.models import MateriaPrima, PrecioClavos
 from ventas.models import DetalleVenta
 
 CHOICE_LARGE = (
@@ -20,9 +21,8 @@ CHOICE_LARGE = (
 )
 
 class DetalleVentaForm(ModelForm):
-    materiaprima = forms.ModelChoiceField(label='Seleccione Materia Prima',
-                                          queryset=MateriaPrima.objects.filter(estado=True), required=True)
-    largo = forms.ChoiceField(label='Seleccione Largo', help_text='En Milimetros', choices=CHOICE_LARGE)
+    materiaprima = forms.ModelChoiceField(label='Seleccione Clavo',
+                                          queryset=PrecioClavos.objects.filter(estado=True), required=True)
     class Meta:
         model = DetalleVenta
-        fields = ['materiaprima', 'unidad', 'largo', 'material', 'descripcion', 'cantidad', 'costo_u', 'costo_t']
+        fields = ['materiaprima', 'unidad', 'material', 'descripcion', 'cantidad', 'costo_u', 'costo_t']

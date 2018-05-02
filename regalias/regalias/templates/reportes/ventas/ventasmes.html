@@ -34,8 +34,8 @@ Ventas Mensuales
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>{{ venta.fecha|date:"d-M-Y" }}</td>
-                        <td>{{ venta.cliente }}</td>
-                        <td>{{ venta.cliente.ci }}</td>
+                        <td>{{ venta.cliente.razon }}</td>
+                        <td>{{ venta.cliente.nit }}</td>
                         <td>{{ venta.detalleventa_set.select_related.count }}</td>
                         <td>{{ venta.costo }}</td>
                         <td>

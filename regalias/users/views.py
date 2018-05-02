@@ -13,7 +13,8 @@ from django.contrib.auth.models import Permission, Group, User
 
 from regalias.utility import admin_log_change, admin_log_addition
 
-from users.form import UsernameForm
+from users.models import Empresa,Color
+from users.form import UsernameForm, EmpresaForm, ColorForm
 from pedidos.models import Pedido
 from ventas.models import Venta
 
@@ -192,3 +193,80 @@ def deactivate_superuser(request, user_id):
     admin_log_change(request, user, 'Administrador Desactivado')
     messages.warning(request, 'Administrador Desactivado Correctamente')
     return HttpResponseRedirect(reverse(lista_usuarios))
+
+@login_required(login_url='/login/')
+def info_empresa(request):
+    if Empresa.objects.all():
+        empresa = Empresa.objects.all().first()
+        return render(request, 'empresa/index.html', {
+            'empresa': empresa
+        })
+    else:
+        return HttpResponseRedirect(reverse(new_empresa))
+
+@login_required(login_url='/login/')
+def new_empresa(request):
+    if request.method == 'POST':
+        form = EmpresaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse(info_empresa))
+    else:
+        form = EmpresaForm()
+    return render(request, 'empresa/new.html', {
+        'form':form,
+    })
+
+@login_required(login_url='/login/')
+def update_empresa(request):
+    empresa = Empresa.objects.all().first()
+    if request.method == 'POST':
+        form = EmpresaForm(request.POST, instance=empresa)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse(info_empresa))
+    else:
+        form = EmpresaForm(instance=empresa)
+    return render(request, 'empresa/update.html', {
+        'form':form,
+    })
+
+@login_required(login_url='/login/')
+def index_colores(request):
+    colores = Color.objects.all()
+    return render(request, 'color/index.html', {
+        'colores':colores,
+    })
+
+@login_required(login_url='/login/')
+def new_color(request):
+    if request.method == 'POST':
+        form = ColorForm(request.POST)
+        if form.is_valid():
+            color = form.save()
+            admin_log_addition(request, color, 'Color Creado')
+            sms = 'Color %s Registrado correctamente'%color.color
+            messages.success(request, sms)
+            return HttpResponseRedirect(reverse(index_colores))
+    else:
+        form = ColorForm()
+    return render(request, 'color/new.html', {
+        'form':form,
+    })
+
+@login_required(login_url='/login/')
+def update_color(request, color_id):
+    color = get_object_or_404(Color, pk = color_id)
+    if request.method == 'POST':
+        form = ColorForm(request.POST, instance=color)
+        if form.is_valid():
+            color = form.save()
+            admin_log_change(request, color, 'Color Modificado')
+            sms = 'Color %s modificado correctamente'%color.color
+            messages.warning(request, sms)
+            return HttpResponseRedirect(reverse(index_colores))
+    else:
+        form = ColorForm(instance=color)
+    return render(request, 'color/update.html', {
+        'form':form,
+    })

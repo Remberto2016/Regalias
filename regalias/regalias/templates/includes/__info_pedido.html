@@ -1,11 +1,11 @@
 <div class="row">
-    <h3>Informacion Pedido # {{ pedido.id }} </h3>
+    <h3>Informacion Pedido </h3>
     <div class="col-md-6">
         <p>
-            <strong>Cliente: </strong>{{ pedido.cliente.nombres }} {{ pedido.cliente.apellidos }}
+            <strong>Cliente: </strong>{{ pedido.cliente.razon }}
         </p>
         <p>
-            <strong>Cedula de Identidad: </strong>{{ pedido.cliente.ci }}
+            <strong>NIT/CI: </strong>{{ pedido.cliente.nit }}
         </p>
         <p>
             <strong>Pais / Ciudad: </strong>{{ pedido.cliente.ciudad.pais }} / {{ pedido.cliente.ciudad }}

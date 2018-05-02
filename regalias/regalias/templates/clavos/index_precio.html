@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Nuestros Precios
+{% endblock %}
+
+{% block content %}
+<div class="row">
+<!--div class="col-md-12">
+    <a href="{% url 'materia-pdf' %}" class="btn btn-info" target="_blank">
+        <i class="fa fa-file-pdf"></i> Pasar a PDF
+    </a>
+</div-->
+</div>
+<div class="row">
+<h2>Nuestros Precios</h2>
+    <div class="col-md-12">
+        <table class="table striped hovered border bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Codigo</th>
+                    <th>Descripcion</th>
+                    <th>Precio</th>
+                    <th>Longitud(mm)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for precio in precios %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ precio.codigo }}</td>
+                        <td>{{ precio.descripcion }}</td>
+                        <td>{{ precio }}</td>
+                        <td>{{ precio.espesor }}</td>
+                        <td>
+                            <a href="{% url 'precio-update-clavo' precio.id %}" class="btn btn-warning btn-xs" title="Editar Precio">
+                                <i class="fa fa-pen-square"></i>
+                            </a>
+                            <a href="{% url 'precio-baja-clavo' precio.id %}" class="btn btn-danger btn-xs" title="Baja Precio">
+                                <i class="fa fa-times-circle"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

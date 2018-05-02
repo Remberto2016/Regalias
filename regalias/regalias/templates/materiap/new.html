@@ -1,9 +1,54 @@
-{% extends '__form.html' %}
+{% extends 'base.html' %}
 
 {% block title %}
 Registrar Materia Prima
 {% endblock %}
 
-{% block legend %}
-Registrar Materia Prima
+{% block content %}
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#home" aria-controls="home" role="tab" data-toggle="tab">
+                Registrar Material
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="home">
+            {% include 'includes/__form_calamina.html' %}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="profile">
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+$(document).ready(function () {
+    var html = '<option>------</option>';
+    {% for color in coloresss %}
+        html += '<option value="{{ color.color }}">{{ color.color }}</option>';
+    {% endfor %}
+    //hiden();
+    $('#id_color').html(html);
+    $('#id_tipo').change(function () {
+        hiden();
+    });
+    function hiden() {
+        var tipo = $('#id_tipo').val();
+        if(tipo == 'Clavos'){
+            $('#id_ancho').parent().parent().addClass('hide');
+            $('#id_longitud').parent().parent().addClass('hide');
+            $('#id_colores').parent().parent().addClass('hide');
+        }
+        if(tipo == 'Calamina'){
+            $('#id_ancho').parent().parent().removeClass('hide');
+            $('#id_longitud').parent().parent().removeClass('hide');
+            $('#id_colores').parent().parent().removeClass('hide');
+        }
+    }
+});
+</script>
 {% endblock %}

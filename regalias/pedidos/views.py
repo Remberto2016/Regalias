@@ -8,7 +8,7 @@ from django.template import RequestContext, Context
 from django.template.loader import render_to_string
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, AdminPasswordChangeForm
 from django.conf import settings
-from django.db.models import ProtectedError
+from django.db.models import ProtectedError, Max
 
 from regalias.utility import admin_log_addition, admin_log_change, render_pdf
 
@@ -62,7 +62,7 @@ def add_material(request, pedido_id):
         if form.is_valid():
             stock = 0
             color = form.cleaned_data['color']
-            materia_id = form.cleaned_data['ancho']
+            materia_id = form.cleaned_data['anchocalamina']
             precioc = form.cleaned_data['calamina']
             umedida = form.cleaned_data['unidad']
             largo = float(form.cleaned_data['largo'])
@@ -150,7 +150,14 @@ def confirm_pedido(request, pedido_id):
     if request.method == 'POST':
         form = ConfirmForm(request.POST, instance=pedido)
         if form.is_valid():
-            pedido = form.save()
+            pedido = form.save(commit=False)
+            pedidos = Pedido.objects.exclude(nro_pedido=None)
+            nro = 1
+            if pedidos:
+                max = pedidos.aggregate(Max('nro_pedido'))
+                if max['nro_pedido__max']:
+                    nro = max['nro_pedido__max'] + 1
+            pedido.nro_pedido = nro
             pedido.estado = True
             pedido.fecha = datetime.datetime.now()
             pedido.save()
@@ -209,5 +216,16 @@ def pdf_detail_pedido(request, pedido_id):
         'pedido': pedido,
         'detalles': detalles,
         'request':request,
+    })
+    return render_pdf(html)
+
+@login_required(login_url='/login/')
+def pdf_proforma(request, pedido_id):
+    pedido = get_object_or_404(Pedido, pk=pedido_id)
+    detalles = DetallePedido.objects.filter(pedido=pedido)
+    html = render_to_string('pedidos/pdf/detail.html', {
+        'pedido': pedido,
+        'detalles': detalles,
+        'request': request,
     })
     return render_pdf(html)

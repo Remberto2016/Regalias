@@ -22,7 +22,7 @@ Ventas por Fecha
                 <tr>
                     <th width="30px">#</th>
                     <th>Cliente</th>
-                    <th>Cedula Identidad</th>
+                    <th>NIT/CI</th>
                     <th>Cantidad Materiales</th>
                     <th>Total Precio(Bs)</th>
                     <th></th>
@@ -32,8 +32,8 @@ Ventas por Fecha
                 {% for venta in ventas %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ venta.cliente }}</td>
-                        <td>{{ venta.cliente.ci }}</td>
+                        <td>{{ venta.cliente.razon }}</td>
+                        <td>{{ venta.cliente.nit }}</td>
                         <td>{{ venta.detalleventa_set.select_related.count }}</td>
                         <td>{{ venta.costo }}</td>
                         <td>

@@ -1,0 +1,37 @@
+{% extends '__form.html' %}
+
+{% block title %}
+Modificar Color
+{% endblock %}
+
+{% block legend %}
+Modificar Color
+{% endblock %}
+
+{% block submit %}
+Modificar
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).ready(function () {
+        $('#id_pais').change(medida);
+        function medida(){
+            if($(this).val()){
+                var id = $(this).val();
+                $.ajax({
+                    data:{'id': id},
+                    url:"{% url 'cliente-ajax-ciudades' %}",
+                    type:'GET',
+                    success: function(data){
+                        $('#id_ciudad').html(data);
+                    },
+                    failure: function(data){
+                        console.log('error')
+                    }
+                });
+            }
+        }
+    });
+</script>
+{% endblock %}

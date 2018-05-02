@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Nuestros Clientes
+{% endblock %}
+
+{% block content %}
+<div class="row">
+<div class="col-md-12">
+    <a href="{% url 'color-new' %}" class="btn btn-success">
+        <i class="fa fa-plus-circle"></i> Registrar Color
+    </a>
+</div>
+</div>
+<h2>Colores Registrados</h2>
+<div class="row col-md-12" id="imprimir">
+    <table class="table striped hovered border bordered">
+        <thead>
+            <tr>
+                <th width="30px">#</th>
+                <th>Color</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for color in colores %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ color.color }}</td>
+                    <td>
+                        <a href="{% url 'color-update' color.id %}" class="btn btn-warning">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

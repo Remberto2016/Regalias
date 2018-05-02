@@ -11,6 +11,7 @@ class Pedido(models.Model):
     venta = models.BooleanField(default=False)
     entrega = models.CharField(max_length=300, null=True, verbose_name='Lugar de Entrega', help_text='Direccion' )
     plazo = models.IntegerField(default=1, verbose_name='Plazo de Entrega', help_text='En Dias')
+    nro_pedido = models.IntegerField(null=True)
     def __unicode__(self):
         return '%s %s'%(self.fecha, self.cliente)
     def __str__(self):
@@ -40,7 +41,7 @@ class DetallePedido(models.Model):
     pedido = models.ForeignKey(Pedido, models.PROTECT)
     material = models.ManyToManyField(MateriaPrima)
     color = models.CharField(max_length=100, null=True)
-    ancho = models.CharField(max_length=10, null=True)
+    ancho = models.FloatField(null=True)
     totalm = models.FloatField(null=True)
     def __unicode__(self):
         return '%s: %s'%(self.pedido.id, self.cantidad)

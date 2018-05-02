@@ -12,9 +12,8 @@ Nuestras Ventas
             <tr>
                 <th width="30px">#</th>
                 <th>Fecha Venta</th>
-                <th>C.I.</th>
-                <th>Nombres</th>
-                <th>Apellidos</th>
+                <th>NIT/C.I.</th>
+                <th>Cliente</th>
                 <th>Cant.Material</th>
                 <th>CostoT.</th>
                 <th></th>
@@ -24,11 +23,10 @@ Nuestras Ventas
             {% for venta in ventas %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td>{{ venta.fecha|date:"M Y d" }}</td>
-                    <td>{{ venta.cliente.ci }}</td>
-                    <td>{{ venta.cliente.nombres }}</td>
-                    <td>{{ venta.cliente.apellidos }}</td>
-                    <td>{{ venta.detallepedido_set.count }}</td>
+                    <td>{{ venta.fecha|date:"d / M / Y " }}</td>
+                    <td>{{ venta.cliente.nit }}</td>
+                    <td>{{ venta.cliente.razon }}</td>
+                    <td>{{ venta.detalleventa_set.count }}</td>
                     <td>{{ venta.costo }}</td>
                     <td>
                         <a href="{% url 'venta-detail' venta.id %}" class="btn btn-info btn-xs" title="Detalle Venta">

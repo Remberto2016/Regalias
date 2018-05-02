@@ -6,9 +6,14 @@ Detalle Venta
 
 {% block content %}
 <div class="row">
-<div class="col-md-12">
+<div class="col-md-6">
     <a href="{% url 'venta-pdf-detail' venta.id %}" class="btn btn-info" target="_blank">
         <i class="fa fa-file-pdf"></i> Pasar a PDF
+    </a>
+</div>
+<div class="col-md-6">
+    <a href="{% url 'venta-pdf-factura' venta.id %}" class="btn btn-danger" target="_blank">
+        <i class="fa fa-credit-card"></i> Factura
     </a>
 </div>
 </div>

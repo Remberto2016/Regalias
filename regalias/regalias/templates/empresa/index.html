@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Nuestros Clientes
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <a href="{% url 'empresa_update' %}" class="btn btn-info" target="_blank">
+            <i class="fa fa-file-pdf"></i> Mofidicar Informacion
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <p class="lead">
+            <strong>NIT: </strong>{{ empresa.nit }}
+        </p>
+    </div>
+    <div class="col-md-6">
+        <p class="lead">
+            <strong>Nro. Autorizacion: </strong>{{ empresa.nro }}
+        </p>
+    </div>
+    <div class="col-md-12">
+        <p class="lead">
+            <strong>Llave Dosificacion: </strong>{{ empresa.key }}
+        </p>
+    </div>
+</div>
+{% endblock %}

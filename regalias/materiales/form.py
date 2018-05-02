@@ -2,18 +2,22 @@
 from django.forms import ModelForm, TextInput
 from django import forms
 
-from materiales.models import MateriaPrima, Proveedor, Precio
+from users.models import Color
+from clientes.models import Pais
+from materiales.models import MateriaPrima, Proveedor, Precio, PrecioClavos
 
 import datetime
 class MateriaPForm(ModelForm):
+    colores = forms.ModelChoiceField(label='Color', queryset=Color.objects.all(), required=False)
     class Meta:
         model = MateriaPrima
-        exclude = ['user', 'estado', 'salida', 'stock']
+        exclude = ['user', 'estado', 'salida', 'stock', 'cantidad', 'color']
 
 class ProveedorForm(ModelForm):
+    pais = forms.ModelChoiceField(label='Pais', queryset=Pais.objects.all())
     class Meta:
         model = Proveedor
-        exclude = ['estado']
+        fields = ['proveedor', 'telefono', 'pais', 'origen', 'direccion', 'email']
 
 class PrecioForm(ModelForm):
     class Meta:
@@ -46,3 +50,8 @@ class SearchProveedor(forms.Form):
         ('12', 'Diciembre'),
     )
     month = forms.ChoiceField(choices=meses, label="Seleccione un Mes")
+
+class PrecioClavoForm(ModelForm):
+    class Meta:
+        model = PrecioClavos
+        exclude = ['estado']

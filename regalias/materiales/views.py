@@ -12,9 +12,9 @@ from django.db.models import ProtectedError
 
 from regalias.utility import admin_log_addition, admin_log_change, render_pdf
 
-from materiales.models import MateriaPrima, Proveedor, Precio
-
-from materiales.form import MateriaPForm, ProveedorForm, SearchProveedor, PrecioForm
+from users.models import Color
+from materiales.models import MateriaPrima, Proveedor, Precio, PrecioClavos
+from materiales.form import MateriaPForm, ProveedorForm, SearchProveedor, PrecioForm, PrecioClavoForm
 
 import datetime
 
@@ -27,12 +27,19 @@ def index(request):
 
 @login_required(login_url='/login/')
 def new(request):
+    colores = Color.objects.all()
     if request.method == 'POST':
         form = MateriaPForm(request.POST)
         if form.is_valid():
             m = form.save(commit=False)
+            if form.cleaned_data['colores'] != None:
+                c_id = form.cleaned_data['colores']
+                #print(c_id)
+                #color = Color.objects.get(id=c_id)
+                m.color = c_id
             m.user = request.user
-            m.stock = m.longitud
+            if form.cleaned_data['longitud']:
+                m.stock = m.longitud
             m.save()
             admin_log_addition(request, m, 'Materia Prima Creada')
             messages.success(request, 'Materia Prima Creada Correctamente')
@@ -41,11 +48,13 @@ def new(request):
         form = MateriaPForm()
     return render(request, 'materiap/new.html', {
         'form':form,
+        'colores':colores,
     })
 
 @login_required(login_url='/login/')
 def update(request, materia_id):
     materia = get_object_or_404(MateriaPrima, pk = materia_id)
+    colores = Color.objects.all()
     if request.method == 'POST':
         form = MateriaPForm(request.POST, instance=materia)
         if form.is_valid():
@@ -57,6 +66,7 @@ def update(request, materia_id):
         form = MateriaPForm(instance=materia)
     return render(request, 'materiap/update.html', {
         'form':form,
+        'colores':colores,
     })
 
 @login_required(login_url='/login/')
@@ -213,6 +223,7 @@ def index_precios(request):
 
 @login_required(login_url='/login/')
 def new_precio(request):
+    colores = Color.objects.all()
     if request.method == 'POST':
         form = PrecioForm(request.POST)
         if form.is_valid():
@@ -225,10 +236,12 @@ def new_precio(request):
         form = PrecioForm()
     return render(request, 'materiap/new_precio.html', {
         'form':form,
+        'colores':colores,
     })
 
 @login_required(login_url='/login/')
 def update_precio(request, precio_id):
+    colores = Color.objects.all()
     precio = get_object_or_404(Precio, pk = precio_id)
     if request.method == 'POST':
         form = PrecioForm(request.POST, instance=precio)
@@ -242,6 +255,7 @@ def update_precio(request, precio_id):
         form = PrecioForm(instance=precio)
     return render(request, 'materiap/update_precio.html', {
         'form':form,
+        'colores':colores,
     })
 
 @login_required(login_url='/login/')
@@ -270,3 +284,71 @@ def active_precio(request, precio_id):
     sms = 'Precio activado correctamente'
     messages.success(request, sms)
     return HttpResponseRedirect(reverse(precios_baja))
+
+
+@login_required(login_url='/login/')
+def index_precios_clavos(request):
+    precios = PrecioClavos.objects.filter(estado=True)
+    return render(request, 'clavos/index_precio.html', {
+        'precios':precios,
+    })
+
+@login_required(login_url='/login/')
+def new_precio_clavo(request):
+    if request.method == 'POST':
+        form = PrecioClavoForm(request.POST)
+        if form.is_valid():
+            precio = form.save()
+            admin_log_addition(request, precio, 'Precio Creado')
+            sms = 'Precio Creado Correctamente'
+            messages.success(request, sms)
+            return HttpResponseRedirect(reverse(index_precios_clavos))
+    else:
+        form = PrecioClavoForm()
+    return render(request, 'clavos/new_precio.html', {
+        'form':form,
+    })
+
+@login_required(login_url='/login/')
+def update_precio_clavo(request, precio_id):
+    precio = get_object_or_404(PrecioClavos, pk = precio_id)
+    if request.method == 'POST':
+        form = PrecioClavoForm(request.POST, instance=precio)
+        if form.is_valid():
+            precio = form.save()
+            admin_log_change(request, precio, 'Precio Modificado')
+            sms = 'Precio Modificado Correctamente'
+            messages.warning(request, sms)
+            return HttpResponseRedirect(reverse(index_precios_clavos))
+    else:
+        form = PrecioClavoForm(instance=precio)
+    return render(request, 'clavos/update_precio.html', {
+        'form':form,
+    })
+
+@login_required(login_url='/login/')
+def baja_precio_clavo(request, precio_id):
+    precio = get_object_or_404(PrecioClavos, pk = precio_id)
+    precio.estado = False
+    precio.save()
+    admin_log_change(request, precio, 'Precio Dado De Baja')
+    sms = 'Precio dado de baja correctamente'
+    messages.error(request, sms)
+    return HttpResponseRedirect(reverse(index_precios_clavos))
+
+@login_required(login_url='/login/')
+def precios_baja_clavo(request):
+    precios = PrecioClavos.objects.filter(estado=False)
+    return render(request, 'clavos/index_precio_baja.html', {
+        'precios':precios,
+    })
+
+@login_required(login_url='/login/')
+def active_precio_clavo(request, precio_id):
+    precio = get_object_or_404(PrecioClavos, pk=precio_id)
+    precio.estado = True
+    precio.save()
+    admin_log_change(request, precio, 'Precio Activado Correctamente')
+    sms = 'Precio activado correctamente'
+    messages.success(request, sms)
+    return HttpResponseRedirect(reverse(precios_baja_clavo))

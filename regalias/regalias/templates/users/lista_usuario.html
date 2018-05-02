@@ -45,7 +45,7 @@ Nuestros Usuarios
                     </td>
                     <td>
                         <a href="{% url 'user-permission' user.id %}" class="btn btn-warning btn-xs" title="Permisos Usuario">
-                            <i class="fa fa-pen-square"></i>
+                            <i class="fa fa-pencil-square"></i>
                         </a>
                         {% if user.is_active %}
                             <a href="{% url 'user-baja' user.id %}" class="btn btn-danger btn-xs" title="Baja Usuario">
@@ -53,7 +53,7 @@ Nuestros Usuarios
                             </a>
                         {% else %}
                             <a href="{% url 'user-activate' user.id %}" class="btn btn-success btn-xs" title="Activar Usuario">
-                                <i class="fa fa-calendar-check"></i>
+                                <i class="fa fa-calendar-check-o"></i>
                             </a>
                         {% endif %}
                         {% if user.is_superuser %}

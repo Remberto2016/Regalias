@@ -16,6 +16,39 @@ Agregar Material
 <script>
     $(document).ready(function () {
         var option = '';
+        var cantidad = 0;
+
+        $('#id_materiaprima').change(function () {
+            var precio_id = $(this).val();
+            if(precio_id){
+                $.ajax({
+                    data:{'precio_id': precio_id},
+                    url:"{% url 'venta-ajax-precio-clavo' %}",
+                    type:'GET',
+                    success: function(data){
+                        $('#id_costo_u').val(data);
+                        precio = data;
+                    },
+                    failure: function(data){
+                        console.log('error')
+                    }
+                });
+            }else{
+                $('#id_costo_u').val(0)
+            }
+        });
+
+        $('#id_cantidad').keyup(function () {
+            if($(this).val()){
+                cantidad = $(this).val();
+                var costo_t = cantidad * precio;
+                $('#id_costo_t').val(costo_t);
+            }
+            else{
+                cantidad = 0;
+            }
+        });
+
         $('#id_materiaprima').change(function () {
             var select = $('#id_materiaprima').val();
             option = $('option[value='+select+']').html();

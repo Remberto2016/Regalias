@@ -19,4 +19,10 @@ urlpatterns = [
 
     path('pdf/<int:venta_id>/detail', views.pdf_detail_venta, name='venta-pdf-detail'),
 
+
+    path('pdf/<int:venta_id>/factura', views.factura_pdf, name='venta-pdf-factura'),
+
+
+    path('ajax/precio/clavo', views.ajax_get_precio, name='venta-ajax-precio-clavo'),
+
 ]

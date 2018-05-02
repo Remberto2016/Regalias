@@ -18,37 +18,37 @@ Materias Primas
             <thead>
                 <tr>
                     <th>#</th>
+                    <th>Material</th>
                     <th>Marca</th>
                     <th>Detalle</th>
                     <th>Peso</th>
-                    <th>T. Superficie</th>
-                    <th>Estandar</th>
-                    <th>Certificacion</th>
-                    <th>Metros Lineales</th>
-                    <th>Acción</th>
+                    <th>Espesor(mm)</th>
+                    <th>Ancho(ml)</th>
+                    <th>Color</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {% for material in materiales %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
+                        <td>{{ material.tipo }}</td>
                         <td>{{ material.marca }}</td>
                         <td>{{ material.detalle }}</td>
                         <td>{{ material.peso }} {{ material.medida }}</td>
-                        <td>{{ material.superficie }}</td>
-                        <td>{{ material.estandar }}</td>
-                        <td>{{ material.certificacion }}</td>
-                        <td><span class="label label-success">{{ material.longitud }}</span> M.</td>
+                        <td>{{ material.espesor }}</td>
+                        <td>{{ material.ancho }}</td>
+                        <td>{{ material.color }}</td>
                         <td>
                             <a href="{% url 'materia-update' material.id %}" class="btn btn-warning btn-xs" title="Editar Materia Prima">
-                                <i class="fa fa-pencil-square"></i>
+                                <i class="fa fa-pen-square"></i>
                             </a>
                             <a href="{% url 'materia-detail' material.id %}" class="btn btn-info btn-xs" title="Detalle Materia Prima">
                                 <i class="fa fa-info-circle"></i>
                             </a>
-                            <a href="{% url 'materia-baja' material.id %}" class="btn btn-danger btn-xs" title="Baja Materia Prima">
+                            <!--a href="{% url 'materia-baja' material.id %}" class="btn btn-danger btn-xs" title="Baja Materia Prima">
                                 <i class="fa fa-times-circle"></i>
-                            </a>
+                            </a-->
                         </td>
                     </tr>
                 {% endfor %}

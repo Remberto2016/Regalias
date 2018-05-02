@@ -12,9 +12,8 @@ Pedidos No Confirmados
             <thead>
                 <tr>
                     <th width="30px">#</th>
-                    <th>C.I.</th>
-                    <th>Nombres</th>
-                    <th>Apellidos</th>
+                    <th>NIT/C.I.</th>
+                    <th>Razon Social</th>
                     <th>Cant.Material</th>
                     <th>CostoT.</th>
                     <th></th>
@@ -24,9 +23,8 @@ Pedidos No Confirmados
                 {% for pedido in pedidos %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ pedido.cliente.ci }}</td>
-                        <td>{{ pedido.cliente.nombres }}</td>
-                        <td>{{ pedido.cliente.apellidos }}</td>
+                        <td>{{ pedido.cliente.nit }}</td>
+                        <td>{{ pedido.cliente.razon }}</td>
                         <td>{{ pedido.detallepedido_set.count }}</td>
                         <td>{{ pedido.costo }}</td>
                         <td>

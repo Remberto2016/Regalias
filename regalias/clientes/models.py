@@ -38,16 +38,14 @@ class Ciudad(models.Model):
 
 
 class Cliente(models.Model):
-    ci = models.CharField(validators=[validate_ci], max_length=10,unique=True, verbose_name='Cedula de Identidad')
-    nit = models.CharField(max_length=20, verbose_name='NIT', null=True)
-    nombres = models.CharField(max_length=50, verbose_name='Nombres')
-    apellidos = models.CharField(max_length=100, verbose_name='Apellidos')
+    nit = models.CharField(max_length=20, verbose_name='NIT/CI', null=True)
+    razon = models.CharField(max_length=100, verbose_name='Razon Social', null=True)
     direccion = models.CharField(max_length=50, verbose_name='Direccion')
     telefono = models.CharField(max_length=15, verbose_name='Telefono/Ceular')
     email = models.EmailField(blank=True, verbose_name='Correo Electronico')
     ciudad = models.ForeignKey(Ciudad, verbose_name='Ciudad', on_delete=models.PROTECT)
     estado = models.BooleanField(default=True)
     def __unicode__(self):
-        return '%s %s' % (self.nombres, self.apellidos)
+        return '%s %s' % (self.nit, self.razon)
     def __str__(self):
-        return '%s %s' % (self.nombres, self.apellidos)
+        return '%s %s' % (self.nit, self.razon)

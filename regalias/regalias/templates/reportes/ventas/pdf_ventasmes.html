@@ -15,7 +15,7 @@ Ventas en la Gestion: {{ fecha.year }} Mes: {{ fecha|date:"F" }}
                 <th width="30px">#</th>
                 <th>Fecha</th>
                 <th width="">Cliente</th>
-                <th>Cedula Identidad</th>
+                <th>NIT/CI</th>
                 <th>Cantidad Materiales</th>
                 <th width="20%">Total Precio(Bs)</th>
             </tr>
@@ -25,8 +25,8 @@ Ventas en la Gestion: {{ fecha.year }} Mes: {{ fecha|date:"F" }}
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ venta.fecha|date:"d-M-Y" }}</td>
-                    <td>{{ venta.cliente }}</td>
-                    <td>{{ venta.cliente.ci }}</td>
+                    <td>{{ venta.cliente.razon }}</td>
+                    <td>{{ venta.cliente.nit }}</td>
                     <td class="center">{{ venta.detalleventa_set.select_related.count }}</td>
                     <td class="right">{{ venta.costo }}</td>
                 </tr>

@@ -15,10 +15,10 @@
     <link rel="stylesheet" href="{% static "css/alertify.core.css" %}">
     <link rel="stylesheet" href="{% static "css/alertify.default.css" %}">
     <link rel="stylesheet" href="{% static "css/custom.min.css" %}">
-    <link rel="stylesheet" href="{% static "css/print.css" %}">
-    <link rel="stylesheet" href="{% static "style.css" %}">
+    <link rel="stylesheet" href="{% static 'css/print.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 
-
+    
     {% block css %}{% endblock css %}
 
     <!-- jQuery -->
@@ -54,19 +54,18 @@
                         </div>
                         <div class="profile_info" style="background-color:#0f1126;">
                             {% if user.is_authenticated %}
-                            <span>Bienvenido. </span>
-                            <h2>{{request.user.username}}</h2>
+                                <span>Bienvenido. </span>
+                                <h2>{{request.user.username}}</h2>
                             {% else %}
-                            <span>Nuestro. </span>
-                            <h2>Sistema Ventas</h2>
+                                <span>Nuestro. </span>
+                                <h2>Sistema Ventas</h2>
                             {% endif %}
                         </div>
                     </div>
                     <br />
                     {% if user.is_authenticated %}
-                    {% include '__sidebar.html' %}
-
-                    <!-- /menu footer buttons -->
+                        {% include '__sidebar.html' %}
+                   <!-- /menu footer buttons -->
                     <div class="sidebar-footer hidden-small" style="background-color:#0f1126;">
                         <a data-toggle="tooltip" data-placement="top" title="Settings" style="background-color:#0f1126;">
                             <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
@@ -110,17 +109,17 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
                                     {% if user.is_authenticated %}
-                                    <li>
-                                        <a href="{% url 'logout' %}">
-                                            <i class="fa fa-sign-out pull-right"></i> Cerrar Sesion
-                                        </a>
-                                    </li>
+                                        <li>
+                                            <a href="{% url 'logout' %}">
+                                                <i class="fa fa-sign-out pull-right"></i> Cerrar Sesion
+                                            </a>
+                                        </li>
                                     {% else %}
-                                    <li>
-                                        <a href="{% url 'login' %}">
-                                            <i class="fa fa-sign-out pull-right"></i> Iniciar Sesion
-                                        </a>
-                                    </li>
+                                        <li>
+                                            <a href="{% url 'login' %}">
+                                                <i class="fa fa-sign-out pull-right"></i> Iniciar Sesion
+                                            </a>
+                                        </li>
                                     {% endif %}
                                 </ul>
                                 <li> <a> 
@@ -134,47 +133,47 @@
                                     {{request.user.last_login|date:"d M Y " }}
                                 </a>
                             </li>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-        <div class="right_col" role="main">
-            <div class="">
-                <div class="clearfix"></div>
-                {% if messages %}
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="grid example">
-                            {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }}" role="alert">
-                                <i class="fa fa-exclamation-triangle"></i> {{ message|safe }}
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
-                {% endif %}
-                {% block content %}
-
-                {% endblock %}
             </div>
+            <div class="right_col" role="main">
+                <div class="">
+                    <div class="clearfix"></div>
+                    {% if messages %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="grid example">
+                                    {% for message in messages %}
+                                        <div class="alert alert-{{ message.tags }}" role="alert">
+                                            <i class="fa fa-exclamation-triangle"></i> {{ message|safe }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% block content %}
+
+                    {% endblock %}
+                </div>
+            </div>
+            <footer>
+                <div class="pull-right">
+                    Remberto Lopez Romano
+                </div>
+                <div class="clearfix"></div>
+            </footer>
         </div>
-        <footer>
-            <div class="pull-right">
-                Remberto Lopez Romano
-            </div>
-            <div class="clearfix"></div>
-        </footer>
     </div>
-</div>
-{% block js %}{% endblock js %}
-<!-- Custom Theme Scripts -->
-<script src="{% static "js/custom.min.js" %}" ></script>
+    {% block js %}{% endblock js %}
+    <!-- Custom Theme Scripts -->
+    <script src="{% static "js/custom.min.js" %}" ></script>
 
-<!-- Datatables -->
-<script>
-$(document).ready(function() {
+    <!-- Datatables -->
+    <script>
+    $(document).ready(function() {
     var handleDataTableButtons = function() {
       if ($("table.table.striped.hovered").length) {
         $("table.table").DataTable({
@@ -201,47 +200,47 @@ $(document).ready(function() {
                     "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
                     "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                 }},
-                dom: "Bfrtip",
-                buttons: [
-                {
-                    extend: "copy",
-                    className: "btn-sm"
-                },
-                {
-                    extend: "csv",
-                    className: "btn-sm"
-                },
-                {
-                    extend: "excel",
-                    className: "btn-sm"
-                },
-                {
-                    extend: "pdfHtml5",
-                    className: "btn-sm"
-                },
-                {
-                    extend: "print",
-                    className: "btn-sm"
-                }
-                ],
-                responsive: true
-            });
-    }
-};
+            dom: "Bfrtip",
+          buttons: [
+          {
+            extend: "copy",
+            className: "btn-sm"
+          },
+          {
+            extend: "csv",
+            className: "btn-sm"
+          },
+          {
+            extend: "excel",
+            className: "btn-sm"
+          },
+          {
+            extend: "pdfHtml5",
+            className: "btn-sm"
+          },
+          {
+            extend: "print",
+            className: "btn-sm"
+          }
+          ],
+          responsive: true
+        });
+      }
+    };
 
-TableManageButtons = function() {
-  "use strict";
-  return {
-    init: function() {
-      handleDataTableButtons();
-  }
-};
-}();
+    TableManageButtons = function() {
+      "use strict";
+      return {
+        init: function() {
+          handleDataTableButtons();
+        }
+      };
+    }();
 
-$('#datatable').dataTable();
-$('#datatable-keytable').DataTable({
-  keys: true
-});
+    $('#datatable').dataTable();
+    $('#datatable-keytable').DataTable({
+      keys: true
+    });
 
     //$('table.table').DataTable();
 
@@ -251,14 +250,14 @@ $('#datatable-keytable').DataTable({
       scrollY: 380,
       scrollCollapse: true,
       scroller: true
-  });
+    });
 
     var table = $('#datatable-fixed-header').DataTable({
       fixedHeader: true
-  });
+    });
 
     TableManageButtons.init();
-});
-</script>
-<!-- /Datatables -->
+    });
+    </script>
+  <!-- /Datatables -->
 </body>
