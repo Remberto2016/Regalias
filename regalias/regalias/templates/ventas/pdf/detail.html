@@ -33,6 +33,13 @@ Detalle Venta {{ venta.id }}
                 {% endfor %}
             </tbody>
         </table>
+
     </div>
 </div>
+    <table class="table">
+    <tr>
+        <th width="80%">Costo Total</th>
+        <th width="20%">{{ venta.costo }} </th>
+    </tr>
+    </table>
 {% endblock %}

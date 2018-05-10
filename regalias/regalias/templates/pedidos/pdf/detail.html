@@ -18,7 +18,7 @@ Detalle Pedido
             <th>Largo(ml)</th>
             <th>Color</th>
             <th width="120px">Costo U.(Bs)</th>
-            <th width="120px">Costo T.(Bs)</th>
+            <th width="112px">Costo T.(Bs)</th>
         </tr>
     </thead>
     <tbody>
@@ -31,15 +31,15 @@ Detalle Pedido
                 <td>{{ detalle.largo }}</td>
                 <td>{{ detalle.color }}</td>
                 <td>{{ detalle.costo_u }}</td>
-                <td>{{ detalle.costo_t }}</td>
+                <td>{{ detalle.costo }}</td>
             </tr>
         {% endfor %}
     </tbody>
 </table>
     <table class="table">
     <tr>
-        <th width="89%">Costo Total</th>
-        <th width="11%">{% sum_pedidos detalles %}</th>
+        <th width="90%">Costo Total</th>
+        <th width="10%">{% sum_pedidos detalles %}</th>
     </tr>
     </table>
 {% endblock %}

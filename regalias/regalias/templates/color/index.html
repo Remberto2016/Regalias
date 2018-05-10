@@ -6,24 +6,25 @@ Nuestros Clientes
 
 {% block content %}
 <div class="row">
-<div class="col-md-12">
-    <a href="{% url 'color-new' %}" class="btn btn-success">
-        <i class="fa fa-plus-circle"></i> Registrar Color
-    </a>
+    <div class="col-md-12">
+        <a href="{% url 'color-new' %}" class="btn btn-success">
+            <i class="fa fa-plus-circle"></i> Registrar Color
+        </a>
+    </div>
 </div>
-</div>
-<h2>Colores Registrados</h2>
-<div class="row col-md-12" id="imprimir">
-    <table class="table striped hovered border bordered">
-        <thead>
-            <tr>
-                <th width="30px">#</th>
-                <th>Color</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for color in colores %}
+<div class="row col-md-12">
+    <h2>Colores Registrados</h2>
+    <div class="row col-md-12" id="imprimir">
+        <table class="table striped hovered border bordered">
+            <thead>
+                <tr>
+                    <th width="30px">#</th>
+                    <th>Color</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for color in colores %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ color.color }}</td>
@@ -33,8 +34,9 @@ Nuestros Clientes
                         </a>
                     </td>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}
