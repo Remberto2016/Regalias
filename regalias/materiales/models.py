@@ -79,7 +79,7 @@ class MateriaPrima(models.Model):
     def __str__(self):
         return '%s' % self.ancho
     def detalle(self):
-        return '%s: %s - %smm * %sml' % (
+        return '%s: %s de   %smm de espesor * %sml de ancho' % (
         self.unidad, self.color, self.espesor, self.ancho)
     class Meta:
         verbose_name = 'Materia Prima Calamina'
@@ -91,6 +91,7 @@ class PrecioClavos(models.Model):
     descripcion = models.CharField(max_length=200, verbose_name='Descripcion')
     precio = models.FloatField(verbose_name='Precio Kilo.', help_text='En Bolivianos')
     longitud = models.FloatField(verbose_name='Longitud', help_text='En Milimetros (mm)', null=True)
+    stock = models.IntegerField(default=1, help_text='En Kilos')
     estado = models.BooleanField(default=True)
     def __unicode__(self):
         return '%s: %s Bs. ml'%(self.descripcion, self.precio)

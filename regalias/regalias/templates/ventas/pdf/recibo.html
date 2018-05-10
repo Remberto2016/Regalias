@@ -1,0 +1,132 @@
+{% extends 'report.html' %}
+
+{% block title %}
+Recibo Oficial
+{% endblock %}
+
+{% block cuerpo %}
+<h1 align="center">Recibo Oficial</h1>
+<table class="table">
+    <tr>
+        <td style="border: white" width="20%">Empresa:</td>
+        <th> {{ venta.cliente.razon }}</th>
+    </tr>
+    <tr>
+        <td style="border: white" width="20%">NIT/CI:</td>
+        <th> {{ venta.cliente.nit }}</th>
+    </tr>
+</table>
+    <br>
+<table class="table">
+    <tr>
+        <td width="20%" style="border: white">Recibi la Suma de:</td>
+        <td width="5%" style="border: white">Bs.</td>
+        <th width="75%">{{ venta.costo }}</th>
+    </tr>
+    <tr>
+        <td width="20%" style="border: white"></td>
+        <td width="5%" style="border: white">Son</td>
+        <th width="75%">{{ literal_amount|upper }} {{ decimal_amount }}/100</th>
+    </tr>
+</table>
+    
+<!--table>
+    <tr>
+        <td width="23%" style="font-size: 16px;">
+            POR CONCEPTO DE:
+        </td>
+        <th width="77%">
+            <table class="table" width="100%">
+                <thead>
+                    <tr>
+                        <th width="5%">#</th>
+                        <th width="25%">Material</th>
+                        <th width="25%">Descripcion</th>
+                        <th width="10%">Cantidad</th>
+                        <th width="15%">Costo U.(Bs)</th>
+                        <th width="20%">Costo T.(Bs)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for detalle in detalles %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ detalle.material }}</td>
+                            <td>{{ detalle.descripcion }}</td>
+                            <td>{{ detalle.cantidad }}</td>
+                            <td>{{ detalle.costo_u }}</td>
+                            <td>{{ detalle.costo_t }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </th>
+    </tr>
+</table-->
+<div class="row">
+    <h2>POR CONCEPTO DE:</h2>
+    <div class="col-md-12">
+        <table class="table" width="100%">
+            <thead>
+                <tr>
+                    <th width="5%">#</th>
+                    <th width="25%">Material</th>
+                    <th width="25%">Descripcion</th>
+                    <th width="10%">Cantidad</th>
+                    <th width="15%">Costo U.(Bs)</th>
+                    <th width="20%">Costo T.(Bs)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for detalle in detalles %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ detalle.material }}</td>
+                        <td>{{ detalle.descripcion }}</td>
+                        <td>{{ detalle.cantidad }}</td>
+                        <td>{{ detalle.costo_u }}</td>
+                        <td>{{ detalle.costo_t }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+    <br><br>
+<table class="table">
+    <tr>
+        <th>RECIBI CONFORME</th>
+        <th>ENTREGUE CONFORME</th>
+    </tr>
+    <tr style="">
+        <td>
+            <br><br>
+            <p>
+                <strong>Firma: ....................................................................................</strong>
+            </p>
+            <p>
+                <strong>Nombre: ....................................................................................</strong>
+            </p>
+            <p>
+                <strong>Nº CI: ....................................................................................</strong>
+            </p>
+            <p>
+                <strong>Fecha: ....................................................................................</strong>
+            </p>
+        </td>
+        <td>
+            <br><br>
+            <p>
+                <strong>Firma: ....................................................................................</strong>
+            </p>
+            <p>
+                <strong>Nombre: ....................................................................................</strong>
+            </p>
+            <p>
+                <strong>Nº CI: ....................................................................................</strong>
+            </p>
+            <p style="color: white;">s</p>
+        </td>
+    </tr>
+</table>
+{% endblock %}

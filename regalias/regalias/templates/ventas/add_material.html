@@ -26,8 +26,11 @@ Agregar Material
                     url:"{% url 'venta-ajax-precio-clavo' %}",
                     type:'GET',
                     success: function(data){
-                        $('#id_costo_u').val(data);
-                        precio = data;
+                        $('#id_costo_u').val(data[0]['precio']);
+                        precio = data[0]['precio'];
+                        $('#id_cantidad').attr('min', 1);
+                        $('#id_cantidad').attr('max', data[0]['stock']);
+                        $('#id_cantidad').attr('title', 'La cantidad debe ser mayor a 1 y menor a '+data[0]['stock']);
                     },
                     failure: function(data){
                         console.log('error')

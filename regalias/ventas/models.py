@@ -35,6 +35,7 @@ class DetalleVenta(models.Model):
     costo_u = models.FloatField(default=0, verbose_name='Costo Unitario')
     costo_t = models.FloatField(verbose_name='Costo Total')
     venta = models.ForeignKey(Venta, models.PROTECT)
+    precio_id = models.IntegerField(null=True)
     def __unicode__(self):
         return '%s: %s'%(self.venta.id, self.cantidad)
     def __str__(self):

@@ -5,38 +5,50 @@ Nuestros Clientes
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <a href="{% url 'color-new' %}" class="btn btn-success">
-            <i class="fa fa-plus-circle"></i> Registrar Color
-        </a>
-    </div>
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2 class="app">Lista de colores registrados </h2>
+      <ul class="nav navbar-right panel_toolbox">
+        <li>    <a href="{% url 'color-new' %}" class="btn btn-success" style="color:black;">
+        <i class="fa fa-plus-circle"></i> <strong>Registrar Color</strong>
+    </a></li>
+        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+        </li>
+        <li><a class="close-link" href=""><i class="fa fa-close"></i></a>
+        </li>
+    </ul>
+    <div class="clearfix"></div>
 </div>
-<div class="row col-md-12">
-    <h2>Colores Registrados</h2>
-    <div class="row col-md-12" id="imprimir">
-        <table class="table striped hovered border bordered">
-            <thead>
-                <tr>
-                    <th width="30px">#</th>
-                    <th>Color</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for color in colores %}
+<div class="x_content">
+  <p class="text-muted font-13 m-b-30">
+    Este es una tabla donde contiene todos los colores registrados.
+</p>
+<div class="row col-md-12" id="imprimir">
+    <table class="table striped hovered border bordered">
+        <thead>
+            <tr>
+                <th width="30px">#</th>
+                <th>Color</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for color in colores %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ color.color }}</td>
                     <td>
-                        <a href="{% url 'color-update' color.id %}" class="btn btn-warning">
+                        <a href="{% url 'color-update' color.id %}" class="btn btn-warning" title="Editar Color">
                             <i class="fa fa-edit"></i>
                         </a>
                     </td>
                 </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
 </div>
 {% endblock %}

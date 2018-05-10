@@ -352,3 +352,10 @@ def active_precio_clavo(request, precio_id):
     sms = 'Precio activado correctamente'
     messages.success(request, sms)
     return HttpResponseRedirect(reverse(precios_baja_clavo))
+
+@login_required(login_url='/login/')
+def index_inventario(request):
+    inventarios = PrecioClavos.objects.filter(estado=True)
+    return render(request, 'clavos/index_inventario.html', {
+        'inventarios':inventarios,
+    })

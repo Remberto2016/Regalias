@@ -18,6 +18,7 @@ urlpatterns = [
     path('pedido/<int:pedido_id>/vent/', views.venta_pedido, name='venta-pedido-vent'),
 
     path('pdf/<int:venta_id>/detail', views.pdf_detail_venta, name='venta-pdf-detail'),
+    path('pdf/<int:venta_id>/recibo', views.pdf_recibo_venta, name='venta-pdf-recibo'),
 
 
     path('pdf/<int:venta_id>/factura', views.factura_pdf, name='venta-pdf-factura'),

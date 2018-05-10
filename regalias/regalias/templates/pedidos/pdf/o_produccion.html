@@ -29,7 +29,7 @@ Detalle Pedido {{ pedido.id }}
 <table class="table striped hovered border bordered">
     <thead>
         <tr>
-            <th width="30px">#</th>
+            <th width="50px">#</th>
             <th width="80px">Cantidad</th>
             <th width="80px">Unidad</th>
             <th width="300px">Descripcion</th>
@@ -57,8 +57,18 @@ Detalle Pedido {{ pedido.id }}
                 {% endfor %}
             </td>
         </tr>
+
         {% endfor %}
     </tbody>
+</table>
+<table class="table striped hovered border bordered">
+            <tr>
+            <th width="51px">Pzas.</th>
+            <td width="80px"></td>
+            <td width="80px" colspan="2"></td>
+            <th width="" colspan="3"> Total Metros Lineales</th>
+            <td width="90px" align="center"> <strong>{{ detalle.totalm }}</strong></td>       
+        </tr>
 </table>
 <hr>
 <table>
@@ -92,10 +102,10 @@ Detalle Pedido {{ pedido.id }}
     <tr></tr>
     <tr></tr>
     <tr>
-        <th>Firma:</th>
+        <th width="15%">Firma:</th>
         <th><hr></th>
         <td width="50px"></td>
-        <th>Firma:</th>
+        <th width ="15%">Firma:</th>
         <th><hr></th>
     </tr>
     <tr></tr>
@@ -123,7 +133,7 @@ Detalle Pedido {{ pedido.id }}
         <th><hr></th>
         <tr>
             <tr></tr>
-            <th >Firma:</th>
+            <th >Lugar y Fecha:</th>
             <td colspan="4"><hr></td>
         </tr>
     </table>

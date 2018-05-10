@@ -8,6 +8,10 @@ Detalle Materia Prima
 <div class="row">
     <h1>Detalle Materia Prima</h1>
     <div class="col-md-6">
+
+        <p class="lead">
+            <strong>Unidad: </strong>{{ materia.unidad }}
+        </p>
         <p class="lead">
             <strong>Nro. de Serie: </strong>{{ materia.nro_serie }}
         </p>
@@ -47,6 +51,7 @@ Detalle Materia Prima
         <a href="{% url 'materia-update' materia.id %}" class="btn btn-warning">
             <span class="fa fa-pen-square"></span> Editar Material
         </a>
+        <a href="{% block cancel %}javascript:history.go(-1){% endblock %}" class="btn btn-success">Atras</a>
     </div>
 </div>
 {% endblock %}

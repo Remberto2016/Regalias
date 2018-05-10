@@ -5,55 +5,66 @@ Materias Primas
 {% endblock %}
 
 {% block content %}
-<div class="row">
-<div class="col-md-12">
-    <a href="{% url 'materia-pdf' %}" class="btn btn-info" target="_blank">
-        <i class="fa fa-file-pdf"></i> Pasar a PDF
-    </a>
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2 class="app">Lista de Materiales </h2>
+      <ul class="nav navbar-right panel_toolbox">
+        <li><a href="{% url 'materia-pdf' %}" class="btn btn-danger " target="_blank" data-toggle="tooltip" title="Psar a PDF!">
+            <strong style="color:black;"><i class="fa fa-file-pdf-o"></i></strong>
+        </a></li>
+        <li><a href="{% url 'materia-new' %}" type="button" href="" class="btn btn-success" data-toggle="tooltip" title="Nuevo Material!"><span class="glyphicon glyphicon-plus" ></span></a></li>
+        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+        </li>
+        <li><a class="close-link" href=""><i class="fa fa-close"></i></a>
+        </li>
+    </ul>
+    <div class="clearfix"></div>
 </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <table class="table striped hovered border bordered">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Material</th>
-                    <th>Marca</th>
-                    <th>Detalle</th>
-                    <th>Peso</th>
-                    <th>Espesor(mm)</th>
-                    <th>Ancho(ml)</th>
-                    <th>Color</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for material in materiales %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ material.tipo }}</td>
-                        <td>{{ material.marca }}</td>
-                        <td>{{ material.detalle }}</td>
-                        <td>{{ material.peso }} {{ material.medida }}</td>
-                        <td>{{ material.espesor }}</td>
-                        <td>{{ material.ancho }}</td>
-                        <td>{{ material.color }}</td>
-                        <td>
-                            <a href="{% url 'materia-update' material.id %}" class="btn btn-warning btn-xs" title="Editar Materia Prima">
-                                <i class="fa fa-pencil-square"></i>
-                            </a>
-                            <a href="{% url 'materia-detail' material.id %}" class="btn btn-info btn-xs" title="Detalle Materia Prima">
-                                <i class="fa fa-info-circle"></i>
-                            </a>
+<div class="x_content">
+  <p class="text-muted font-13 m-b-30">
+    Este es una tabla donde contiene los datos de los Materiales registrados.
+</p>
+<table class="table striped hovered border bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Material</th>
+            <th>Marca</th>
+            <th>Detalle</th>
+            <th>Peso</th>
+            <th>Espesor(mm)</th>
+            <th>Ancho(ml)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for material in materiales %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ material.tipo }}</td>
+            <td>{{ material.marca }}</td>
+            <td>{{ material.detalle }}</td>
+            <td>{{ material.peso }} {{ material.medida }}</td>
+            <td>{{ material.espesor }}</td>
+            <td>{{ material.ancho }}</td>
+            <td>
+                <a href="{% url 'materia-update' material.id %}" class="btn btn-warning btn-xs" title="Editar Materia Prima">
+                    <i class="fa fa-pencil-square"></i>
+                </a>
+                <a href="{% url 'materia-detail' material.id %}" class="btn btn-info btn-xs" title="Detalle Materia Prima">
+                    <i class="fa fa-info-circle"></i>
+                </a>
                             <!--a href="{% url 'materia-baja' material.id %}" class="btn btn-danger btn-xs" title="Baja Materia Prima">
                                 <i class="fa fa-times-circle"></i>
                             </a-->
                         </td>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+
 {% endblock %}

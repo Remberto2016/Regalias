@@ -154,7 +154,7 @@
         height: 350px;
     }
     .rectangulo {
-       width: 250px; 
+       width: 200px;
        height: 100px; 
        border: 1px solid #555;
        background: #428bca;
@@ -173,32 +173,40 @@
 </head>
 <body>
     <table>
-          <tr>
-              <th colspan="2"><p align="center" style="font-size: 10px;"> <strong><span class="titulos">CASA MATRIZ</span> </strong> <br/>
+        <tr>
+            <th>
+                <p align="center" style="font-size: 10px;">
+                    <strong><span class="titulos">CASA MATRIZ</span> </strong> <br/>
                     Calle: Eliodoro Nery N°2869. <br/>
                     Zona: 16 de julio Telf.: 2841803 <br/>
                     El Alto, La Paz - Bolivia
-                </p></th>
-                <th colspan="1"><p align="center" style="font-size: 10px;"> <strong><span class="titulos">Sucursal </span> </strong><br/>
+                </p>
+                <p align="center" style="font-size: 10px;">
+                    <strong><span class="titulos">Sucursal </span> </strong><br/>
                     Av. Litoral # 145 Telf.: 2851566 <br/>
                     Z Rosas Pampa Industrial <br/>
-                    El Alto, La Paz - Bolivia  
-                </p></th>
-                <th rowspan="2" width="500px"><div class="rectangulo" style="align:right;" >
+                    El Alto, La Paz - Bolivia
+                </p>
+            </th>
+            <th colspan="2">
+                <img src="{{ STATIC_URL }}imagenes/Calaminas_Sin Fondo.png" alt="500px;" height="200px" width="400px">
+                <h2 align="center">FACTURA</h2>
+            </th>
+            <th>
+                <p class="rectangulo" align="center" style="width: 100px !important;">
+                    <strong>Fabricacion de otros productos elaborados de metal,
+                    actividades de servicios de metales</strong>
+                </p>
+                <div class="rectangulo" style="align:right;" >
                     <p>
                         <strong>NIT: </strong>{{ empresa.nit }} <br/>
                         <strong>Factura Nro.:</strong> {{ venta.nro_venta }} <br/>
                         <strong>Autorizacion Nro.: </strong>{{ empresa.nro }}
-                    </p> </div>
-                    </div><strong>ORIGINAL</strong><br/>
-                 <p class="rectangulo" align="center"><strong>Fabricacion de otros productos elaborados de metal, 
-                    actividades de servicios de metales</strong>  
                     </p>
-                </th>
-          </tr>
-          <th width="400px"> <img src="{{ STATIC_URL }}imagenes/Calaminas_Sin Fondo.png" alt="500px;" height="300px" width="500px"></th>
-          <th colspan="2"><h2 align="center">FACTURA</h2></th>
-
+                </div>
+                <strong>ORIGINAL</strong><br/>
+            </th>
+        </tr>
 </table>
 <table>
     <tr>
@@ -242,13 +250,12 @@
 <table class="table1 ">
     <tr>
         <br>
-
-        <td width="750px" align="center"><strong>Nota.</strong> Una ves retirada la mercaderia no se aceptan cambios ni devoluciones</td>
+        <td></td>
         <td align="right" width="200px">COSTO TOTAL </td>
         <td width="182px" align="center"><strong>{{ venta.costo }}</strong>  </td>
     </tr>
     <tr>
-      <td width="750px">SON: {{ literal_amount|upper }} {{ decimal_amount }}/100 Bs.</td>
+      <td width="750px">SON: {{ literal_amount|upper }} {{ decimal_amount }}/100 Bs.
       <td align="right" width="200px">DESCUENTOS </td>
       <td width="182px" align="center"><strong>0,00</strong></td>
   </tr>
@@ -256,7 +263,12 @@
     <td width="750px"></td>
     <td align="right" width="200px">TOTAL A PAGAR</td>
     <td width="182px" align="center"><strong>{{ venta.costo }}</strong></td>
-</tr>
+    </tr>
+</table>
+<table>
+    <tr>
+        <td width="750px"><strong>Nota.</strong> Una ves retirada la mercaderia no se aceptan cambios ni devoluciones</td>
+    </tr>
 </table>
 <table>
     <tr>

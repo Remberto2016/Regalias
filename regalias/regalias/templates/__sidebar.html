@@ -1,9 +1,9 @@
-<!-- sidebar menu -->
-<div id="sidebar-menu" class="main_menu_side hidden-print main_menu" style="background-color:#0f1126;">
-    <div class="menu_section">
-        <h3>General</h3>
-        <ul class="nav side-menu">
-            {% if user.is_superuser %}
+    <!-- sidebar menu -->
+    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu" style="background-color:#0f1126;">
+        <div class="menu_section">
+            <h3>General</h3>
+            <ul class="nav side-menu">
+                {% if user.is_superuser %}
                 <li>
                     <a>
                         <i class="fa fa-file"></i>Informacion <span class="fa fa-chevron-down"></span>
@@ -17,10 +17,13 @@
                                 Colores
                             </a>
                         </li>
+
                     </ul>
                 </li>
-            {% endif %}
-            {% if 'clientes' in perms %}
+
+
+                {% endif %}
+                {% if 'clientes' in perms %}
                 <li>
                     <a><i class="fa fa-users"></i> Clientes<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -41,8 +44,8 @@
                         </li>
                     </ul>
                 </li>
-            {% endif %}
-            {% if 'materiales' in perms %}
+                {% endif %}
+                {% if 'materiales' in perms %}
                 <li>
                     <a><i class="fa fa-sitemap"></i> Proveedor <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -57,30 +60,68 @@
                         </li>
                     </ul>
                 </li>
-                <li><a><i class="fa fa-briefcase"></i> Precios <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                        <li>
-                            <a href="{% url 'precio-new' %}">Nuevo Precio Calamina</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'precio-index' %}">Lista Precios Calamina</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'precio-list-baja' %}">Precios Baja Calamina</a>
-                        </li>
+                    <!--li><a><i class="fa fa-briefcase"></i> Precios e Inventario<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li>
+                                <a href="{% url 'precio-new' %}">Nuevo Precio Calamina</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'precio-index' %}">Lista Precios Calamina</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'precio-list-baja' %}">Precios Baja Calamina</a>
+                            </li>
 
-                        <li>
-                            <a href="{% url 'precio-new-clavo' %}">Nuevo Precio Clavo</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'precio-index-clavos' %}">Lista Precios Clavos</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'precio-list-baja-clavo' %}">Precios Clavos Baja</a>
-                        </li>
+                            <li>
+                                <a href="{% url 'precio-new-clavo' %}">Nuevo Precio Clavo</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'precio-index-clavos' %}">Lista Precios Clavos</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'precio-list-baja-clavo' %}">Precios Clavos Baja</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'index_inventario' %}">Inventario Clavos</a>
+                            </li>
 
+                        </ul>
+                    </li-->
+
+                    <li><a><i class="fa fa-sitemap"></i> Precios e Inventario <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a>Calaminas<span class="fa fa-chevron-down"></span></a>
+                              <ul class="nav child_menu">
+                                <li class="sub_menu">
+                                    <a href="{% url 'precio-new' %}">Nuevo Precio Calamina</a>
+                                </li>
+                                <li><a href="{% url 'precio-index' %}">Lista Precios Calamina</a>
+                                </li>
+                                <li><a href="{% url 'precio-list-baja' %}">Precios Baja Calamina</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a>Clavos<span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+                            <li class="sub_menu">
+                                <li>
+                                    <a href="{% url 'precio-new-clavo' %}">Nuevo Precio Clavo</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'precio-index-clavos' %}">Lista Precios Clavos</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'precio-list-baja-clavo' %}">Precios Clavos Baja</a>
+                                </li>
+                            </ul>                    
+                            <li>
+                                <a href="{% url 'index_inventario' %}">Inventario Clavos</a>
+                            </li>
+                        </li>
                     </ul>
+
                 </li>
+
                 <li><a><i class="fa fa-briefcase"></i> Materiales <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li>
@@ -89,106 +130,106 @@
                         <li>
                             <a href="{% url 'materia-index' %}">Lista Materiales</a>
                         </li>
-                        <!--li>
-                            <a href="{% url 'materia-usada' %}">Materiales Usados</a>
-                        </li-->
-                        <li>
-                            <a href="{% url 'materia-proveedor' %}">Material por Proveedor</a>
-                        </li>
-                    </ul>
+                            <!--li>
+                                <a href="{% url 'materia-usada' %}">Materiales Usados</a>
+                            </li-->
+                            <li>
+                                <a href="{% url 'materia-proveedor' %}">Material por Proveedor</a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if 'pedidos' in perms %}
+                    <li>
+                        <a><i class="fa fa-archive"></i> Pedidos <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li>
+                                <a href="{% url 'pedido-index' %}">Pedidos</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'pedido-list-clientes' %}">Registrar Pedido</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'pedido-no-confirmados' %}">Pedidos No Confirmados</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'pedido-vendidos' %}">Pedidos Vendidos</a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if 'ventas' in perms %}
+                    <li>
+                        <a><i class="fa fa-shopping-cart"></i> Ventas <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li>
+                                <a href="{% url 'venta-index' %}">Lista Ventas</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'venta-list-clientes' %}">Nueva Venta</a>
+                            </li>
+                            <!--li>
+                                <a href="{% url 'venta-no-confirmados' %}">Ventas sin Confirmar</a>
+                            </li-->
+                            <li>
+                                <a href="{% url 'venta-list-pedidos' %}">Venta Pedido</a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if 'reportes' in perms %}
+                    <li>
+                        <a><i class="fa fa-list-alt"></i> Reportes <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li>
+                                <a href="{% url 'reporte-venta-fecha' %}">
+                                    Ventas por Fechas
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'reporte-venta-mes' %}">
+                                    Ventas Mesuales
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'reporte-venta-year' %}">
+                                    Ventas Anuales
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'reporte-salida-material' %}">Salida de Material</a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                <!--li><a><i class="fa fa-list"></i> Reportes <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                <li><a href="#">Clientes</a></li>
+                <li><a href="#">Proveedor</a></li>
+                <li><a href="#">Productos</a></li>
+                <li><a href="#">Pedidos</a></li>
+                <li><a href="#">Inventario</a></li>
+                <li><a href="#">Ventas</a></li>
+                <li><a href="#">Usuarios</a></li>
+                </ul>
                 </li>
-            {% endif %}
-            {% if 'pedidos' in perms %}
-                <li>
-                    <a><i class="fa fa-archive"></i> Pedidos <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                        <li>
-                            <a href="{% url 'pedido-index' %}">Pedidos</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'pedido-list-clientes' %}">Registrar Pedido</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'pedido-no-confirmados' %}">Pedidos No Confirmados</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'pedido-vendidos' %}">Pedidos Vendidos</a>
-                        </li>
-                    </ul>
-                </li>
-            {% endif %}
-            {% if 'ventas' in perms %}
-                <li>
-                    <a><i class="fa fa-shopping-cart"></i> Ventas <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                        <li>
-                            <a href="{% url 'venta-index' %}">Lista Ventas</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'venta-list-clientes' %}">Nueva Venta</a>
-                        </li>
-                        <!--li>
-                            <a href="{% url 'venta-no-confirmados' %}">Ventas sin Confirmar</a>
-                        </li-->
-                        <li>
-                            <a href="{% url 'venta-list-pedidos' %}">Venta Pedido</a>
-                        </li>
-                    </ul>
-                </li>
-            {% endif %}
-            {% if 'reportes' in perms %}
-                <li>
-                    <a><i class="fa fa-list-alt"></i> Reportes <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                        <li>
-                            <a href="{% url 'reporte-venta-fecha' %}">
-                                Ventas por Fechas
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'reporte-venta-mes' %}">
-                                Ventas Mesuales
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'reporte-venta-year' %}">
-                                Ventas Anuales
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'reporte-salida-material' %}">Salida de Material</a>
-                        </li>
-                    </ul>
-                </li>
-            {% endif %}
-            <!--li><a><i class="fa fa-list"></i> Reportes <span class="fa fa-chevron-down"></span></a>
-            <ul class="nav child_menu">
-            <li><a href="#">Clientes</a></li>
-            <li><a href="#">Proveedor</a></li>
-            <li><a href="#">Productos</a></li>
-            <li><a href="#">Pedidos</a></li>
-            <li><a href="#">Inventario</a></li>
-            <li><a href="#">Ventas</a></li>
-            <li><a href="#">Usuarios</a></li>
-            </ul>
-            </li>
-            <li><a><i class="fa fa-bar-chart"></i> Estadisticas <span class="fa fa-chevron-down"></span></a>
-            <ul class="nav child_menu">
-            <li><a href="chartjs.html">Chart JS</a></li>
-            <li><a href="chartjs2.html">Chart JS2</a></li>
-            <li><a href="other_charts.html">Other Charts</a></li>
-            </ul>
+                <li><a><i class="fa fa-bar-chart"></i> Estadisticas <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                <li><a href="chartjs.html">Chart JS</a></li>
+                <li><a href="chartjs2.html">Chart JS2</a></li>
+                <li><a href="other_charts.html">Other Charts</a></li>
+                </ul>
             </li-->
             <li>
                 <a><i class="fa fa-user"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     {% if user.is_superuser %}
-                        <li>
-                            <a href="{% url 'user-new' %}">Registrar Usuario</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'user-list' %}">Lista Usuarios</a>
-                        </li>
+                    <li>
+                        <a href="{% url 'user-new' %}">Registrar Usuario</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'user-list' %}">Lista Usuarios</a>
+                    </li>
                     {% endif %}
                     <li>
                         <a href="{% url 'user-change-username' %}">Modificar Nombre Usuario</a>

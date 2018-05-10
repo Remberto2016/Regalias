@@ -15,11 +15,15 @@
     <link rel="stylesheet" href="{% static "css/alertify.core.css" %}">
     <link rel="stylesheet" href="{% static "css/alertify.default.css" %}">
     <link rel="stylesheet" href="{% static "css/custom.min.css" %}">
-    <link rel="stylesheet" href="{% static 'css/print.css' %}">
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-
+    <link rel="stylesheet" href="{% static "css/print.css" %}">
     
-    {% block css %}{% endblock css %}
+    {% block css %}
+    <style>
+        .app{
+            font-family: Cooper Black;
+        }
+    </style>
+    {% endblock css %}
 
     <!-- jQuery -->
     <script src="{% static "js/jquery.min.js" %}" ></script>
@@ -55,7 +59,7 @@
                         <div class="profile_info" style="background-color:#0f1126;">
                             {% if user.is_authenticated %}
                                 <span>Bienvenido. </span>
-                                <h2>{{request.user.username|upper }}</h2>
+                                <h2>{{request.user.username}}</h2>
                             {% else %}
                                 <span>Nuestro. </span>
                                 <h2>Sistema Ventas</h2>
@@ -76,7 +80,7 @@
                         <a data-toggle="tooltip" data-placement="top" title="Lock" style="background-color:#0f1126;">
                             <span class="glyphicon glyphicon-eye-close" aria-hidden="true" ></span>
                         </a>
-                        <a data-toggle="tooltip" data-placement="top" title="Logout" style="background-color:#0f1126;" href="">
+                        <a data-toggle="tooltip" data-placement="top" title="Logout" style="background-color:#0f1126;" href="{% url 'logout' %}">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                         </a>
                     </div>
@@ -104,6 +108,10 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    {% if user.is_authenticated %}
+                                    {% else %}
+                                    Iniciar Sesion
+                                    {%endif%}
                                     <img src="" alt="">{{ request.user.username}}
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
@@ -126,16 +134,11 @@
                                     {% if user.is_superuser %}
                                     Administrador(a):
                                     {% else %}
-                                    {{request.user.last_login|date:"d M Y " }}
                                     {% endif %}
                                 </a>
                             </li>
                                  <li> <a> 
-                                    {% if user.is_superuser %}
                                     {{request.user.last_login|date:"d M Y " }}
-                                    {% else %}
-                                    
-                                    {% endif%}
                                 </a>
                             </li>
                             </li>

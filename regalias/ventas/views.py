@@ -61,12 +61,17 @@ def add_material(request, venta_id):
     if request.method == 'POST':
         form = DetalleVentaForm(request.POST)
         if form.is_valid():
+            clavo = form.cleaned_data['materiaprima']
+            precioclavo = PrecioClavos.objects.get(id=clavo.id)
             detalle = form.save(commit=False)
             detalle.venta = venta
             detalle.costo_t = detalle.cantidad * detalle.costo_u
+            detalle.precio_id = precioclavo.id
             detalle.save()
             venta.costo = venta.costo + detalle.costo_t
             venta.save()
+            precioclavo.stock = precioclavo.stock - detalle.cantidad
+            precioclavo.save()
             admin_log_addition(request, detalle, 'Detalle Venta Creado')
             admin_log_change(request, venta, 'Costo Modificado')
             messages.success(request, 'Material Agredado Correctemente')
@@ -82,8 +87,8 @@ def add_material(request, venta_id):
 def ajax_get_precio(request):
     if request.is_ajax():
         id = request.GET['precio_id']
-        precio = get_object_or_404(PrecioClavos, pk = id)
-        return JsonResponse(precio.precio, safe=False)
+        precio = PrecioClavos.objects.filter(pk = id).values('precio', 'stock')
+        return JsonResponse(list(precio), safe=False)
     else:
         raise Http404
 
@@ -93,6 +98,9 @@ def delete_material(request, detalle_id):
     venta = Venta.objects.get(pk = detalle.venta.id)
     venta.costo = venta.costo - detalle.costo_t
     venta.save()
+    precioclavo = PrecioClavos.objects.get(id = detalle.precio_id)
+    precioclavo.stock = precioclavo.stock + detalle.cantidad
+    precioclavo.save()
     detalle.delete()
     admin_log_change(request, venta, 'Costo Modificado')
     messages.error(request, 'Material Eliminado')
@@ -242,3 +250,16 @@ def factura_pdf(request, venta_id):
 
     return render_pdf(html_string)
 
+@login_required(login_url='/login/')
+def pdf_recibo_venta(request, venta_id):
+    venta = get_object_or_404(Venta, pk=venta_id)
+    literal_amount = num2words(int(venta.costo), lang='es')
+    decimal_amount = get_decimal_amount(venta)
+    detalles = DetalleVenta.objects.filter(venta=venta)
+    html = render_to_string('ventas/pdf/recibo.html', {
+        'venta': venta,
+        'detalles': detalles,
+        'literal_amount': literal_amount,
+        'decimal_amount': decimal_amount,
+    })
+    return render_pdf(html)

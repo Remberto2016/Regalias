@@ -35,4 +35,6 @@ urlpatterns = [
     path('clavo/precio/bajas', views.precios_baja_clavo, name='precio-list-baja-clavo'),
     path('clavo/precio/<int:precio_id>/baja', views.baja_precio_clavo, name='precio-baja-clavo'),
     path('clavo/precio/<int:precio_id>/activate', views.active_precio_clavo, name='precio-active-clavo'),
+
+    path('inventario', views.index_inventario, name='index_inventario'),
 ]

@@ -8,12 +8,12 @@
     @page {
         size: letter;
         margin-left: 1cm;
-        margin-top: 3cm;
+        margin-top: 2.3cm;
         margin-right: 1cm;
         margin-bottom:1cm;
         @frame header {
             -pdf-frame-content: headerContent;
-            top:0.5cm;
+            /*top:0.5cm;*/
             margin-left: 1cm;
             margin-right: 1cm;
             margin-bottom: 2cm;
@@ -38,10 +38,10 @@
     .barra{
         font-size: 2px;
         background: #000000;
-       
+        
         width: 100%;
         position: relative;
-       
+        
         border-bottom: 3px double #000000;
     }
     h1{
@@ -157,22 +157,32 @@
     .cabecera{
         height: 350px;
     }
-    .celdas{
+    .hr-line {
+        width: 100%;
+        position: relative;
+        margin: 15px;
+        border-bottom: 5px solid #000;
+    }
+        .celdas{
         border: 2px solid #000000; 
         padding-bottom:3px; 
         padding-top: 4px;
     }
+
     </style>
 </head>
 <body>
     <div id="headerContent">
         <header>
             <div class="cabecera">
-                <img  src="{{ STATIC_URL }}imagenes/Calaminas_Sin Fondo.png" alt="banner" height="190px" width="450px" align="right"/>
+                <img  src="{{ STATIC_URL }}imagenes/Calaminas_Sin Fondo.png" alt="banner" height="150px" width="300px" align="right"/>
+
             </div>
+
         </header>
+        
     </div>
-   <div class="barra">.</div>  
+    <div class="barra">.</div> 
     <section class="consulta">
         {% block cuerpo %}
         <h1>Hola Reporte!!!!</h1>

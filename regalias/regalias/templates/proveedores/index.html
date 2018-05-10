@@ -5,13 +5,26 @@ Nuestros Proveedores
 {% endblock %}
 
 {% block content %}
-<div class="row">
-<div class="col-md-12">
-    <a href="{% url 'proveedor-pdf' %}" class="btn btn-info" target="_blank">
-        <i class="fa fa-file-pdf"></i> Pasar a PDF
-    </a>
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="x_panel">
+    <div class="x_title">
+        <h2 class="app">Lista de Proveedores </h2>
+      <ul class="nav navbar-right panel_toolbox">
+        <li><a href="{% url 'proveedor-pdf' %}" class="btn btn-danger" target="_blank" data-toggle="tooltip" title="Psar a PDF!">
+            <strong style="color:black;"><i class="fa fa-file-pdf-o"> </i></strong>
+        </a></li>
+        <li><a href="{% url 'proveedor-new' %} " type="button" href="" class="collapse-link btn btn-success" data-toggle="tooltip" title="Nuevo Proveedor!"><span class="glyphicon glyphicon-plus" ></span></a></li>
+        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+        </li>
+        <li><a class="close-link" href=""><i class="fa fa-close"></i></a>
+        </li>
+    </ul>
+    <div class="clearfix"></div>
 </div>
-</div>
+<div class="x_content">
+  <p class="text-muted font-13 m-b-30">
+    Este es una tabla donde contiene los datos de los Proveedores registrados.
+</p>
 <div class="row">
     <div class="col-md-12">
         <table class="table striped hovered border bordered">
@@ -28,28 +41,31 @@ Nuestros Proveedores
             </thead>
             <tbody>
                 {% for proveedor in proveedores %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ proveedor.proveedor }}</td>
-                        <td>{{ proveedor.origen.pais }}-{{ proveedor.origen }}</td>
-                        <td>{{ proveedor.telefono }}</td>
-                        <td>{{ proveedor.direccion }}</td>
-                        <td>{{ proveedor.email }}</td>
-                        <td>
-                            <a href="{% url 'proveedor-update' proveedor.id %}" class="btn btn-warning btn-xs" title="Editar Proveedor">
-                                <i class="fa fa-pencil-square"></i>
-                            </a>
-                            <a href="{% url 'proveedor-detail' proveedor.id %}" class="btn btn-info btn-xs" title="Detalle Proveedor">
-                                <i class="fa fa-info-circle"></i>
-                            </a>
-                            <a href="{% url 'proveedor-baja' proveedor.id %}" class="btn btn-danger btn-xs" title="Baja Proveedor">
-                                <i class="fa fa-times-circle"></i>
-                            </a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ proveedor.proveedor }}</td>
+                    <td>{{ proveedor.origen.pais }}-{{ proveedor.origen }}</td>
+                    <td>{{ proveedor.telefono }}</td>
+                    <td>{{ proveedor.direccion }}</td>
+                    <td>{{ proveedor.email }}</td>
+                    <td>
+                        <a href="{% url 'proveedor-update' proveedor.id %}" class="btn btn-warning btn-xs" title="Editar Proveedor">
+                            <i class="fa fa-pencil-square"></i>
+                        </a>
+                        <a href="{% url 'proveedor-detail' proveedor.id %}" class="btn btn-info btn-xs" title="Detalle Proveedor">
+                            <i class="fa fa-info-circle"></i>
+                        </a>
+                        <a href="{% url 'proveedor-baja' proveedor.id %}" class="btn btn-danger btn-xs" title="Baja Proveedor">
+                            <i class="fa fa-times-circle"></i>
+                        </a>
+                    </td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+</div>
+</div>
+</div>
 </div>
 {% endblock %}
