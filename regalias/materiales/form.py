@@ -55,3 +55,6 @@ class PrecioClavoForm(ModelForm):
     class Meta:
         model = PrecioClavos
         exclude = ['estado']
+
+class StockClavos(forms.Form):
+    cantidad = forms.IntegerField(label='Cantidad de Material', widget=TextInput(attrs={'min':'1'}))

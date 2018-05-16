@@ -4,12 +4,27 @@
 Registrar Cliente
 {% endblock %}
 
+{% block info-form %}
+{% load static %}
+<div class="row">
+    <div class="col-md-12">
+        <!--a href="#" onClick="window.open('{% url 'cliente-new-ciudad-popup' %}','popup', 'width=400px,height=400px')">
+            Registrar Ciudad
+        </a-->
+        <a href="{% url 'cliente-new-ciudad' %}" class="btn btn-success">
+            Registrar Ciudad
+        </a>
+    </div>
+</div>
+{% endblock %}
+
 {% block legend %}
 Registrar Cliente
 {% endblock %}
 
 {% block js %}
 <script>
+
     $(document).ready(function () {
         $('#id_pais').change(medida);
         function medida(){

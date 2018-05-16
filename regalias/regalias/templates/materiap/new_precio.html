@@ -11,11 +11,31 @@ Registrar Precio
 {% block js %}
 <script>
 $(document).ready(function () {
+    $('#id_codigo').val('CAL - {{ key }}');
+
     var html = '<option>------</option>';
     {% for color in colores %}
         html += '<option value="{{ color.color }}">{{ color.color }}</option>';
     {% endfor %}
     $('#id_color').html(html);
+
+    //material-ajax-material
+    $('#id_materia').change(function () {
+        var id = $(this).val();
+        $.ajax({
+        data:{'id': id},
+        url:"{% url 'material-ajax-material' %}",
+        type:'GET',
+        success: function(data){
+            $('#id_serie').val(data[0]['serie']);
+            $('#id_color').val(data[0]['color']);
+            $('#id_espesor').val(data[0]['espesor']);
+        },
+        failure: function(data){
+            console.log('error')
+        }
+    });
+    })
 });
 </script>
 {% endblock %}

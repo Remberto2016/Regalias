@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='cliente-index'),
     path('new/ciudad', views.new_ciudad, name='cliente-new-ciudad'),
+    path('popup/new/ciudad', views.new_ciudad_popup, name='cliente-new-ciudad-popup'),
     path('new/pais', views.new_pais, name='cliente-new-pais'),
     path('new', views.new, name='cliente-new'),
     path('<int:cliente_id>/update', views.update, name='cliente-update'),

@@ -30,22 +30,6 @@ COLORCHOICE = (
     ('Verde', 'Verde'),
 )
 
-class Precio(models.Model):
-    codigo = models.CharField(max_length=10, verbose_name='Codigo')
-    descripcion = models.CharField(max_length=200, verbose_name='Descripcion')
-    precio = models.FloatField(verbose_name='Precio Metro L.', help_text='En Bolivianos')
-    espesor = models.FloatField(verbose_name='Espesor', help_text='En Milimetros (mm)', null=True)
-    color = models.CharField(max_length=100, verbose_name='Color', default='Sin Color', choices=COLORCHOICE, null=True)
-    estado = models.BooleanField(default=True)
-    def __unicode__(self):
-        return '%s: %s Bs. ml'%(self.descripcion, self.precio)
-    def __str__(self):
-        return '%s: %s Bs. ml' % (self.descripcion, self.precio)
-    class Meta:
-        verbose_name = 'Tabla de Precio'
-        verbose_name_plural = 'Tabla de Precios'
-        ordering = ['precio']
-
 TIPOCHOICES = (
     ('Calamina', 'Calamina'),
     ('Clavos', 'Clavos'),
@@ -73,11 +57,14 @@ class MateriaPrima(models.Model):
     estado = models.BooleanField(default=True)
     salida = models.FloatField(default=0)
     stock = models.FloatField(default=0)
+    precio_m = models.FloatField(verbose_name='Precio', help_text='En Bolivianos')
     proveedor = models.ForeignKey(Proveedor, null=True, on_delete=models.PROTECT)
     def __unicode__(self):
-        return '%s'%self.ancho
+        return '%s: %s de   %smm de espesor * %sml de ancho' % (
+            self.unidad, self.color, self.espesor, self.ancho)
     def __str__(self):
-        return '%s' % self.ancho
+        return '%s: %s de   %smm de espesor * %sml de ancho' % (
+            self.unidad, self.color, self.espesor, self.ancho)
     def detalle(self):
         return '%s: %s de   %smm de espesor * %sml de ancho' % (
         self.unidad, self.color, self.espesor, self.ancho)
@@ -86,8 +73,32 @@ class MateriaPrima(models.Model):
         verbose_name_plural = 'Materia Prima Calaminas'
         ordering = ['fecha']
 
+class Precio(models.Model):
+    codigo = models.CharField(max_length=11, verbose_name='Codigo')
+    materia = models.ForeignKey(MateriaPrima, null=True, on_delete=models.PROTECT)
+    descripcion = models.CharField(max_length=200, verbose_name='Descripcion')
+    precio = models.FloatField(verbose_name='Precio Metro L.', help_text='En Bolivianos')
+    espesor = models.FloatField(verbose_name='Espesor', help_text='En Milimetros (mm)', null=True)
+    color = models.CharField(max_length=100, verbose_name='Color', default='Sin Color', choices=COLORCHOICE, null=True)
+    estado = models.BooleanField(default=True)
+    def __unicode__(self):
+        return '%s: %s Bs. ml'%(self.descripcion, self.precio)
+    def __str__(self):
+        return '%s: %s Bs. ml' % (self.descripcion, self.precio)
+    class Meta:
+        verbose_name = 'Tabla de Precio'
+        verbose_name_plural = 'Tabla de Precios'
+        ordering = ['precio']
+
+
+TIPESCLAVOS = (
+    ('Unidad', 'Unidad'),
+    ('Caja', 'Caja'),
+)
+
 class PrecioClavos(models.Model):
     codigo = models.CharField(max_length=10, verbose_name='Codigo')
+    tipo = models.CharField(max_length=20, null=True, choices=TIPESCLAVOS)
     descripcion = models.CharField(max_length=200, verbose_name='Descripcion')
     precio = models.FloatField(verbose_name='Precio Kilo.', help_text='En Bolivianos')
     longitud = models.FloatField(verbose_name='Longitud', help_text='En Milimetros (mm)', null=True)

@@ -39,13 +39,14 @@ def new_pais(request):
 
 @login_required(login_url='/login/')
 def new_ciudad(request):
+    ref = request.META.get('HTTP_REFERER')
     if request.method == 'POST':
         form = CiudadForm(request.POST)
         if form.is_valid():
             c = form.save()
             admin_log_addition(request, c, 'Ciudad Creada')
             messages.success(request, 'Ciudad Registrada Correctamente')
-            return HttpResponseRedirect(reverse(index))
+            return HttpResponseRedirect(ref)
     else:
         form = CiudadForm()
     return render(request, 'clientes/new_ciudad.html', {
@@ -134,3 +135,18 @@ def pdf_clientes(request):
         'clientes':clientes,
     })
     return render_pdf(html)
+
+@login_required(login_url='/login/')
+def new_ciudad_popup(request):
+    if request.method == 'POST':
+        form = CiudadForm(request.POST)
+        if form.is_valid():
+            c = form.save()
+            admin_log_addition(request, c, 'Ciudad Creada')
+            messages.success(request, 'Ciudad Registrada Correctamente')
+            return render(request, 'close_popup.html')
+    else:
+        form = CiudadForm()
+    return render(request, 'clientes/new_ciudad_popup.html', {
+        'form':form,
+    })

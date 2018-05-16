@@ -14,19 +14,39 @@ from regalias.utility import admin_log_addition, admin_log_change, render_pdf
 
 from users.models import Color
 from materiales.models import MateriaPrima, Proveedor, Precio, PrecioClavos
-from materiales.form import MateriaPForm, ProveedorForm, SearchProveedor, PrecioForm, PrecioClavoForm
+from materiales.form import MateriaPForm, ProveedorForm, SearchProveedor, PrecioForm, PrecioClavoForm, StockClavos
 
 import datetime
 
 @login_required(login_url='/login/')
 def index(request):
     materiales = MateriaPrima.objects.filter(estado=True)
+    referer = request.META.get('HTTP_REFERER')
+    print(referer)
     return render(request, 'materiap/index.html', {
         'materiales':materiales,
     })
 
+
+import string
+import random
+
+
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    """
+    Función para generar valores aleatorios
+    Puede recibir:
+        size = longitud de la cadena
+            Defecto 6
+        chars = caracteres a utilizar para buscar la cadena
+            Defecto letras mayusculas y numeros
+    """
+    return ''.join(random.choice(chars) for _ in range(size))
+
+
 @login_required(login_url='/login/')
 def new(request):
+
     colores = Color.objects.all()
     if request.method == 'POST':
         form = MateriaPForm(request.POST)
@@ -49,6 +69,7 @@ def new(request):
     return render(request, 'materiap/new.html', {
         'form':form,
         'colores':colores,
+
     })
 
 @login_required(login_url='/login/')
@@ -223,7 +244,9 @@ def index_precios(request):
 
 @login_required(login_url='/login/')
 def new_precio(request):
+    key = id_generator(5, "12345")
     colores = Color.objects.all()
+    materia = MateriaPrima.objects.filter(tipo='Calamina')
     if request.method == 'POST':
         form = PrecioForm(request.POST)
         if form.is_valid():
@@ -237,6 +260,8 @@ def new_precio(request):
     return render(request, 'materiap/new_precio.html', {
         'form':form,
         'colores':colores,
+        'materia':materia,
+        'key': key,
     })
 
 @login_required(login_url='/login/')
@@ -295,6 +320,7 @@ def index_precios_clavos(request):
 
 @login_required(login_url='/login/')
 def new_precio_clavo(request):
+
     if request.method == 'POST':
         form = PrecioClavoForm(request.POST)
         if form.is_valid():
@@ -359,3 +385,30 @@ def index_inventario(request):
     return render(request, 'clavos/index_inventario.html', {
         'inventarios':inventarios,
     })
+
+@login_required(login_url='/login/')
+def stock_clavo(request, precio_id):
+    precio = get_object_or_404(PrecioClavos, pk = precio_id)
+    if request.method == 'POST':
+        form = StockClavos(request.POST)
+        if form.is_valid():
+            cantidad = form.cleaned_data['cantidad']
+            precio.stock = precio.stock + cantidad
+            precio.save()
+            admin_log_change(request, precio, 'Stock Modificado')
+            sms = 'Stock de material %s modificado'%precio
+            messages.info(request, sms)
+            return HttpResponseRedirect(reverse(index_precios_clavos))
+    else:
+        form = StockClavos()
+    return render(request, 'clavos/add_stock.html', {
+        'form':form,
+    })
+
+def ajax_get_material(request):
+    if request.is_ajax():
+        id = request.GET['id']
+        material = MateriaPrima.objects.filter(id = id).values('espesor', 'ancho', 'color','nro_serie')
+        return JsonResponse(list(material), safe=False)
+    else:
+        return Http404

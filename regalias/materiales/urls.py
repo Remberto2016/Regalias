@@ -12,7 +12,6 @@ urlpatterns = [
     path('proveedor/month', views.materiap_proveedor, name='materia-proveedor'),
     path('proveedor/month/<int:proveedor_id>/<int:mes>/<int:year>/', views.pdf_materiap_proveedor, name='materia-proveedor-pdf'),
 
-
     path('proveedor', views.index_proveedor, name='proveedor-index'),
     path('proveedor/new', views.new_proveedor, name='proveedor-new'),
     path('proveedor/<int:proveedor_id>/update', views.update_proveedor, name='proveedor-update'),
@@ -35,6 +34,10 @@ urlpatterns = [
     path('clavo/precio/bajas', views.precios_baja_clavo, name='precio-list-baja-clavo'),
     path('clavo/precio/<int:precio_id>/baja', views.baja_precio_clavo, name='precio-baja-clavo'),
     path('clavo/precio/<int:precio_id>/activate', views.active_precio_clavo, name='precio-active-clavo'),
+    path('clavo/<int:precio_id>/stock', views.stock_clavo, name='precio-stock-clavo'),
 
-    path('inventario', views.index_inventario, name='index_inventario'),
+    path('clavo/inventario', views.index_inventario, name='index_inventario'),
+
+
+    path('ajax/material', views.ajax_get_material, name='material-ajax-material'),
 ]

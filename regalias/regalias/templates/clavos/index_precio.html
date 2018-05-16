@@ -30,9 +30,11 @@ Nuestros Precios
             <tr>
                 <th>#</th>
                 <th>Codigo</th>
+                <th>Tipo</th>
                 <th>Descripcion</th>
                 <th>Precio</th>
                 <th>Longitud(mm)</th>
+                <th>Stock</th>
                 <th></th>
             </tr>
         </thead>
@@ -41,15 +43,20 @@ Nuestros Precios
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ precio.codigo }}</td>
+                <td>{{ precio.tipo }}</td>
                 <td>{{ precio.descripcion }}</td>
                 <td><span class="badge" style="background-color:#3a87ad">{{ precio.precio }} Bs. </span></td>
                 <td>{{ precio.longitud }}</td>
+                <td>{{ precio.stock }}</td>
                 <td>
                     <a href="{% url 'precio-update-clavo' precio.id %}" class="btn btn-warning btn-xs" title="Editar Precio">
                         <i class="fa fa-pencil-square"></i>
                     </a>
                     <a href="{% url 'precio-baja-clavo' precio.id %}" class="btn btn-danger btn-xs" title="Baja Precio">
                         <i class="fa fa-times-circle"></i>
+                    </a>
+                    <a href="{% url 'precio-stock-clavo' precio.id %}" class="btn btn-success btn-xs" title="Aumentar Stock">
+                        <i class="fa fa-edit"></i>
                     </a>
                 </td>
             </tr>
