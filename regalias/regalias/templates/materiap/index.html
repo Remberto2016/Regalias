@@ -22,48 +22,40 @@ Materias Primas
     <div class="clearfix"></div>
 </div>
 <div class="x_content">
-  <p class="text-muted font-13 m-b-30">
-    Este es una tabla donde contiene los datos de los Materiales registrados.
-</p>
-<table class="table striped hovered border bordered">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Material</th>
-            <th>Marca</th>
-            <th>Detalle</th>
-            <th>Peso</th>
-            <th>Espesor(mm)</th>
-            <th>Ancho(ml)</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for material in materiales %}
-        <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ material.tipo }}</td>
-            <td>{{ material.marca }}</td>
-            <td>{{ material.detalle }}</td>
-            <td>{{ material.peso }} {{ material.medida }}</td>
-            <td>{{ material.espesor }}</td>
-            <td>{{ material.ancho }}</td>
-            <td>
-                <a href="{% url 'materia-update' material.id %}" class="btn btn-warning btn-xs" title="Editar Materia Prima">
-                    <i class="fa fa-pencil-square"></i>
-                </a>
-                <a href="{% url 'materia-detail' material.id %}" class="btn btn-info btn-xs" title="Detalle Materia Prima">
-                    <i class="fa fa-info-circle"></i>
-                </a>
-                            <!--a href="{% url 'materia-baja' material.id %}" class="btn btn-danger btn-xs" title="Baja Materia Prima">
-                                <i class="fa fa-times-circle"></i>
-                            </a-->
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+    <p class="text-muted font-13 m-b-30">
+        Este es una tabla donde contiene los datos de los Materiales registrados.
+    </p>
+    <table class="table striped hovered border bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Material</th>
+                <th>Marca</th>
+                <th>Detalle</th>
+                <th>Peso</th>
+                <th>Espesor(mm)</th>
+                <th>Ancho(ml)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for material in materiales %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ material.tipo }}</td>
+                    <td>{{ material.marca }}</td>
+                    <td>{{ material.detalle }}</td>
+                    <td>{{ material.peso }} {{ material.medida }}</td>
+                    <td>{{ material.espesor }}</td>
+                    <td>{{ material.ancho }}</td>
+                    <td>
+
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
     </div>
 </div>
 

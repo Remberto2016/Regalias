@@ -48,7 +48,7 @@ Nuestro Inventario
                 <td> <span class="badge" style="background-color:#3a87ad">{{ inventario.precio }} Bs.</span></td>
                 <td>{{ inventario.longitud }}</td>
                 <td><span class="badge" style="background-color:#468847">{{ inventario.stock }} U. </span></td>
-                <td>{% salidamaterial invetario %}</td>
+                <td>{% salidamaterial inventario %}</td>
                 <td>
                     <a href="{% url 'precio-update-clavo' inventario.id %}" class="btn btn-warning btn-xs" title="Agregar stock">
                         <i class="fa fa-pencil-square"></i>

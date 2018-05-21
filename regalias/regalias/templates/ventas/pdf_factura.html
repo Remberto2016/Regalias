@@ -226,27 +226,36 @@
         </td>
     </tr>
 </table>
+{% load helper_ventas %}
 <table class="table ">
     <thead>
         <tr>
             <th width="150px">Cantidad</th>
             <th>Concepto</th>
             <th width="150px">P. UNIT.(Bs)</th>
+            <th width="150px">MetroLineales</th>
             <th width="200px">Total</th>
         </tr>
     </thead>
     <tbody>
+    {% load helper_material %}
         {% for detalle in detalles %}
-        <tr>
-            <td align="center">{{ detalle.cantidad }} </td>
-            <td>{{ detalle.descripcion }} : {{detalle.material}}</td>
-            <td align="center">{{ detalle.costo_u }}.-</td>
-            <td align="center">{{ detalle.costo_t }}.-</td>
-        </tr>
+            <tr>
+                <td align="center">{{ detalle.cantidad }} </td>
+                <td>{{ detalle.descripcion }} : {{detalle.material}}</td>
+                <td align="center">{{ detalle.costo_u }}.-</td>
+                <td align="center">
+                    {% if not detalle.precio_id %}
+                        {% sumita detalle.largo detalle.cantidad %}
+                    {% else %}
+
+                    {% endif %}
+                </td>
+                <td align="center">{{ detalle.costo_t }}.-</td>
+            </tr>
         {% endfor %}
     </tbody>
 </table>
-{% load helper_ventas %}
 <table class="table1 ">
     <tr>
         <br>

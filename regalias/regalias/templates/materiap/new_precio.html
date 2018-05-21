@@ -8,6 +8,42 @@ Registrar Precio
 Registrar Precio
 {% endblock %}
 
+{% block cuerpo-form %}
+{% for field in form %}
+    <div class="form-group">
+        {% if field.errors %}
+            <div class="mypadding2 bg-red fg-white margin10 no-margin-right no-margin-left">
+                <i class="fa fa-exclamation-triangle"></i>{{ field.errors }}
+            </div>
+        {% endif %}
+        {{ field.label_tag }}
+        {% if field.html_name == 'precio' %}
+            <div class="col-sm-6">
+                {{ field }}
+                {% if field.help_text %}
+                    <small class="fg-green block padding10 no-padding-top">
+                        <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+                    </small>
+                {% endif %}
+            </div>
+            <div class="col-sm-3" id="informacionid" style="">
+
+            </div>
+        {% else %}
+            <div class="col-sm-9">
+            {{ field }}
+            {% if field.help_text %}
+                <small class="fg-green block padding10 no-padding-top">
+                    <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+                </small>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+{% endfor %}
+{% endblock %}
+
+
 {% block js %}
 <script>
 $(document).ready(function () {
@@ -19,23 +55,41 @@ $(document).ready(function () {
     {% endfor %}
     $('#id_color').html(html);
 
+    var html = '<option>------</option>';
+    {% for materia in materias %}
+        html += '<option value="{{ materia.id }}">{{ materia }}</option>';
+    {% endfor %}
+    $('#id_materia').html(html);
+    var longitud = 0;
+    var informacion = ''; 
     //material-ajax-material
     $('#id_materia').change(function () {
         var id = $(this).val();
-        $.ajax({
-        data:{'id': id},
-        url:"{% url 'material-ajax-material' %}",
-        type:'GET',
-        success: function(data){
-            $('#id_serie').val(data[0]['serie']);
-            $('#id_color').val(data[0]['color']);
-            $('#id_espesor').val(data[0]['espesor']);
-        },
-        failure: function(data){
-            console.log('error')
-        }
+            $.ajax({
+            data:{'id': id},
+            url:"{% url 'material-ajax-material' %}",
+            type:'GET',
+            success: function(data){
+                $('#id_color').val(data[0]['color']);
+                $('#id_espesor').val(data[0]['espesor']);
+                $('#informacionid').html('Longitud: '+data[0]['stock']+' ml.');
+                longitud = data[0]['stock'];
+                informacion = $('#informacionid').html();
+            },
+            failure: function(data){
+                console.log('error')
+            }
+        });
     });
-    })
+    $('#id_precio').keyup(function () {
+        var precio = $(this).val();
+        var g = precio * longitud;
+        $('#informacionid').html(informacion + "<br>" +' Venta: ' + g +'Bs.');
+    });
+
+    $('#id_color').attr('readonly', 'readonly');
+   $('#id_espesor').attr('readonly', 'readonly');
+     
 });
 </script>
 {% endblock %}

@@ -56,8 +56,8 @@ class MateriaPrima(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     estado = models.BooleanField(default=True)
     salida = models.FloatField(default=0)
+    precioc = models.FloatField(default=0, verbose_name='Precio de Compra', help_text='En Bolivianos')
     stock = models.FloatField(default=0)
-    precio_m = models.FloatField(verbose_name='Precio', help_text='En Bolivianos')
     proveedor = models.ForeignKey(Proveedor, null=True, on_delete=models.PROTECT)
     def __unicode__(self):
         return '%s: %s de   %smm de espesor * %sml de ancho' % (
@@ -74,12 +74,12 @@ class MateriaPrima(models.Model):
         ordering = ['fecha']
 
 class Precio(models.Model):
-    codigo = models.CharField(max_length=11, verbose_name='Codigo')
+    codigo = models.CharField(max_length=10, verbose_name='Codigo')
     materia = models.ForeignKey(MateriaPrima, null=True, on_delete=models.PROTECT)
     descripcion = models.CharField(max_length=200, verbose_name='Descripcion')
     precio = models.FloatField(verbose_name='Precio Metro L.', help_text='En Bolivianos')
     espesor = models.FloatField(verbose_name='Espesor', help_text='En Milimetros (mm)', null=True)
-    color = models.CharField(max_length=100, verbose_name='Color', default='Sin Color', choices=COLORCHOICE, null=True)
+    color = models.CharField(max_length=100, verbose_name='Color', default='Sin Color', null=True)
     estado = models.BooleanField(default=True)
     def __unicode__(self):
         return '%s: %s Bs. ml'%(self.descripcion, self.precio)

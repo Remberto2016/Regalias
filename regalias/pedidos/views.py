@@ -117,7 +117,9 @@ def ajax_get_precio(request):
     if request.is_ajax():
         id = request.GET['precio_id']
         precio = get_object_or_404(Precio, pk = id)
-        return JsonResponse(precio.precio, safe=False)
+        precios = Precio.objects.filter(pk = id).values('precio', 'color', 'espesor', 'materia__ancho', 'materia__cantidad', 'materia__longitud', 'materia_id', 'materia__stock')
+        #return JsonResponse(precio.precio, safe=False)
+        return JsonResponse(list(precios), safe=False)
     else:
         raise Http404
 

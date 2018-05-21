@@ -91,15 +91,19 @@
                 <li><a><i class="fa fa-sitemap"></i> Precios e Inventario <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li><a>Calaminas<span class="fa fa-chevron-down"></span></a>
-                          <ul class="nav child_menu">
-                            <li class="sub_menu">
+                            <ul class="nav child_menu">
+                                <li class="sub_menu">
                                 <a href="{% url 'precio-new' %}">Nuevo Precio Calamina</a>
-                            </li>
-                            <li><a href="{% url 'precio-index' %}">Lista Precios Calamina</a>
-                            </li>
-                            <li><a href="{% url 'precio-list-baja' %}">Precios Baja Calamina</a>
-                            </li>
-                        </ul>
+                                </li>
+                                <li><a href="{% url 'precio-index' %}">Lista Precios Calamina</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'precio-list-baja' %}">Precios Baja Calamina</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'inventario-calamina' %}">Inventario Calaminas</a>
+                                </li>
+                            </ul>
                     </li>
                         <li><a>Clavos<span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">

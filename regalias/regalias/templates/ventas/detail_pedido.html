@@ -31,8 +31,8 @@ Detalle Pedido
                 {% for detalle in detalles %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ detalle.material }}</td>
                         <td>{{ detalle.descripcion }}</td>
+                        <td>Ancho: {{ detalle.ancho }} - Largo: {{ detalle.largo }}</td>
                         <td>{{ detalle.cantidad }}</td>
                         <td>{{ detalle.costo_u }}</td>
                         <td>{{ detalle.costo_t }}</td>

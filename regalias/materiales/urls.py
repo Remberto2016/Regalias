@@ -11,6 +11,8 @@ urlpatterns = [
     path('pdf', views.pdf_materia_prima, name='materia-pdf'),
     path('proveedor/month', views.materiap_proveedor, name='materia-proveedor'),
     path('proveedor/month/<int:proveedor_id>/<int:mes>/<int:year>/', views.pdf_materiap_proveedor, name='materia-proveedor-pdf'),
+    path('inventario', views.inventario_calaminas, name='inventario-calamina'),
+
 
     path('proveedor', views.index_proveedor, name='proveedor-index'),
     path('proveedor/new', views.new_proveedor, name='proveedor-new'),

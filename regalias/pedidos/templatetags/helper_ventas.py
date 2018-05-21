@@ -10,3 +10,11 @@ def sum_ventas(ventas):
     if suma['costo__sum']:
         return suma['costo__sum']
     return 0.0
+
+@register.simple_tag
+def t_metros(detalle):
+    return 1
+
+@register.simple_tag
+def sumas():
+    return 1

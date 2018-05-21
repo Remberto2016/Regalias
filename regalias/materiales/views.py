@@ -8,7 +8,7 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, AdminPasswordChangeForm
 from django.conf import settings
-from django.db.models import ProtectedError
+from django.db.models import ProtectedError, Sum, Max
 
 from regalias.utility import admin_log_addition, admin_log_change, render_pdf
 
@@ -244,9 +244,14 @@ def index_precios(request):
 
 @login_required(login_url='/login/')
 def new_precio(request):
-    key = id_generator(5, "12345")
+    precios = Precio.objects.all()
+    if precios:
+        llave = precios.aggregate(Max('id'))
+        key = llave['id__max'] + (100)
+    else:
+        key = 101
     colores = Color.objects.all()
-    materia = MateriaPrima.objects.filter(tipo='Calamina')
+    materias = MateriaPrima.objects.filter(tipo='Calamina')
     if request.method == 'POST':
         form = PrecioForm(request.POST)
         if form.is_valid():
@@ -260,7 +265,7 @@ def new_precio(request):
     return render(request, 'materiap/new_precio.html', {
         'form':form,
         'colores':colores,
-        'materia':materia,
+        'materias':materias,
         'key': key,
     })
 
@@ -386,6 +391,14 @@ def index_inventario(request):
         'inventarios':inventarios,
     })
 
+
+@login_required(login_url='/login/')
+def inventario_calaminas(request):
+    materiap = MateriaPrima.objects.filter(tipo='Calamina')
+    return render(request, 'materiap/index_inventario.html', {
+        'materiap':materiap,
+    })
+
 @login_required(login_url='/login/')
 def stock_clavo(request, precio_id):
     precio = get_object_or_404(PrecioClavos, pk = precio_id)
@@ -408,7 +421,7 @@ def stock_clavo(request, precio_id):
 def ajax_get_material(request):
     if request.is_ajax():
         id = request.GET['id']
-        material = MateriaPrima.objects.filter(id = id).values('espesor', 'ancho', 'color','nro_serie')
+        material = MateriaPrima.objects.filter(id = id).values('espesor', 'ancho', 'color', 'stock', 'longitud', 'id')
         return JsonResponse(list(material), safe=False)
     else:
         return Http404
