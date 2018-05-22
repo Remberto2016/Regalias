@@ -143,10 +143,27 @@ def new_ciudad_popup(request):
         if form.is_valid():
             c = form.save()
             admin_log_addition(request, c, 'Ciudad Creada')
-            messages.success(request, 'Ciudad Registrada Correctamente')
-            return render(request, 'close_popup.html')
+            return render(request, 'close_popup.html', {
+                'c':c,
+            })
     else:
         form = CiudadForm()
     return render(request, 'clientes/new_ciudad_popup.html', {
+        'form':form,
+    })
+
+@login_required(login_url='/login/')
+def new_pais_popup(request):
+    if request.method == 'POST':
+        form = PaisForm(request.POST)
+        if form.is_valid():
+            p = form.save()
+            admin_log_addition(request, p, 'Pais Creado')
+            return render(request, 'close_popup.html', {
+                'c':p,
+            })
+    else:
+        form = PaisForm()
+    return render(request, 'clientes/new_pais_popup.html', {
         'form':form,
     })

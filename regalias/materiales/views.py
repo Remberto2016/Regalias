@@ -69,7 +69,6 @@ def new(request):
     return render(request, 'materiap/new.html', {
         'form':form,
         'colores':colores,
-
     })
 
 @login_required(login_url='/login/')
@@ -247,9 +246,9 @@ def new_precio(request):
     precios = Precio.objects.all()
     if precios:
         llave = precios.aggregate(Max('id'))
-        key = llave['id__max'] + (100)
+        key = llave['id__max'] + 100
     else:
-        key = 101
+        key = 100
     colores = Color.objects.all()
     materias = MateriaPrima.objects.filter(tipo='Calamina')
     if request.method == 'POST':
@@ -325,7 +324,12 @@ def index_precios_clavos(request):
 
 @login_required(login_url='/login/')
 def new_precio_clavo(request):
-
+    precios = PrecioClavos.objects.all()
+    if precios:
+        llave = precios.aggregate(Max('id'))
+        key = llave['id__max'] + 100
+    else:
+        key = 100
     if request.method == 'POST':
         form = PrecioClavoForm(request.POST)
         if form.is_valid():
@@ -335,9 +339,11 @@ def new_precio_clavo(request):
             messages.success(request, sms)
             return HttpResponseRedirect(reverse(index_precios_clavos))
     else:
-        form = PrecioClavoForm()
+        form = PrecioClavoForm(initial={'codigo':'CLA %s'%key})
+        form = PrecioClavoForm(initial={'codigo':'CLA %s'%key})
     return render(request, 'clavos/new_precio.html', {
         'form':form,
+
     })
 
 @login_required(login_url='/login/')
@@ -425,3 +431,19 @@ def ajax_get_material(request):
         return JsonResponse(list(material), safe=False)
     else:
         return Http404
+
+@login_required(login_url='/login/')
+def new_proveedor_popup(request):
+    if request.method == 'POST':
+        form = ProveedorForm(request.POST)
+        if form.is_valid():
+            pro = form.save()
+            admin_log_addition(request, pro, 'Proveedor Registrado')
+            return render(request, 'close_popup.html', {
+                'c':pro,
+            })
+    else:
+        form = ProveedorForm()
+    return render(request, 'proveedores/new_popup.html', {
+        'form':form,
+    })

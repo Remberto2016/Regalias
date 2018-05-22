@@ -9,27 +9,30 @@ Recibo Oficial
 <table class="table">
     <tr>
         <td style="border: white" width="20%">Empresa:</td>
-        <th> {{ venta.cliente.razon }}</th>
+        <th> {{ venta.cliente.razon|upper }}</th>
     </tr>
+    <tr></tr>
     <tr>
         <td style="border: white" width="20%">NIT/CI:</td>
         <th> {{ venta.cliente.nit }}</th>
     </tr>
+
 </table>
-    <br>
+<br>
 <table class="table">
     <tr>
         <td width="20%" style="border: white">Recibi la Suma de:</td>
         <td width="5%" style="border: white">Bs.</td>
         <th width="75%">{{ venta.costo }}</th>
     </tr>
+    <tr></tr>
     <tr>
         <td width="20%" style="border: white"></td>
         <td width="5%" style="border: white">Son</td>
-        <th width="75%">{{ literal_amount|upper }} {{ decimal_amount }}/100</th>
+        <th width="75%">{{ literal_amount|upper }} {{ decimal_amount }} /100</th>
     </tr>
 </table>
-    
+
 <!--table>
     <tr>
         <td width="23%" style="font-size: 16px;">
@@ -64,69 +67,78 @@ Recibo Oficial
     </tr>
 </table-->
 <div class="row">
-    <h2>POR CONCEPTO DE:</h2>
-    <div class="col-md-12">
-        <table class="table" width="100%">
-            <thead>
-                <tr>
-                    <th width="5%">#</th>
-                    <th width="25%">Material</th>
-                    <th width="25%">Descripcion</th>
-                    <th width="10%">Cantidad</th>
-                    <th width="15%">Costo U.(Bs)</th>
-                    <th width="20%">Costo T.(Bs)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for detalle in detalles %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ detalle.material }}</td>
-                        <td>{{ detalle.descripcion }}</td>
-                        <td>{{ detalle.cantidad }}</td>
-                        <td>{{ detalle.costo_u }}</td>
-                        <td>{{ detalle.costo_t }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+  <td width="40%"><h2>POR CONCEPTO DE:</h2></td>  
+  <div class="col-md-12">
+    <table width="100%" border="" cellpadding="5px" class="table">
+        <tbody>
+
+            {% for detalle in detalles %}
+            {% if detalle.material == 'Clavos' %}
+            <tr>
+                <td width="40%" style="border: white"></td>
+                <th align="center">{{ detalle.cantidad }} {{ detalle.descripcion }}   </th>
+            </tr>
+            {% else %}
+            <tr>
+                <td width="40%" style="border: white"></td>
+                <th align="center">{{ detalle.cantidad }} Pzas. {{ detalle.descripcion }}  {{detalle.ancho}} {{detalle.material}}</th>
+            </tr>
+
+            {% endif %}
+
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
-    <br><br>
-<table class="table">
+</div>
+<br><br>
+<table>
+    <hr style="border-top: 5px double #8c8b8b;">
     <tr>
-        <th>RECIBI CONFORME</th>
-        <th>ENTREGUE CONFORME</th>
+        <td colspan="2" align="center" style="background-color: #73879C; height: 20px;
+        vertical-align: bottom;"><strong > ENTREGUE CONFORME </strong></td>
+        <td width="50px"></td>
+        <td colspan="2" align="center" style="background-color: #73879C; height: 20px;
+        vertical-align: bottom;"><strong>RECIBÍ CONFORME</strong></td>
     </tr>
-    <tr style="">
-        <td>
-            <br><br>
-            <p>
-                <strong>Firma: ....................................................................................</strong>
-            </p>
-            <p>
-                <strong>Nombre: ....................................................................................</strong>
-            </p>
-            <p>
-                <strong>Nº CI: ....................................................................................</strong>
-            </p>
-            <p>
-                <strong>Fecha: ....................................................................................</strong>
-            </p>
-        </td>
-        <td>
-            <br><br>
-            <p>
-                <strong>Firma: ....................................................................................</strong>
-            </p>
-            <p>
-                <strong>Nombre: ....................................................................................</strong>
-            </p>
-            <p>
-                <strong>Nº CI: ....................................................................................</strong>
-            </p>
-            <p style="color: white;">s</p>
-        </td>
+    <tr></tr>
+    <tr></tr>
+    <tr>
+        <th width="15%">Firma:</th>
+        <th><hr></th>
+        <td width="50px"></td>
+        <th width ="15%">Firma:</th>
+        <th><hr></th>
     </tr>
-</table>
-{% endblock %}
+    <tr></tr>
+    <tr>
+        <th>Nombre:</th>
+        <th><hr></th>
+        <td width="50px"></td>
+        <th>Nombre:</th>
+        <th><hr></th>
+    </tr>
+    <tr></tr>
+    <tr>
+        <th >Cargo:</th>
+        <th><hr></th>
+        <td width="50px"></td>
+        <th>Cargo:</th>
+        <th><hr></th>
+    </tr>
+    <tr></tr>
+    <tr>
+        <th >N° C.I.:</th>
+        <th><hr></th>
+        <td width="50px"></td>
+        <th>N° C.I.:</th>
+        <th><hr></th>
+        <tr>
+            <tr></tr>
+            <th >Lugar y Fecha:</th>
+            <td colspan="4"><hr></td>
+        </tr>
+
+    </table>
+    <hr style="border-top: 10px double #8c8b8b;">
+    {% endblock %}

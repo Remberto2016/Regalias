@@ -16,6 +16,7 @@ urlpatterns = [
 
     path('proveedor', views.index_proveedor, name='proveedor-index'),
     path('proveedor/new', views.new_proveedor, name='proveedor-new'),
+    path('popup/proveedor/new', views.new_proveedor_popup, name='proveedor-new-popup'),
     path('proveedor/<int:proveedor_id>/update', views.update_proveedor, name='proveedor-update'),
     path('proveedor/<int:proveedor_id>/baja', views.baja_proveedor, name='proveedor-baja'),
     path('proveedor/<int:proveedor_id>/activate', views.activate_proveedor, name='proveedor-activate'),

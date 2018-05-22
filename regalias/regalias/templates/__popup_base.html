@@ -1,7 +1,7 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html lang="es">
-<head>
+<html lang="es" style="background-color:#F7F7F7;">
+<head style="background-color:#F7F7F7;">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -39,123 +39,19 @@
     <script src="{% static "js/alertify.js" %}" ></script>
     <script src="{% static "js/angular.min.js" %}" ></script>
 </head>
-<body class="nav-md">
-    <div class="container body" >
-        <div class="main_container" style="background-color:#0f1126;">
-            <div class="right_col" role="main">
-                <div class="">
-                    <div class="clearfix"></div>
-                    {% if messages %}
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="grid example">
-                                    {% for message in messages %}
-                                        <div class="alert alert-{{ message.tags }}" role="alert">
-                                            <i class="fa fa-exclamation-triangle"></i> {{ message|safe }}
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
+<body class="">
+    <div class="" >
+        <div class="container">
+            <div class="" >
                     {% block content %}
 
                     {% endblock %}
                 </div>
             </div>
         </div>
-    </div>
+
     {% block js %}{% endblock js %}
     <!-- Custom Theme Scripts -->
-    <script src="{% static "js/custom.min.js" %}" ></script>
 
-    <!-- Datatables -->
-    <script>
-    $(document).ready(function() {
-    var handleDataTableButtons = function() {
-      if ($("table.table.striped.hovered").length) {
-        $("table.table").DataTable({
-            "language": {
-                "sProcessing":     "Procesando...",
-                "sLengthMenu":     "Mostrar _MENU_ registros",
-                "sZeroRecords":    "No se encontraron resultados",
-                "sEmptyTable":     "Ningún dato disponible en esta tabla",
-                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix":    "",
-                "sSearch":         "Buscar ",
-                "sUrl":            "",
-                "sInfoThousands":  ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst":    "Primero",
-                    "sLast":     "Último",
-                    "sNext":     "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                }},
-            dom: "Bfrtip",
-          buttons: [
-          {
-            extend: "copy",
-            className: "btn-sm"
-          },
-          {
-            extend: "csv",
-            className: "btn-sm"
-          },
-          {
-            extend: "excel",
-            className: "btn-sm"
-          },
-          {
-            extend: "pdfHtml5",
-            className: "btn-sm"
-          },
-          {
-            extend: "print",
-            className: "btn-sm"
-          }
-          ],
-          responsive: true
-        });
-      }
-    };
-
-    TableManageButtons = function() {
-      "use strict";
-      return {
-        init: function() {
-          handleDataTableButtons();
-        }
-      };
-    }();
-
-    $('#datatable').dataTable();
-    $('#datatable-keytable').DataTable({
-      keys: true
-    });
-
-    //$('table.table').DataTable();
-
-    $('#datatable-scroller').DataTable({
-      ajax: "js/datatables/json/scroller-demo.json",
-      deferRender: true,
-      scrollY: 380,
-      scrollCollapse: true,
-      scroller: true
-    });
-
-    var table = $('#datatable-fixed-header').DataTable({
-      fixedHeader: true
-    });
-
-    TableManageButtons.init();
-    });
-    </script>
-  <!-- /Datatables -->
 </body>
+</html>

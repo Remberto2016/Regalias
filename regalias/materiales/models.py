@@ -82,9 +82,9 @@ class Precio(models.Model):
     color = models.CharField(max_length=100, verbose_name='Color', default='Sin Color', null=True)
     estado = models.BooleanField(default=True)
     def __unicode__(self):
-        return '%s: %s Bs. ml'%(self.descripcion, self.precio)
+        return '%s: %s' % (self.codigo, self.descripcion)
     def __str__(self):
-        return '%s: %s Bs. ml' % (self.descripcion, self.precio)
+        return '%s: %s' % (self.codigo, self.descripcion)
     class Meta:
         verbose_name = 'Tabla de Precio'
         verbose_name_plural = 'Tabla de Precios'
@@ -105,9 +105,9 @@ class PrecioClavos(models.Model):
     stock = models.IntegerField(default=1, help_text='En Kilos')
     estado = models.BooleanField(default=True)
     def __unicode__(self):
-        return '%s: %s Bs. ml'%(self.descripcion, self.precio)
+        return '%s: %s'%(self.codigo, self.descripcion)
     def __str__(self):
-        return '%s: %s Bs. ml' % (self.descripcion, self.precio)
+        return '%s: %s' % (self.codigo, self.descripcion)
     class Meta:
         verbose_name = 'Tabla de Precio Clavo'
         verbose_name_plural = 'Tabla de Precios Clavos'

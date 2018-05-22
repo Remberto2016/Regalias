@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body onload="window.close();">
+<body onload="">
+<script type="text/javascript">opener.dismissAddAnotherPopup( window, "{{ c.id }}", "{{ c }}" );</script>
 <script>
     $(document).ready(function () {
         window.close()

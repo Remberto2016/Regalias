@@ -8,6 +8,61 @@ Registrar Proveedor
 Registrar Proveedor
 {% endblock %}
 
+{% block cuerpo-form %}
+{% for field in form %}
+<div class="form-group">
+    {% if field.errors %}
+    <div class="mypadding2 bg-red fg-white margin10 no-margin-right no-margin-left">
+        <i class="fa fa-exclamation-triangle"></i>{{ field.errors }}
+    </div>
+    {% endif %}
+    {% if field.html_name == 'origen' %}
+    {{ field.label_tag }}
+    <div class="col-sm-8">
+        {{ field }}
+        {% if field.help_text %}
+        <small class="fg-green block padding10 no-padding-top">
+            <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+        </small>
+        {% endif %}
+    </div>
+    <div class="col-sm-1" style="line-height: 30px">
+        <a href="{% url 'cliente-new-ciudad-popup' %}" class="btn btn-success add-another" title="Registrar Ciudad" id="{{ field.auto_id }}">
+            <i class="fa fa-plus-circle "></i>
+        </a>
+    </div>
+    {% else %}
+    {% if field.html_name == 'pais' %}
+    {{ field.label_tag }}
+    <div class="col-sm-8">
+        {{ field }}
+        {% if field.help_text %}
+        <small class="fg-green block padding10 no-padding-top">
+            <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+        </small>
+        {% endif %}
+    </div>
+    <div class="col-sm-1" style="line-height: 30px">
+        <a href="{% url 'cliente-new-pais-popup' %}" class="btn btn-success add-another" title="Registrar Pais" id="{{ field.auto_id }}">
+            <i class="fa fa-plus-circle "></i>
+        </a>
+    </div>
+    {% else %}
+    {{ field.label_tag }}
+    <div class="col-sm-9">
+        {{ field }}
+        {% if field.help_text %}
+        <small class="fg-green block padding10 no-padding-top">
+            <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+        </small>
+        {% endif %}
+    </div>
+    {% endif %}
+    {% endif%}
+</div>
+{% endfor %}
+{% endblock %}
+
 {% block js %}
 <script>
     $(document).ready(function () {
@@ -31,4 +86,5 @@ Registrar Proveedor
         }
     });
 </script>
+{% include '__popup_script.html' %}
 {% endblock %}

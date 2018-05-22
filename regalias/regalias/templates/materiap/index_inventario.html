@@ -31,13 +31,12 @@
             <tr>
                 <th>#</th>
                 <th>Material</th>
-                <th>Marca</th>
                 <th>Detalle</th>
                 <th>Peso</th>
                 <th>Espesor(mm)</th>
                 <th>Ancho(ml)</th>
-                <th>Longitud Ini.(ml)</th>
                 <th>Stock Disponible(ml)</th>
+                <th>Longitud Ini.(ml)</th>
             </tr>
         </thead>
         <tbody>
@@ -45,13 +44,12 @@
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ material.tipo }}</td>
-                    <td>{{ material.marca }}</td>
                     <td>{{ material.detalle }}</td>
                     <td>{{ material.peso }} {{ material.medida }}</td>
                     <td>{{ material.espesor }}</td>
                     <td>{{ material.ancho }}</td>
-                    <td>{{ material.longitud }}</td>
-                    <td>{{ material.stock }}</td>
+                    <td><span class="badge badge-info" style="background-color: #3a87ad;">{{ material.stock }}</span></td>
+                    <td><span class="badge badge-inverse">{{ material.longitud }}</span></td>
                 </tr>
             {% endfor %}
         </tbody>

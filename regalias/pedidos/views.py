@@ -18,6 +18,26 @@ from pedidos.models import Pedido, DetallePedido
 
 from pedidos.form import DetallePedidoForm, ConfirmForm
 import datetime
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect, JsonResponse, Http404, HttpResponse
+from django.urls import reverse
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required, permission_required
+from django.template import RequestContext, Context
+from django.template.loader import render_to_string
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, AdminPasswordChangeForm
+from django.conf import settings
+from django.db.models import ProtectedError, Max
+
+from regalias.utility import admin_log_addition, admin_log_change, render_pdf
+
+from clientes.models import Cliente
+from materiales.models import Precio, MateriaPrima
+from pedidos.models import Pedido, DetallePedido
+
+from pedidos.form import DetallePedidoForm, ConfirmForm
+import datetime
 
 @login_required(login_url='/login/')
 def index(request):

@@ -22,7 +22,7 @@ Agregar Material
         {% endif %}
         {{ field.label_tag }}
         {% if field.html_name == 'cantidad' %}
-            <div class="col-sm-5">
+            <div class="col-sm-6">
                 {{ field }}
                 {% if field.help_text %}
                     <small class="fg-green block padding10 no-padding-top">
@@ -30,7 +30,7 @@ Agregar Material
                     </small>
                 {% endif %}
             </div>
-            <div class="col-sm-4" id="informacionid" style="">
+            <div class="col-sm-3" id="informacionid" style="">
 
             </div>
         {% else %}
@@ -51,6 +51,7 @@ Agregar Material
 <script>
     $(document).ready(function () {
         var html = '';
+        var mdisponibles = 0;
         {% for material in materiales %}
             html = html + '<option value="{{ material.color }}">{{ material.color }}</option>';
         {% endfor %}
@@ -70,10 +71,9 @@ Agregar Material
                         $('#id_costo_u').val(data[0]['precio']);
                         $('#id_color').val(data[0]['color']);
                         $('#id_anchocalamina').val(data[0]['materia__ancho']);
-                        $('#informacionid').html('M. Disponibles: '+data[0]['materia__stock']+' M.');
-                        longitud = data[0]['materia__stock'];
+                        mdisponibles = data[0]['materia__stock'];
+                        $('#informacionid').html('Metros Disponibles: '+mdisponibles);
                         precio = data[0]['precio'];
-                        informacion = $('#informacionid').html();
                         $.ajax({
                             data:{'id': data[0]['materia_id']},
                             url:"{% url 'material-ajax-material' %}",
@@ -118,9 +118,10 @@ Agregar Material
                 cantidad = $(this).val();
                 tmetros = large * cantidad;
                 var costo_t = tmetros * precio;
+                var disponibles = mdisponibles - tmetros;
+                $('#informacionid').html('Metros Disponibles: '+mdisponibles+' Metros Restantes: '+disponibles);
                 $('#id_costo_t').val(costo_t);
                 $('#id_total_m').val(tmetros);
-
             }
             else{
                 cantidad = 0;
@@ -140,15 +141,8 @@ Agregar Material
                 $('#id_total_m').val(0 * cantidad);
             }
         });
-
-        $('#id_cantidad').keyup(function () {
-        var cantidad = $(this).val();
-        var g = longitud - (large * cantidad);
-        $('#informacionid').html(informacion + "<br>" + ' M. Restantes: ' + g +' M.' );
-    });
         $('#id_color').attr('readonly', 'readonly');
         $('#id_anchocalamina').attr('readonly', 'readonly');
-        $('#id_total_m').attr('readonly', 'readonly');
     });
 </script>
 {% endblock %}

@@ -61,7 +61,7 @@ $(document).ready(function () {
     {% endfor %}
     $('#id_materia').html(html);
     var longitud = 0;
-    var informacion = ''; 
+    var informacion = '';
     //material-ajax-material
     $('#id_materia').change(function () {
         var id = $(this).val();
@@ -72,8 +72,8 @@ $(document).ready(function () {
             success: function(data){
                 $('#id_color').val(data[0]['color']);
                 $('#id_espesor').val(data[0]['espesor']);
-                $('#informacionid').html('Longitud: '+data[0]['stock']+' ml.');
-                longitud = data[0]['stock'];
+                $('#informacionid').html('Lon: '+data[0]['longitud']+' ml.');
+                longitud = data[0]['longitud'];
                 informacion = $('#informacionid').html();
             },
             failure: function(data){
@@ -84,12 +84,8 @@ $(document).ready(function () {
     $('#id_precio').keyup(function () {
         var precio = $(this).val();
         var g = precio * longitud;
-        $('#informacionid').html(informacion + "<br>" +' Venta: ' + g +'Bs.');
+        $('#informacionid').html(informacion + ' - Venta: ' + g +'Bs.');
     });
-
-    $('#id_color').attr('readonly', 'readonly');
-   $('#id_espesor').attr('readonly', 'readonly');
-     
 });
 </script>
 {% endblock %}
