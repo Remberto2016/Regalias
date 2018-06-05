@@ -31,7 +31,6 @@ Nuestro Inventario
             <tr>
                 <th>#</th>
                 <th>Codigo</th>
-                <th>Tipo</th>
                 <th>Descripcion</th>
                 <th>Precio</th>
                 <th>Longitud(mm)</th>
@@ -45,18 +44,14 @@ Nuestro Inventario
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ inventario.codigo }}</td>
-                <td>{{ inventario.tipo }}</td>
                 <td>{{ inventario.descripcion }}</td>
                 <td> <span class="badge" style="background-color:#3a87ad">{{ inventario.precio }} Bs.</span></td>
                 <td>{{ inventario.longitud }}</td>
                 <td><span class="badge" style="background-color:#468847">{{ inventario.stock }} U. </span></td>
-                <td><span class="badge" style="background-color:#f89406">{% salidamaterial inventario %}</span></td>
+                <td>{% salidamaterial inventario %}</td>
                 <td>
-                    <a href="{% url 'precio-update-clavo' inventario.id %}" class="btn btn-warning btn-xs" title="Editar Precio">
+                    <a href="{% url 'precio-update-clavo' inventario.id %}" class="btn btn-warning btn-xs" title="Agregar stock">
                         <i class="fa fa-pencil-square"></i>
-                    </a>
-                    <a href="{% url 'precio-stock-clavo' inventario.id %}" class="btn btn-success btn-xs" title="Agregar stock">
-                        <i class="fa fa-edit"></i>
                     </a>
                 </td>
             </tr>

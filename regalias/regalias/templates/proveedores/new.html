@@ -70,7 +70,6 @@ Registrar Proveedor
         function medida(){
             if($(this).val()){
                 var id = $(this).val();
-
                 $.ajax({
                     data:{'id': id},
                     url:"{% url 'cliente-ajax-ciudades' %}",

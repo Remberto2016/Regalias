@@ -185,7 +185,7 @@ def venta_pedido(request, pedido_id):
     venta.save()
     for d in detalles:
         detalle = DetalleVenta.objects.create(
-            material=' %sLargo: ml X %s Ancho:  ml'%(d.largo, d.ancho),
+            material='Largo: %s ml- Ancho: %s ml'%(d.largo, d.ancho),
             descripcion=d.descripcion,
             cantidad=d.cantidad,
             costo_u=d.costo_u,
@@ -193,7 +193,6 @@ def venta_pedido(request, pedido_id):
             venta=venta,
             unidad=d.unidad,
             largo=d.largo,
-            ancho=d.ancho,
         )
         detalle.save()
         admin_log_addition(request, detalle, 'Material Agregado')

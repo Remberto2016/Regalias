@@ -30,14 +30,31 @@ Registrar Precio
 
             </div>
         {% else %}
-            <div class="col-sm-9">
-            {{ field }}
-            {% if field.help_text %}
-                <small class="fg-green block padding10 no-padding-top">
-                    <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
-                </small>
+            {% if field.html_name == 'materia' %}
+
+                <div class="col-sm-8">
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="fg-green block padding10 no-padding-top">
+                            <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+                        </small>
+                    {% endif %}
+                </div>
+                <div class="col-sm-1" style="line-height: 30px">
+                    <a href="{% url 'materia-new-popup' %}" class="btn btn-success add-another" title="Registrar Ciudad" id="{{ field.auto_id }}">
+                        <i class="fa fa-plus-circle "></i>
+                    </a>
+                </div>
+            {% else %}
+                <div class="col-sm-9">
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="fg-green block padding10 no-padding-top">
+                            <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+                        </small>
+                    {% endif %}
+                </div>
             {% endif %}
-        </div>
         {% endif %}
     </div>
 {% endfor %}
@@ -72,8 +89,8 @@ $(document).ready(function () {
             success: function(data){
                 $('#id_color').val(data[0]['color']);
                 $('#id_espesor').val(data[0]['espesor']);
-                $('#informacionid').html('Lon: '+data[0]['longitud']+' ml.');
-                longitud = data[0]['longitud'];
+                $('#informacionid').html('Lon: '+data[0]['stock']+' ml.');
+                longitud = data[0]['stock'];
                 informacion = $('#informacionid').html();
             },
             failure: function(data){
@@ -88,4 +105,5 @@ $(document).ready(function () {
     });
 });
 </script>
+{% include '__popup_script.html' %}
 {% endblock %}

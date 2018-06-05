@@ -26,6 +26,14 @@ def index(request):
     return render(request, 'materiap/index.html', {
         'materiales':materiales,
     })
+@login_required(login_url='/login/')
+def index_alambron(request):
+    materiales = MateriaPrima.objects.filter(estado=True)
+    referer = request.META.get('HTTP_REFERER')
+    print(referer)
+    return render(request, 'materiap/index-alambron.html', {
+        'materiales':materiales,
+    })
 
 
 import string
@@ -201,6 +209,14 @@ def pdf_materia_prima(request):
     return render_pdf(html)
 
 @login_required(login_url='/login/')
+def pdf_materia_prima_alambron(request):
+    materiales = MateriaPrima.objects.filter(estado = True)
+    html = render_to_string('materiap/pdf_materiap_alambron.html', {
+        'materiales':materiales,
+    })
+    return render_pdf(html)
+
+@login_required(login_url='/login/')
 def materiap_proveedor(request):
     hoy = datetime.datetime.now()
     proveedor = Proveedor.objects.filter(estado=True).first()
@@ -339,8 +355,8 @@ def new_precio_clavo(request):
             messages.success(request, sms)
             return HttpResponseRedirect(reverse(index_precios_clavos))
     else:
-        form = PrecioClavoForm(initial={'codigo':'CLA %s'%key})
-        form = PrecioClavoForm(initial={'codigo':'CLA %s'%key})
+        form = PrecioClavoForm(initial={'codigo':'CLA - %s'%key})
+        form = PrecioClavoForm(initial={'codigo':'CLA - %s'%key})
     return render(request, 'clavos/new_precio.html', {
         'form':form,
 
@@ -446,4 +462,31 @@ def new_proveedor_popup(request):
         form = ProveedorForm()
     return render(request, 'proveedores/new_popup.html', {
         'form':form,
+    })
+
+@login_required(login_url='/login/')
+def new_popup(request):
+    colores = Color.objects.all()
+    if request.method == 'POST':
+        form = MateriaPForm(request.POST)
+        if form.is_valid():
+            m = form.save(commit=False)
+            if form.cleaned_data['colores'] != None:
+                c_id = form.cleaned_data['colores']
+                #print(c_id)
+                #color = Color.objects.get(id=c_id)
+                m.color = c_id
+            m.user = request.user
+            if form.cleaned_data['longitud']:
+                m.stock = m.longitud
+            m.save()
+            admin_log_addition(request, m, 'Materia Prima Creada')
+            return render(request, 'close_popup.html', {
+                'c':m,
+            })
+    else:
+        form = MateriaPForm()
+    return render(request, 'materiap/new_popup.html', {
+        'form':form,
+        'colores':colores,
     })

@@ -24,4 +24,6 @@ urlpatterns = [
     path('color', views.index_colores, name='color-index'),
     path('color/new', views.new_color, name='color-new'),
     path('color/<int:color_id>/update', views.update_color, name='color-update'),
+    path('color/new/popup', views.new_color_popup, name='color-new-popup'),
+
 ]

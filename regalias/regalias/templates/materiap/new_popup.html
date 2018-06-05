@@ -1,19 +1,17 @@
-{% extends 'base.html' %}
+{% extends '__popup_base.html' %}
 
 {% block title %}
 Registrar Materia Prima
 {% endblock %}
 
 {% block content %}
-<div class="">
-    <div class="tab-content">
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="home">
+        {% include 'includes/__form_calamina.html' %}
         
-            {% include 'includes/__form_calamina.html' %}
-
-        <div role="tabpanel" class="tab-pane" id="profile">
-
-        </div>
     </div>
+</div>
+</div>
 </div>
 {% endblock %}
 
@@ -22,7 +20,7 @@ Registrar Materia Prima
 $(document).ready(function () {
     var html = '<option>------</option>';
     {% for color in coloresss %}
-        html += '<option value="{{ color.color }}">{{ color.color }}</option>';
+    html += '<option value="{{ color.color }}">{{ color.color }}</option>';
     {% endfor %}
     //hiden();
     $('#id_color').html(html);
@@ -42,7 +40,11 @@ $(document).ready(function () {
             $('#id_colores').parent().parent().removeClass('hide');
         }
     }
+
 });
+function closeWin() {
+    window.close();
+}
 </script>
-    {% include '__popup_script.html' %}
+{% include '__popup_script.html' %}
 {% endblock %}

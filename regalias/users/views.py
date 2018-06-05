@@ -270,3 +270,19 @@ def update_color(request, color_id):
     return render(request, 'color/update.html', {
         'form':form,
     })
+
+@login_required(login_url='/login/')
+def new_color_popup(request):
+    if request.method == 'POST':
+        form = ColorForm(request.POST)
+        if form.is_valid():
+            color = form.save()
+            admin_log_addition(request, color, 'Color Creado')
+            return render(request, 'close_popup.html', {
+                'c': color,
+            })
+    else:
+        form = ColorForm()
+    return render(request, 'color/new_popup.html', {
+        'form':form,
+    })

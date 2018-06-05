@@ -3,15 +3,20 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='materia-index'),
+    path('alambron', views.index_alambron, name='materia-index-alambrom'),
+
     path('new', views.new, name='materia-new'),
     path('<int:materia_id>/update', views.update, name='materia-update'),
     path('<int:materia_id>/baja', views.baja_material, name='materia-baja'),
     path('<int:materia_id>/detail', views.detail_materia, name='materia-detail'),
     path('usada', views.materia_usada, name='materia-usada'),
     path('pdf', views.pdf_materia_prima, name='materia-pdf'),
+    path('pdf/alambron', views.pdf_materia_prima_alambron, name='materia-pdf-alambron'),
     path('proveedor/month', views.materiap_proveedor, name='materia-proveedor'),
     path('proveedor/month/<int:proveedor_id>/<int:mes>/<int:year>/', views.pdf_materiap_proveedor, name='materia-proveedor-pdf'),
     path('inventario', views.inventario_calaminas, name='inventario-calamina'),
+
+    path('new/popup', views.new_popup, name='materia-new-popup'),
 
 
     path('proveedor', views.index_proveedor, name='proveedor-index'),
