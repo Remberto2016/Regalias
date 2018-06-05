@@ -23,6 +23,11 @@ class PrecioForm(ModelForm):
     class Meta:
         model = Precio
         exclude = ['estado']
+        widgets = {
+            'codigo':TextInput(attrs={'readonly': 'readonly'}),
+            'espesor':TextInput(attrs={'readonly': 'readonly'}),
+            'color': TextInput(attrs={'readonly': 'readonly'}),
+        }
 
 class SearchProveedor(forms.Form):
     proveedor = forms.ModelChoiceField(label='Seleccione Proveedor',

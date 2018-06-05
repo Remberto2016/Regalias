@@ -13,7 +13,7 @@ from django.db.models import ProtectedError, Sum, Max
 from regalias.utility import admin_log_addition, admin_log_change, render_pdf
 
 from users.models import Color
-from materiales.models import MateriaPrima, Proveedor, Precio, PrecioClavos
+from materiales.models import MateriaPrima, Proveedor, Precio, PrecioClavos, DetallePrecioClavo
 from materiales.form import MateriaPForm, ProveedorForm, SearchProveedor, PrecioForm, PrecioClavoForm, StockClavos
 
 import datetime
@@ -21,8 +21,6 @@ import datetime
 @login_required(login_url='/login/')
 def index(request):
     materiales = MateriaPrima.objects.filter(estado=True)
-    referer = request.META.get('HTTP_REFERER')
-    print(referer)
     return render(request, 'materiap/index.html', {
         'materiales':materiales,
     })
@@ -428,6 +426,11 @@ def stock_clavo(request, precio_id):
         form = StockClavos(request.POST)
         if form.is_valid():
             cantidad = form.cleaned_data['cantidad']
+            d = DetallePrecioClavo.objects.create(
+                precioclavo=precio,
+                cantidad=cantidad,
+            )
+            d.save()
             precio.stock = precio.stock + cantidad
             precio.save()
             admin_log_change(request, precio, 'Stock Modificado')

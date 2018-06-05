@@ -50,7 +50,11 @@ Materias Primas
                     <td>{{ material.espesor }}</td>
                     <td>{{ material.ancho }}</td>
                     <td>
-
+                        {% if not material.precio_set.select_related.all %}
+                            <a href="{% url 'precio-new' %}" class="btn btn-info">
+                                <i class="fa fa-pencil-square"></i>
+                            </a>                        
+                        {% endif %}
                     </td>
                 </tr>
         

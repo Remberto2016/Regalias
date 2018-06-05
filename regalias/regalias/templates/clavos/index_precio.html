@@ -56,6 +56,47 @@ Nuestros Precios
                     <a href="{% url 'precio-stock-clavo' precio.id %}" class="btn btn-success btn-xs" title="Aumentar Stock">
                         <i class="fa fa-edit"></i>
                     </a>
+                    <button type="button" class="btn btn-primary btn-xs openmodal" data-toggle="modal" data-target=".bs-example-modal-lg{{ precio.id }}" title="Detalle Entrada">
+                        <i class="fa fa-list-alt"></i>
+                    </button>
+                    <div class="modal fade bs-example-modal-lg{{ precio.id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                        <div class="modal-dialog modal-md" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Detalle de Entradas</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table bordered col-md-12" style="width: 100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Fecha</th>
+                                                        <th>Cantidad</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for d in precio.detalleprecioclavo_set.select_related.all %}
+                                                        <tr>
+                                                            <td>{{ forloop.counter }}</td>
+                                                            <td>{{ d.fecha }}</td>
+                                                            <td>{{ d.cantidad }}</td>
+                                                            <td></td>
+                                                        </tr>
+                                                    {% endfor %}
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <br><br><br><br><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </tr>
             {% endfor %}
@@ -64,4 +105,16 @@ Nuestros Precios
 </div>
 </div>
 </div>
+{% endblock %}
+{% block js %}
+    <script>
+    $(document).ready(function () {
+        $('.btn.btn-primary.btn-xs.openmodal').click(function () {
+            /*$('#DataTables_Table_1_filter').addClass('hide');
+            $('#DataTables_Table_1_info').addClass('hide');
+            $('#DataTables_Table_1_paginate').addClass('hide');*/
+        })
+    });
+
+    </script>
 {% endblock %}

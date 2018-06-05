@@ -31,17 +31,21 @@ $(document).ready(function () {
     });
     function hiden() {
         var tipo = $('#id_tipo').val();
+        $('#id_unidad').attr('readonly','readonly');
         if(tipo == 'Clavos'){
             $('#id_ancho').parent().parent().addClass('hide');
             $('#id_longitud').parent().parent().addClass('hide');
             $('#id_colores').parent().parent().addClass('hide');
+            $('#id_unidad').val('Alambron');
         }
         if(tipo == 'Calamina'){
             $('#id_ancho').parent().parent().removeClass('hide');
             $('#id_longitud').parent().parent().removeClass('hide');
             $('#id_colores').parent().parent().removeClass('hide');
+            $('#id_unidad').val('Bobina');
         }
     }
+
 });
 </script>
     {% include '__popup_script.html' %}

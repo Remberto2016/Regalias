@@ -112,3 +112,12 @@ class PrecioClavos(models.Model):
         verbose_name = 'Tabla de Precio Clavo'
         verbose_name_plural = 'Tabla de Precios Clavos'
         ordering = ['precio']
+
+class DetallePrecioClavo(models.Model):
+    fecha = models.DateField(auto_now_add=True)
+    cantidad = models.IntegerField()
+    precioclavo = models.ForeignKey(PrecioClavos, on_delete=models.Model)
+    def __unicode__(self):
+        return '%s'% self.precioclavo
+    def __str__(self):
+        return '%s' % self.precioclavo

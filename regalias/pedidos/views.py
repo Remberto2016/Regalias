@@ -91,6 +91,7 @@ def add_material(request, pedido_id):
             costo_u = float(form.cleaned_data['costo_u'])
             costo_t = float(form.cleaned_data['costo_t'])
             print(type(materia_id.ancho))
+            tipo = materia_id.tipo
             #m = MateriaPrima.objects.get(id = int(materia_id))
             materials = MateriaPrima.objects.filter(estado=True, color=color, stock__gte=float(totalm), ancho=materia_id.ancho)
             if not materials:
@@ -107,6 +108,7 @@ def add_material(request, pedido_id):
                     color=color,
                     ancho=materia_id.ancho,
                     totalm=totalm,
+                    tipo=tipo,
                 )
                 #mejorar control
                 for materia in materials:
@@ -159,6 +161,10 @@ def ajax_get_materiales(request):
 def delete_material(request, detalle_id):
     detalle = get_object_or_404(DetallePedido, pk = detalle_id)
     pedido = Pedido.objects.get(pk = detalle.pedido.id)
+    detallem = detalle.material.first()
+    material = MateriaPrima.objects.get(id = detallem.id)
+    material.stock = material.stock + detalle.totalm
+    material.save()
     pedido.costo = pedido.costo - detalle.costo_t
     pedido.save()
     detalle.delete()
@@ -204,6 +210,10 @@ def delete_pedido(request, pedido_id):
     pedido = get_object_or_404(Pedido, pk = pedido_id)
     detalle = DetallePedido.objects.filter(pedido=pedido)
     for d in detalle:
+        detallem = d.material.first()
+        material = MateriaPrima.objects.get(id=detallem.id)
+        material.stock = material.stock + detalle.totalm
+        material.save()
         d.delete()
     pedido.delete()
     messages.error(request, 'Pedido Eliminado')

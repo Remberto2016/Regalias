@@ -92,7 +92,9 @@ Recibo Oficial
     <table class="table">
         <tr>
             <td width="40%" style="border: white"></td>
-                <th align="left">{{ venta.pedido.id }}</th>
+                <th align="right">
+                    <strong>Nro.: </strong>{{ venta.nro_venta }}/{{ venta.fecha|date:"Y" }}
+                </th>
         </tr>
     </table>
 </div>

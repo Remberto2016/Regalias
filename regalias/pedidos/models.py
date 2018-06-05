@@ -43,6 +43,8 @@ class DetallePedido(models.Model):
     color = models.CharField(max_length=100, null=True)
     ancho = models.FloatField(null=True)
     totalm = models.FloatField(null=True)
+    tipo = models.CharField(max_length=50, null=True)
+    #materiap = models.ForeignKey(MateriaPrima, on_delete=models.PROTECT(), null=True)
     def __unicode__(self):
         return '%s: %s'%(self.pedido.id, self.cantidad)
     def __str__(self):

@@ -10,11 +10,12 @@ Ventas Fecha {{ fecha|date }}
 <h2>Salida de Material en fecha: {{ fecha|date }}</h2>
 <h2>Tipo de Material: {{ material }}</h2>
 <div class="col-md-12">
-    <table class="table hovered striped">
+    <table class="table">
         <thead>
             <tr>
-                <th width="30px">#</th>
+                <th>#</th>
                 <th>Fecha Salida</th>
+                <th>Tipo</th>
                 <th>Material</th>
                 <th>Unidad</th>
                 <th>Cantidad</th>
@@ -25,17 +26,18 @@ Ventas Fecha {{ fecha|date }}
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ detalle.venta.fecha|date }}</td>
-                    <td>{{ detalle.material }}</td>
+                    <td>{{ detalle.tipo }}</td>
+                    <td>{{ detalle.descripcion }}</td>
                     <td>{{ detalle.unidad }}</td>
-                    <td width="24%">{{ detalle.cantidad }}</td>
+                    <td>{{ detalle.cantidad }}</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
     <table class="table" width="100%">
         <tr>
-            <th width="76%">TOTALES</th>
-            <td width="24%" class="right">{% sum_cant_salidas detalles %}</td>
+            <th width="84%">TOTALES</th>
+            <td width="16%" class="right">{% sum_cant_salidas detalles %}</td>
         </tr>
     </table>
 </div>

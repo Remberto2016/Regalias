@@ -17,10 +17,14 @@ from users.models import Empresa,Color
 from users.form import UsernameForm, EmpresaForm, ColorForm
 from pedidos.models import Pedido
 from ventas.models import Venta
+from clientes.models import Cliente
+from materiales.models import Proveedor, MateriaPrima
 
 import datetime
 
 def home(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse(user_index))
     hoy = datetime.datetime.now()
     ventas = Venta.objects.filter(fecha__year=hoy.year, estado=True)
     pedidos = Pedido.objects.filter(fecha__year=hoy.year, estado=True, venta=False)
@@ -74,8 +78,18 @@ def user_logout(request):
 
 @login_required(login_url='/login/')
 def user_index(request):
-
+    hoy = datetime.datetime.now()
+    ventas = Venta.objects.filter(fecha__year=hoy.year, estado=True)
+    pedidos = Pedido.objects.filter(fecha__year=hoy.year, estado=True, venta=False)
+    clientes =  Cliente.objects.all()
+    proveedores = Proveedor.objects.all()
+    materiales = MateriaPrima.objects.filter(estado=True)
     return render(request, 'users/index.html', {
+        'ventas':ventas,
+        'pedidos':pedidos,
+        'clientes':clientes,
+        'proveedores':proveedores,
+        'materiales':materiales,
     })
 
 @login_required(login_url='/login/')

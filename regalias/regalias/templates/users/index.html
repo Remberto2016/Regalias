@@ -5,9 +5,132 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="s12">
-            <h2>Bienvenido {{ request.user.username }}</h2>
-        </div>
+<div class="row">
+    <div class="s12">
+        <h2>Bienvenido {{ request.user.username }}</h2>
     </div>
+</div>
+{% load helperReportes %}
+<div class="row top_tiles">
+  <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+    <div class="tile-stats">
+      <div class="icon"><i class="fa fa-users"></i></div>
+      <div class="count">{{ clientes.count }}</div>
+      <h3>Clientes</h3>
+  </div>
+</div>
+<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+    <div class="tile-stats">
+      <div class="icon"><i class="fa fa-briefcase"></i></div>
+      <div class="count">{{ materiales.count }}</div>
+      <h3>Materiales</h3>
+  </div>
+</div>
+<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+    <div class="tile-stats">
+      <div class="icon"><i class="fa fa-sitemap"></i></div>
+      <div class="count">{{ proveedores.count }}</div>
+      <h3>Proveedores</h3>
+  </div>
+</div>
+<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+    <div class="tile-stats">
+      <div class="icon"><i class="fa fa-shopping-cart"></i></div>
+      <div class="count">{{ventas.count}}</div>
+      <h3>Ventas</h3>
+
+  </div>
+</div>
+</div>
+<div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-6">
+        <div class="dashboard_graph x_panel">
+          <div class="row x_title">
+            <div class="col-md-6">
+              <h3>Ventas en la gestion</h3>
+          </div>
+      </div>
+      <div class="x_content">
+        <div class="demo-container" style="">
+          <div id="chart-ventas" class="demo-placeholder"></div>
+      </div>
+  </div>
+</div>
+</div>
+<div class="col-md-6 col-sm-6 col-xs-6">
+    <div class="dashboard_graph x_panel">
+      <div class="row x_title">
+        <div class="col-md-6">
+          <h3>Pedidos en la gestion</h3>
+      </div>
+  </div>
+  <div class="x_content">
+    <div class="demo-container" style="">
+      <div id="chart-pedidos" class="demo-placeholder"></div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+google.charts.load('current', {'packages':['bar']});
+google.charts.setOnLoadCallback(drawChartventas);
+google.charts.setOnLoadCallback(drawChartpedidos);
+
+function drawChartventas() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Mes');
+    data.addColumn('number', 'Ventas');
+    data.addRows([
+        ['Enero', {% count_ventas ventas 1 %}],
+        ['Febrero', {% count_ventas ventas 2 %}],
+        ['Marzo', {% count_ventas ventas 3 %}],
+        ['Abril', {% count_ventas ventas 4 %}],
+        ['Mayo', {% count_ventas ventas 5 %}],
+        ['Junio', {% count_ventas ventas 6 %}],
+        ['Julio', {% count_ventas ventas 7 %}],
+        ['Agosto', {% count_ventas ventas 8 %}],
+        ['Septiembre', {% count_ventas ventas 9 %}],
+        ['Octubre', {% count_ventas ventas 10 %}],
+        ['Noviembre', {% count_ventas ventas 11 %}],
+        ['Diciembre', {% count_ventas ventas 12 %}]
+        ]);
+    var options = {
+        is3D:true,
+        bar: { groupWidth: "95%" },
+          colors: '#0f1126'
+    };
+    var chart = new google.charts.Bar(document.getElementById('chart-ventas'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+}
+function drawChartpedidos() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Mes');
+    data.addColumn('number', 'Pedidos');
+    data.addRows([
+        ['Enero', {% count_pedidos pedidos 1 %}],
+        ['Febrero', {% count_pedidos pedidos 2 %}],
+        ['Marzo', {% count_pedidos pedidos 3 %}],
+        ['Abril', {% count_pedidos pedidos 4 %}],
+        ['Mayo', {% count_pedidos pedidos 5 %}],
+        ['Junio', {% count_pedidos pedidos 6 %}],
+        ['Julio', {% count_pedidos pedidos 7 %}],
+        ['Agosto', {% count_pedidos pedidos 8 %}],
+        ['Septiembre', {% count_pedidos pedidos 9 %}],
+        ['Octubre', {% count_pedidos pedidos 10 %}],
+        ['Noviembre', {% count_pedidos pedidos 11 %}],
+        ['Diciembre', {% count_pedidos pedidos 12 %}]
+        ]);
+    var options = {
+        is3D:true,
+        bar: { groupWidth: "95%" }
+
+    };
+    var chart = new google.charts.Bar(document.getElementById('chart-pedidos'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+}
+</script>
 {% endblock %}

@@ -37,6 +37,7 @@ class DetalleVenta(models.Model):
     venta = models.ForeignKey(Venta, models.PROTECT)
     largo = models.FloatField(default=1, null=True)
     precio_id = models.IntegerField(null=True)
+    tipo = models.CharField(max_length=50, null=True)
     def __unicode__(self):
         return '%s: %s'%(self.venta.id, self.cantidad)
     def __str__(self):

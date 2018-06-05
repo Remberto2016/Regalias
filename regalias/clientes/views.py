@@ -167,3 +167,19 @@ def new_pais_popup(request):
     return render(request, 'clientes/new_pais_popup.html', {
         'form':form,
     })
+
+@login_required(login_url='/login/')
+def new_cliente_popup(request):
+    if request.method == 'POST':
+        form = ClienteForm(request.POST)
+        if form.is_valid():
+            p = form.save()
+            admin_log_addition(request, p, 'Cliente Creado')
+            return render(request, 'close_popup.html', {
+                'c':p,
+            })
+    else:
+        form = ClienteForm()
+    return render(request, 'clientes/new_cliente_popup.html', {
+        'form':form,
+    })

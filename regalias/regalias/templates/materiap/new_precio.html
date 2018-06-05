@@ -10,56 +10,70 @@ Registrar Precio
 
 {% block cuerpo-form %}
 {% for field in form %}
-    <div class="form-group">
-        {% if field.errors %}
-            <div class="mypadding2 bg-red fg-white margin10 no-margin-right no-margin-left">
-                <i class="fa fa-exclamation-triangle"></i>{{ field.errors }}
-            </div>
-        {% endif %}
-        {{ field.label_tag }}
-        {% if field.html_name == 'precio' %}
-            <div class="col-sm-6">
-                {{ field }}
-                {% if field.help_text %}
-                    <small class="fg-green block padding10 no-padding-top">
-                        <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
-                    </small>
-                {% endif %}
-            </div>
-            <div class="col-sm-3" id="informacionid" style="">
-
-            </div>
-        {% else %}
-            {% if field.html_name == 'materia' %}
-
-                <div class="col-sm-8">
-                    {{ field }}
-                    {% if field.help_text %}
-                        <small class="fg-green block padding10 no-padding-top">
-                            <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
-                        </small>
-                    {% endif %}
-                </div>
-                <div class="col-sm-1" style="line-height: 30px">
-                    <a href="{% url 'materia-new-popup' %}" class="btn btn-success add-another" title="Registrar Ciudad" id="{{ field.auto_id }}">
-                        <i class="fa fa-plus-circle "></i>
-                    </a>
-                </div>
-            {% else %}
-                <div class="col-sm-9">
-                    {{ field }}
-                    {% if field.help_text %}
-                        <small class="fg-green block padding10 no-padding-top">
-                            <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
-                        </small>
-                    {% endif %}
-                </div>
-            {% endif %}
+<div class="form-group">
+    {% if field.errors %}
+    <div class="mypadding2 bg-red fg-white margin10 no-margin-right no-margin-left">
+        <i class="fa fa-exclamation-triangle"></i>{{ field.errors }}
+    </div>
+    {% endif %}
+    {{ field.label_tag }}
+    {% if field.html_name == 'precio' %}
+    <div class="col-sm-9 col-md-9 col-lg-9">
+        {{ field }}
+        {% if field.help_text %}
+        <small class="fg-green block padding10 no-padding-top">
+            <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+        </small>
         {% endif %}
     </div>
+    <div class="col-sm-4 col-md-4 col-lg-4"></div>
+    <div class="row tile_count col-sm-8" align="center" style="border:1px solid;border-radius: 5px;">
+        <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
+          <span class="count_top"><i class="fa fa-clock-o"></i> Longitud Total </span>
+          <div class="count" id="informacionid" style="font-size: 1em;"></div>
+          <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i></span>
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
+          <span class="count_top"><i class="fa fa-clock-o"></i> Venta Total</span>
+          <div class="count" id="informacionide" style="font-size: 1em;"></div>
+          <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i></span>
+      </div>
+      <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
+          <span class="count_top"><i class="fa fa-clock-o"></i> Precio M.L.</span>
+          <div class="count" id="informacionides" style="font-size: 1em;"></div>
+          <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i></span>
+      </div>
+    </div>
+  {% else %}
+  {% if field.html_name == 'materia' %}
+
+    <div class="col-sm-8">
+    {{ field }}
+    {% if field.help_text %}
+    <small class="fg-green block padding10 no-padding-top">
+        <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+    </small>
+    {% endif %}
+    </div>
+    <div class="col-sm-1" style="line-height: 30px">
+    <a href="{% url 'materia-new-popup' %}" class="btn btn-success add-another" title="Registrar Ciudad" id="{{ field.auto_id }}">
+        <i class="fa fa-plus-circle "></i>
+    </a>
+    </div>
+{% else %}
+<div class="col-sm-9">
+    {{ field }}
+    {% if field.help_text %}
+    <small class="fg-green block padding10 no-padding-top">
+        <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+    </small>
+    {% endif %}
+</div>
+{% endif %}
+{% endif %}
+</div>
 {% endfor %}
 {% endblock %}
-
 
 {% block js %}
 <script>
@@ -68,13 +82,13 @@ $(document).ready(function () {
 
     var html = '<option>------</option>';
     {% for color in colores %}
-        html += '<option value="{{ color.color }}">{{ color.color }}</option>';
+    html += '<option value="{{ color.color }}">{{ color.color }}</option>';
     {% endfor %}
     $('#id_color').html(html);
 
     var html = '<option>------</option>';
     {% for materia in materias %}
-        html += '<option value="{{ materia.id }}">{{ materia }}</option>';
+    html += '<option value="{{ materia.id }}">{{ materia }}</option>';
     {% endfor %}
     $('#id_materia').html(html);
     var longitud = 0;
@@ -82,16 +96,17 @@ $(document).ready(function () {
     //material-ajax-material
     $('#id_materia').change(function () {
         var id = $(this).val();
-            $.ajax({
+        $.ajax({
             data:{'id': id},
             url:"{% url 'material-ajax-material' %}",
             type:'GET',
             success: function(data){
                 $('#id_color').val(data[0]['color']);
                 $('#id_espesor').val(data[0]['espesor']);
-                $('#informacionid').html('Lon: '+data[0]['stock']+' ml.');
+                $('#informacionid').html(+data[0]['stock']+' ml.');
                 longitud = data[0]['stock'];
-                informacion = $('#informacionid').html();
+                informacion = $('#informacionide').html();
+                informaciones = $('#informacionides').html();
             },
             failure: function(data){
                 console.log('error')
@@ -100,8 +115,9 @@ $(document).ready(function () {
     });
     $('#id_precio').keyup(function () {
         var precio = $(this).val();
-        var g = precio * longitud;
-        $('#informacionid').html(informacion + ' - Venta: ' + g +'Bs.');
+        var g = Math.round(precio * longitud);
+        $('#informacionide').html(informacion + g + ' Bs.');
+        $('#informacionides').html(informaciones + precio + ' Bs.');
     });
 });
 </script>

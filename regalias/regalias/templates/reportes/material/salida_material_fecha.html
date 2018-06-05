@@ -22,6 +22,7 @@ Salida de Material
             <tr>
                 <th>#</th>
                 <th>Fecha Salida</th>
+                <th>Tipo</th>
                 <th>Material</th>
                 <th>Unidad</th>
                 <th>Cantidad</th>
@@ -33,7 +34,8 @@ Salida de Material
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ detalle.venta.fecha|date }}</td>
-                    <td>{{ detalle.material }}</td>
+                    <td>{{ detalle.tipo }}</td>
+                    <td>{{ detalle.descripcion }}</td>
                     <td>{{ detalle.unidad }}</td>
                     <td>{{ detalle.cantidad }}</td>
                     <td></td>

@@ -107,7 +107,7 @@ def salida_material(request):
         fecha = form.cleaned_data['fecha']
         material = form.cleaned_data['material']
     ventas = Venta.objects.filter(estado=True, fecha=fecha)
-    detalles = DetalleVenta.objects.filter(material=material, venta_id__in = ventas.values('id')).order_by('venta__fecha', 'material')
+    detalles = DetalleVenta.objects.filter(tipo=material, venta_id__in = ventas.values('id')).order_by('venta__fecha', 'material')
     return render(request, 'reportes/material/salida_material_fecha.html', {
         'detalles':detalles,
         'fecha':fecha,

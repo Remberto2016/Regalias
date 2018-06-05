@@ -67,6 +67,7 @@ def add_material(request, venta_id):
             detalle.venta = venta
             detalle.costo_t = detalle.cantidad * detalle.costo_u
             detalle.precio_id = precioclavo.id
+            detalle.tipo = detalle.material
             detalle.save()
             venta.costo = venta.costo + detalle.costo_t
             venta.save()
@@ -193,6 +194,7 @@ def venta_pedido(request, pedido_id):
             venta=venta,
             unidad=d.unidad,
             largo=d.largo,
+            tipo=d.tipo,
         )
         detalle.save()
         admin_log_addition(request, detalle, 'Material Agregado')

@@ -10,7 +10,7 @@ Detalle Pedido {{ pedido.id }}
         <td width="80%"></td>
         <td class="" width="10%" align="right"> <strong>Nro.Prod.</strong> </td>
         <td width="5px"></td>
-        <td  width="10%" class="celdas" align="center">{{ pedido.id }}/{{ pedido.fecha.year }}</td>
+        <td  width="10%" class="celdas" align="center">{{ pedido.nro_pedido }}/{{ pedido.fecha.year }}</td>
     </tr>
 </table>
     <br>
@@ -61,13 +61,16 @@ Detalle Pedido {{ pedido.id }}
         {% endfor %}
     </tbody>
 </table>
+{% load helper_pedido %}
 <table class="table striped hovered border bordered">
             <tr>
-            <th width="51px">Pzas.</th>
-            <td width="80px"></td>
-            <td width="80px" colspan="2"></td>
-            <th width="" colspan="3"> Total Metros Lineales</th>
-            <td width="90px" align="center"> <strong>{{ detalle.totalm }}</strong></td>       
+            <th width="50px">Pzas.</th>
+            <td width="80px">{% total_cantidad detalles %}</td>
+            <td width="380px"></td>
+            <th width="250px"> Total Metros Lineales</th>
+            <td width="190px" align="left"> <strong>
+                {% total_metros detalles %}
+            </strong></td>
         </tr>
 </table>
 <hr>
