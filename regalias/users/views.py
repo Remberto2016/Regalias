@@ -13,7 +13,7 @@ from django.contrib.auth.models import Permission, Group, User
 
 from regalias.utility import admin_log_change, admin_log_addition
 
-from users.models import Empresa,Color
+from users.models import Empresa,Color, ColorName
 from users.form import UsernameForm, EmpresaForm, ColorForm
 from pedidos.models import Pedido
 from ventas.models import Venta
@@ -84,12 +84,14 @@ def user_index(request):
     clientes =  Cliente.objects.all()
     proveedores = Proveedor.objects.all()
     materiales = MateriaPrima.objects.filter(estado=True)
+    ventasu = Venta.objects.filter(fecha__year=hoy.year, estado=True).order_by('-fecha')[0:3]
     return render(request, 'users/index.html', {
         'ventas':ventas,
         'pedidos':pedidos,
         'clientes':clientes,
         'proveedores':proveedores,
         'materiales':materiales,
+        'ventasu':ventasu,
     })
 
 @login_required(login_url='/login/')
@@ -300,3 +302,12 @@ def new_color_popup(request):
     return render(request, 'color/new_popup.html', {
         'form':form,
     })
+
+@login_required(login_url='/login')
+def color_ajax(request):
+    if request.is_ajax():
+        hex = request.GET['hex']
+        colors = ColorName.objects.filter(hexa__icontains=hex).values('hexa', 'nombre_c')
+        return JsonResponse(list(colors), safe=False)
+    else:
+        raise Http404

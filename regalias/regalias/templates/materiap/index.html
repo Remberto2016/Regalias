@@ -11,7 +11,7 @@ Materias Primas
       <h2 class="app">Lista de Bobinas </h2>
       <ul class="nav navbar-right panel_toolbox">
         <li><a href="{% url 'materia-pdf' %}" class="btn btn-danger " target="_blank" data-toggle="tooltip" title="Psar a PDF!">
-            <strong style="color:black;"><i class="fa fa-file-pdf-o"></i></strong>
+            <strong style="color:black;">PDF <i class="fa fa-file-pdf-o"></i></strong>
         </a></li>
         <li><a href="{% url 'materia-new' %}" type="button" href="" class="btn btn-success" data-toggle="tooltip" title="Nuevo Material!"><span class="glyphicon glyphicon-plus" ></span></a></li>
         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -35,36 +35,49 @@ Materias Primas
                 <th>Peso</th>
                 <th>Espesor(mm)</th>
                 <th>Ancho(ml)</th>
+                <th>Precio</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             {% for material in materiales %}
             {% if material.tipo == 'Calamina' %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ material.tipo }}</td>
-                    <td>{{ material.marca }}</td>
-                    <td>{{ material.detalle }}</td>
-                    <td>{{ material.peso }} {{ material.medida }}</td>
-                    <td>{{ material.espesor }}</td>
-                    <td>{{ material.ancho }}</td>
-                    <td>
-                        {% if not material.precio_set.select_related.all %}
-                            <a href="{% url 'precio-new' %}" class="btn btn-info">
-                                <i class="fa fa-pencil-square"></i>
-                            </a>                        
-                        {% endif %}
-                    </td>
-                </tr>
-        
+            <tr>
+                <td>{{ forloop.counter}}</td>
+                <td>{{ material.tipo }}</td>
+                <td>{{ material.marca }}</td>
+                <td>{{ material.detalle }}</td>
+                <td>{{ material.peso }} {{ material.medida }}</td>
+                <td>{{ material.espesor }}</td>
+                <td>{{ material.ancho }}</td>
+                <td>
+                    {% if not material.precio_set.select_related.all %}
+                    <a href="{% url 'precio-new' %}" class="btn btn-info btn-xs" title="Dar Precio">
+                        <i class="fa fa-share"></i>
+                    </a> 
+                    {% else %}
+                    <a href="#" class="btn btn-success btn-xs" title="Ya tiene precio">
+                        <i class="fa fa-check"></i>
+                    </a>
+                </td> 
+                    {% endif %}
+                    <td> 
+                    <a href="{% url 'materia-update' material.id %}" class="btn btn-warning btn-xs" title="Editar Materia Prima">
+                        <i class="fa fa-pencil-square"></i>
+                    </a>
+                    <a href="{% url 'materia-detail' material.id %}" class="btn btn-info btn-xs" title="Detalle Materia Prima">
+                        <i class="fa fa-info-circle"></i>
+                    </a>
+                </td>
+            </tr>
+
             {% endif %}
-                
+
             {% endfor %}
         </tbody>
     </table>
 </div>
-    </div>
+</div>
 </div>
 
 {% endblock %}

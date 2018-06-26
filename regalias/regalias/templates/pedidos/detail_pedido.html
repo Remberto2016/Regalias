@@ -5,34 +5,42 @@ Detalle Pedido
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <a href="{% url 'pedido-pdf-detail' pedido.id %}" class="btn btn-info" target="_blank">
-            <i class="fa fa-file-pdf"></i> Orden De Produccion
-        </a>
-    </div>
-</div>
 {% include 'includes/__info_pedido.html' %}
-<div class="row" id="">
-    <h3>Materiales Agregados</h3>
-    <div class="col colspan12">
-        <table class="table striped hovered border bordered">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Cantidad</th>
-                    <th>Unidad</th>
-                    <th>Descripcion</th>
-                    <th>Color</th>
-                    <th>Largo(ML)</th>
-                    <th>Ancho(ML)</th>
-                    <th>Total(ML)</th>
-                    <th>ConMateriaP.</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for detalle in detalles %}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Materiales Agregados</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a href="{% url 'pedido-pdf-detail' pedido.id %}" class="btn btn-info " target="_blank" data-toggle="tooltip" title="Orden de Producción!"><strong style="color:black;">Orden De Producción </strong>
+                    <strong style="color:black;"><i class="fa fa-file-pdf-o"></i></strong>
+                </a></li>
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <div class="col colspan12">
+            <table class="table striped hovered bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Cantidad</th>
+                        <th>Unidad</th>
+                        <th>Descripcion</th>
+                        <th>Color</th>
+                        <th>Largo(ML)</th>
+                        <th>Ancho(ML)</th>
+                        <th>Total(ML)</th>
+                        <th>ConMateriaP.</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for detalle in detalles %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>{{ detalle.cantidad }}</td>
@@ -44,19 +52,22 @@ Detalle Pedido
                         <td>{{ detalle.totalm }}</td>
                         <td>
                             {% for materia in detalle.material.all %}
-                                <p>Bobina: {{ materia.nro_serie }}</p>
+                            <p>Bobina: {{ materia.nro_serie }}</p>
                             {% endfor %}
 
                         </td>
                         <td>
-                            <a href="{% url 'pedido-new-delete-material' detalle.id %}" class="btn btn-danger btn-xs" title="Eliminar Material">
+                            <!--a href="{% url 'pedido-new-delete-material' detalle.id %}" class="btn btn-danger btn-xs" title="Eliminar Material">
                                 <i class="fa fa-eraser"></i>
-                            </a>
+                            </a-->
                         </td>
                     </tr>                
-                {% endfor %}
-            </tbody>
-        </table>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
+</div>
+</div>
 </div>
 {% endblock %}

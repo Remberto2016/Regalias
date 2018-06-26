@@ -13,23 +13,21 @@ Detalle Venta {{ venta.id }}
             <thead>
                 <tr>
                     <th width="5%">#</th>
-                    <th width="25%">Material</th>
-                    <th width="25%">Descripcion</th>
+                    <th width="60%">Descripcion</th>
                     <th width="10%">Cantidad</th>
-                    <th width="15%">Costo U.(Bs)</th>
-                    <th width="20%">Costo T.(Bs)</th>
+                    <th width="10%">Costo U.(Bs)</th>
+                    <th width="15%">Costo T.(Bs)</th>
                 </tr>
             </thead>
             <tbody>
                 {% for detalle in detalles %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ detalle.material }}</td>
-                        <td>{{ detalle.descripcion }}</td>
-                        <td>{{ detalle.cantidad }}</td>
-                        <td>{{ detalle.costo_u }}</td>
-                        <td>{{ detalle.costo_t }}</td>
-                    </tr>
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ detalle.descripcion }} : {{ detalle.material }}</td>
+                    <td>{{ detalle.cantidad }}</td>
+                    <td>{{ detalle.costo_u }}</td>
+                    <td>{{ detalle.costo_t }}</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>

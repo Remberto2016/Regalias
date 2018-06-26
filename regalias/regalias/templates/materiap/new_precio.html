@@ -26,21 +26,25 @@ Registrar Precio
         </small>
         {% endif %}
     </div>
-    <div class="col-sm-4 col-md-4 col-lg-4"></div>
-    <div class="row tile_count col-sm-8" align="center" style="border:1px solid;border-radius: 5px;">
-        <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
+    <div class="row tile_count col-sm-12" align="center" style="border:1px solid;border-radius: 5px;">
+        <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
           <span class="count_top"><i class="fa fa-clock-o"></i> Longitud Total </span>
           <div class="count" id="informacionid" style="font-size: 1em;"></div>
           <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i></span>
       </div>
-      <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
+      <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
           <span class="count_top"><i class="fa fa-clock-o"></i> Venta Total</span>
           <div class="count" id="informacionide" style="font-size: 1em;"></div>
           <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i></span>
       </div>
-      <div class="col-md-4 col-sm-4 col-xs-4 tile_stats_count">
+      <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
           <span class="count_top"><i class="fa fa-clock-o"></i> Precio M.L.</span>
           <div class="count" id="informacionides" style="font-size: 1em;"></div>
+          <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i></span>
+      </div>
+      <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
+          <span class="count_top"><i class="fa fa-clock-o"></i> Ganancia</span>
+          <div class="count" id="" style="font-size: 1em;"></div>
           <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i></span>
       </div>
     </div>
@@ -79,13 +83,11 @@ Registrar Precio
 <script>
 $(document).ready(function () {
     $('#id_codigo').val('CAL - {{ key }}');
-
     var html = '<option>------</option>';
     {% for color in colores %}
     html += '<option value="{{ color.color }}">{{ color.color }}</option>';
     {% endfor %}
     $('#id_color').html(html);
-
     var html = '<option>------</option>';
     {% for materia in materias %}
     html += '<option value="{{ materia.id }}">{{ materia }}</option>';
@@ -101,12 +103,13 @@ $(document).ready(function () {
             url:"{% url 'material-ajax-material' %}",
             type:'GET',
             success: function(data){
+                $('#id_precio').val('');
                 $('#id_color').val(data[0]['color']);
                 $('#id_espesor').val(data[0]['espesor']);
                 $('#informacionid').html(+data[0]['stock']+' ml.');
                 longitud = data[0]['stock'];
-                informacion = $('#informacionide').html();
-                informaciones = $('#informacionides').html();
+                informacion = $('#informacionide').html(0);
+                informaciones = $('#informacionides').html(0);
             },
             failure: function(data){
                 console.log('error')
@@ -115,9 +118,9 @@ $(document).ready(function () {
     });
     $('#id_precio').keyup(function () {
         var precio = $(this).val();
-        var g = Math.round(precio * longitud);
-        $('#informacionide').html(informacion + g + ' Bs.');
-        $('#informacionides').html(informaciones + precio + ' Bs.');
+        var g = precio * longitud;
+        $('#informacionide').html(+ g + ' Bs.');
+        $('#informacionides').html(precio+ ' Bs.');
     });
 });
 </script>

@@ -436,7 +436,7 @@ def stock_clavo(request, precio_id):
             admin_log_change(request, precio, 'Stock Modificado')
             sms = 'Stock de material %s modificado'%precio
             messages.info(request, sms)
-            return HttpResponseRedirect(reverse(index_precios_clavos))
+            return HttpResponseRedirect(reverse(index_inventario))
     else:
         form = StockClavos()
     return render(request, 'clavos/add_stock.html', {

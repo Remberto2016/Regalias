@@ -31,6 +31,7 @@ Nuestro Inventario
             <tr>
                 <th>#</th>
                 <th>Codigo</th>
+                <th>Tipo</th>
                 <th>Descripcion</th>
                 <th>Longitud(mm)</th>
                 <th>Precio</th>
@@ -44,18 +45,19 @@ Nuestro Inventario
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ inventario.codigo }}</td>
+                <td>{{inventario.tipo}}</td>
                 <td>{{ inventario.descripcion }}</td>
                 <td>{{ inventario.longitud }}</td>
                 <td> <span class="badge" style="background-color:#3a87ad">{{ inventario.precio }} Bs.</span></td>
                 <td><span class="badge" style="background-color:#468847">{{ inventario.stock }} U. </span></td>
                 <td>{% salidamaterial inventario %}</td>
                 <td>
-                    <a href="{% url 'precio-update-clavo' inventario.id %}" class="btn btn-warning btn-xs" title="Editar Material">
+                    <!--a href="{% url 'precio-update-clavo' inventario.id %}" class="btn btn-warning btn-xs" title="Editar Material">
                         <i class="fa fa-pencil-square"></i>
                     </a>
                     <a href="{% url 'precio-baja-clavo' inventario.id %}" class="btn btn-danger btn-xs" title="Baja Precio">
                         <i class="fa fa-times-circle"></i>
-                    </a>
+                    </a-->
                     <a href="{% url 'precio-stock-clavo' inventario.id %}" class="btn btn-success btn-xs" title="Aumentar Stock">
                         <i class="fa fa-edit"></i>
                     </a>
@@ -63,16 +65,19 @@ Nuestro Inventario
                         <i class="fa fa-list-alt"></i>
                     </button>
 
-                                        <div class="modal fade bs-example-modal-lg{{ inventario.id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                    <div class="modal fade bs-example-modal-lg{{ inventario.id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
                         <div class="modal-dialog modal-md" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Detalle de Entradas</h4>
+                                    <h4 class="modal-title app" >Detalle de Entradas</h4>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-md-12">
+                                            <p> Codigo: {{inventario.codigo}}</p>
+                                            <p> Descripcion: {{inventario.descripcion}}</p>
+                                            <p>Stock Actual: {{inventario.stock}}</p>
                                             <table class="table bordered col-md-12" style="width: 100%">
                                                 <thead>
                                                     <tr>
@@ -84,12 +89,12 @@ Nuestro Inventario
                                                 </thead>
                                                 <tbody>
                                                     {% for d in inventario.detalleprecioclavo_set.select_related.all %}
-                                                        <tr>
-                                                            <td>{{ forloop.counter }}</td>
-                                                            <td>{{ d.fecha }}</td>
-                                                            <td>{{ d.cantidad }}</td>
-                                                            <td></td>
-                                                        </tr>
+                                                    <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ d.fecha }}</td>
+                                                        <td>{{ d.cantidad }}</td>
+                                                        <td></td>
+                                                    </tr>
                                                     {% endfor %}
 
                                                 </tbody>
@@ -111,14 +116,14 @@ Nuestro Inventario
 </div>
 {% endblock %}
 {% block js %}
-    <script>
-    $(document).ready(function () {
-        $('.btn.btn-primary.btn-xs.openmodal').click(function () {
+<script>
+$(document).ready(function () {
+    $('.btn.btn-primary.btn-xs.openmodal').click(function () {
             /*$('#DataTables_Table_1_filter').addClass('hide');
             $('#DataTables_Table_1_info').addClass('hide');
             $('#DataTables_Table_1_paginate').addClass('hide');*/
         })
-    });
+});
 
-    </script>
+</script>
 {% endblock %}

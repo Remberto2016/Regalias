@@ -27,6 +27,8 @@ MATERIALUNIDAD = (
     ('Kilos', 'Kilos'),
 )
 
+from materiales.models import MateriaPrima
+
 class DetalleVenta(models.Model):
     material = models.TextField(verbose_name='Material', choices=MATERIALCHOICES)
     unidad = models.CharField(max_length=50, verbose_name='Unidad de Medida', default='Unidad', choices=MATERIALUNIDAD)
@@ -38,6 +40,7 @@ class DetalleVenta(models.Model):
     largo = models.FloatField(default=1, null=True)
     precio_id = models.IntegerField(null=True)
     tipo = models.CharField(max_length=50, null=True)
+    materia_id = models.ForeignKey(MateriaPrima, null=True, on_delete=models.PROTECT)
     def __unicode__(self):
         return '%s: %s'%(self.venta.id, self.cantidad)
     def __str__(self):

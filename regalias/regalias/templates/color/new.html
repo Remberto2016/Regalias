@@ -11,23 +11,22 @@ Registrar Color
 {% block js %}
 <script>
     $(document).ready(function () {
-        $('#id_pais').change(medida);
-        function medida(){
-            if($(this).val()){
-                var id = $(this).val();
-                $.ajax({
-                    data:{'id': id},
-                    url:"{% url 'cliente-ajax-ciudades' %}",
-                    type:'GET',
-                    success: function(data){
-                        $('#id_ciudad').html(data);
-                    },
-                    failure: function(data){
-                        console.log('error')
+        $('#id_hex').change(function () {
+            $.ajax({
+                data:{'hex': $(this).val()},
+                url:"{% url 'color-ajax' %}",
+                type:'GET',
+                success: function(data){
+                    //alert(data[0]['nombre_c']);
+                    if(data[0]) {
+                        $('#id_color').val(data[0]['nombre_c']);
                     }
-                });
-            }
-        }
+                },
+                failure: function(data){
+                    console.log('error')
+                }
+            });
+        });
     });
 </script>
 {% endblock %}

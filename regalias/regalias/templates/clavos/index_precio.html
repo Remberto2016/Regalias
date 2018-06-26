@@ -53,17 +53,16 @@ Nuestros Precios
                     <a href="{% url 'precio-baja-clavo' precio.id %}" class="btn btn-danger btn-xs" title="Baja Precio">
                         <i class="fa fa-times-circle"></i>
                     </a>
-                    <a href="{% url 'precio-stock-clavo' precio.id %}" class="btn btn-success btn-xs" title="Aumentar Stock">
+                    <!--a href="{% url 'precio-stock-clavo' precio.id %}" class="btn btn-success btn-xs" title="Aumentar Stock">
                         <i class="fa fa-edit"></i>
                     </a>
                     <button type="button" class="btn btn-primary btn-xs openmodal" data-toggle="modal" data-target=".bs-example-modal-lg{{ precio.id }}" title="Detalle Entrada">
                         <i class="fa fa-list-alt"></i>
-                    </button>
+                    </button-->
                     <div class="modal fade bs-example-modal-lg{{ precio.id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
                         <div class="modal-dialog modal-md" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     <h4 class="modal-title">Detalle de Entradas</h4>
                                 </div>
                                 <div class="modal-body">

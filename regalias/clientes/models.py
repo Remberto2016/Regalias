@@ -39,7 +39,7 @@ class Ciudad(models.Model):
 
 class Cliente(models.Model):
     nit = models.CharField(max_length=20, verbose_name='NIT/CI', null=True)
-    razon = models.CharField(max_length=100, verbose_name='Razon Social', null=True)
+    razon = models.CharField(max_length=100, verbose_name='Nombre o Razon Social', null=True)
     direccion = models.CharField(max_length=50, verbose_name='Direccion')
     telefono = models.CharField(max_length=15, verbose_name='Telefono/Ceular')
     email = models.EmailField(blank=True, verbose_name='Correo Electronico')

@@ -5,44 +5,74 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <h2>Informacion de Usuario</h2>
-    <div class="col-md-12">
-        <p class="lead">
-            <strong>Usuario: </strong>{{ user.username }}
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="x_panel">
+    <div class="x_title">
+        <h2><strong>Usuario: </strong>{{  user.username|upper }} <small>Informacion de Usuario</small></h2>
+        <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li><a class="close-link" href=""><i class="fa fa-close"></i></a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        <p class="text-muted font-13 m-b-30">
+            Este es una tabla donde contiene los permisos asignados al usuario:  {{  user.username|upper }}.
         </p>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="x_panel tile fixed_height_320">
+            <div class="x_title">
+                <h2>Permisos Disponibles</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table  class="table table striped dt-responsive nowrap" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Permiso</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for grupo in grupos %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ grupo.name }}</td>
+                            <td>
+                                <a href="{% url 'user-add-permission' grupo.id user.id %}" class="btn btn-success btn-xs" title="Asignar Permiso">
+                                    <i class="  fa fa-mail-forward"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-</div>
-<div class="row">
-    <h1>Permisos</h1>
-    <div class="col-md-6">
-        <h2>Permisos</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Permiso</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for grupo in grupos %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ grupo.name }}</td>
-                        <td>
-                            <a href="{% url 'user-add-permission' grupo.id user.id %}" class="btn btn-success btn-xs" title="Asignar Permiso">
-                                <i class="fa fa-plus-circle"></i>
-                            </a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+      <div class="x_panel tile fixed_height_320">
+        <div class="x_title">
+          <h2>Permisos Asignados</h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
     </div>
-    <div class="col-md-6">
-        <h2>Permisos Asignados</h2>
-        <table class="table">
+    <div class="x_content">
+        <table  class="table table striped dt-responsive nowrap" cellspacing="0" width="100%">
             <thead>
                 <tr>
                     <th>#</th>
@@ -52,19 +82,22 @@
             </thead>
             <tbody>
                 {% for asignado in asignados %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ asignado.name }}</td>
-                        <td>
-                            <a href="{% url 'user-remove-permission' asignado.id user.id %}" class="btn btn-danger btn-xs" title="Quitar Permiso">
-                                <i class="fa fa-times-circle"></i>
-                            </a>
-                        </td>
-                    </tr>                
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ asignado.name }}</td>
+                    <td>
+                        <a href="{% url 'user-remove-permission' asignado.id user.id %}" class="btn btn-danger btn-xs" title="Quitar Permiso">
+                            <i class="fa fa-mail-reply"></i>
+                        </a>
+                    </td>
+                </tr>                
                 {% endfor %}
-                
             </tbody>
         </table>
     </div>
+</div>
+</div>
+</div>
+</div>
 </div>
 {% endblock %}

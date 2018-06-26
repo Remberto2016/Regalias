@@ -22,3 +22,7 @@ class Color(models.Model):
         verbose_name = 'Color'
         verbose_name_plural = 'Colores'
         ordering = ['color']
+
+class ColorName(models.Model):
+    nombre_c = models.CharField(max_length=50)
+    hexa = models.CharField(max_length=20)

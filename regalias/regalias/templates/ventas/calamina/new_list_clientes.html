@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Nuestros Clientes
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <a href="{% url 'cliente-new-popup' %}" class="btn btn-success add-another" id="register_cliente">
+            <i class="glyphicon glyphicon-plus"></i> Registrar Cliente
+        </a>
+    </div>
+</div>
+<h2>Seleccione Cliente Para Venta</h2>
+<div class="cell colspan12">
+    <table class="table striped hovered border bordered">
+        <thead>
+            <tr>
+                <th width="30px">#</th>
+                <th>NIT/C.I.</th>
+                <th>Cliente</th>
+                <th>Telefono</th>
+                <th>Direccion</th>
+                <th>Pais</th>
+                <th>Ciudad</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ cliente.nit }}</td>
+                    <td>{{ cliente.razon }}</td>
+                    <td>{{ cliente.telefono }}</td>
+                    <td>{{ cliente.direccion }}</td>
+                    <td>{{ cliente.ciudad.pais }}</td>
+                    <td>{{ cliente.ciudad }}</td>
+                    <td>
+                        <a href="{% url 'venta-new-calamina' cliente.id %}" class="btn btn-xs btn-success" title="Seleccionar Cliente">
+                            <i class="fa fa-credit-card"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).ready(function() {
+    $( '.add-another' ).click(function(e) {
+        e.preventDefault(  );
+        showAddAnotherPopup( $( this ) );
+    });
+});
+
+/* Credit: django.contrib.admin (BSD) */
+
+function showAddAnotherPopup(triggeringLink) {
+    /*
+
+    Pause here with Firebug's script debugger.
+
+    */
+    var name = triggeringLink.attr( 'id' ).replace(/^add_/, '');
+    name = id_to_windowname(name);
+    href = triggeringLink.attr( 'href' );
+
+    if (href.indexOf('?') == -1) {
+        href += '?popup=1';
+    } else {
+        href += '&popup=1';
+    }
+
+    href += '&winName=' + name;
+
+    var win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
+    win.focus();
+
+    return false;
+}
+
+function dismissAddAnotherPopup(win, newId, newRepr) {
+    // newId and newRepr are expected to have previously been escaped by
+    newId = html_unescape(newId);
+    newRepr = html_unescape(newRepr);
+    var name = windowname_to_id(win.name);
+    var elem = document.getElementById(name);
+
+    if (elem) {
+        if (elem.nodeName == 'SELECT') {
+            var o = new Option(newRepr, newId);
+            elem.options[elem.options.length] = o;
+            o.selected = true;
+        }
+    } else {
+        console.log("Could not get input id for win " + name);
+    }
+
+    win.close();
+    location.reload();
+}
+
+function html_unescape(text) {
+ // Unescape a string that was escaped using django.utils.html.escape.
+    text = text.replace(/</g, '');
+    text = text.replace(/"/g, '"');
+    text = text.replace(/'/g, "'");
+    text = text.replace(/&/g, '&');
+    return text;
+}
+
+// IE doesn't accept periods or dashes in the window name, but the element IDs
+// we use to generate popup window names may contain them, therefore we map them
+// to allowed characters in a reversible way so that we can locate the correct
+// element when the popup window is dismissed.
+function id_to_windowname(text) {
+    text = text.replace(/\./g, '__dot__');
+    text = text.replace(/\-/g, '__dash__');
+    text = text.replace(/\[/g, '__braceleft__');
+    text = text.replace(/\]/g, '__braceright__');
+    return text;
+}
+
+function windowname_to_id(text) {
+    return text;
+}
+</script>
+{% endblock %}

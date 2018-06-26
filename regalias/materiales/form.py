@@ -12,6 +12,9 @@ class MateriaPForm(ModelForm):
     class Meta:
         model = MateriaPrima
         exclude = ['user', 'estado', 'salida', 'stock', 'cantidad', 'color']
+        widgets = {
+        'unidad' : TextInput(attrs={'readonly':'readonly'}),
+        }
 
 class ProveedorForm(ModelForm):
     pais = forms.ModelChoiceField(label='Pais', queryset=Pais.objects.all())
@@ -24,7 +27,7 @@ class PrecioForm(ModelForm):
         model = Precio
         exclude = ['estado']
         widgets = {
-            'codigo':TextInput(attrs={'readonly': 'readonly'}),
+            'codigo':TextInput(attrs={'readonly':'readonly'}),
             'espesor':TextInput(attrs={'readonly': 'readonly'}),
             'color': TextInput(attrs={'readonly': 'readonly'}),
         }
@@ -60,6 +63,9 @@ class PrecioClavoForm(ModelForm):
     class Meta:
         model = PrecioClavos
         exclude = ['estado']
+        widgets = {
+        'codigo':TextInput(attrs={'readonly':'readonly'}),
+        }
 
 class StockClavos(forms.Form):
     cantidad = forms.IntegerField(label='Cantidad de Material', widget=TextInput(attrs={'min':'1'}))

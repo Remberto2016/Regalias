@@ -1,0 +1,149 @@
+{% extends '__form.html' %}
+
+{% block title %}
+Agregar Material
+{% endblock %}
+
+{% block info-form %}
+{% include 'includes/__info_venta.html' %}
+{% endblock %}
+
+{% block legend %}
+Agregar Material
+{% endblock %}
+
+{% block cuerpo-form %}
+{% for field in form %}
+    <div class="form-group">
+        {% if field.errors %}
+            <div class="mypadding2 bg-red fg-white margin10 no-margin-right no-margin-left">
+                <i class="fa fa-exclamation-triangle"></i>{{ field.errors }}
+            </div>
+        {% endif %}
+        {{ field.label_tag }}
+        {% if field.html_name == 'cantidad' %}
+            <div class="col-sm-6">
+                {{ field }}
+                {% if field.help_text %}
+                    <small class="fg-green block padding10 no-padding-top">
+                        <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+                    </small>
+                {% endif %}
+            </div>
+            <div class="col-sm-3" id="informacionid" style="">
+
+            </div>
+        {% else %}
+            <div class="col-sm-9">
+            {{ field }}
+            {% if field.help_text %}
+                <small class="fg-green block padding10 no-padding-top">
+                    <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+                </small>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+{% endfor %}
+{% endblock %}
+
+
+{% block js %}
+<script>
+    $(document).ready(function () {
+        var html = '';
+        var mdisponibles = 0;
+        {% for material in materiales %}
+            html = html + '<option value="{{ material.color }}">{{ material.color }}</option>';
+        {% endfor %}
+        /*$('#id_color').html(html);*/
+        var precio = 0;
+        var cantidad = 0;
+        var large = 0;
+        var tmetros = 0;
+        $('#id_calamina').change(function () {
+            var precio_id = $(this).val();
+            if(precio_id){
+                $.ajax({
+                    data:{'precio_id': precio_id},
+                    url:"{% url 'pedido-ajax-precio' %}",
+                    type:'GET',
+                    success: function(data){
+                        $('#id_costo_u').val(data[0]['precio']);
+                        $('#id_color').val(data[0]['color']);
+                        $('#id_anchocalamina').val(data[0]['materia__ancho']);
+                        mdisponibles = data[0]['materia__stock'];
+                        $('#informacionid').html('Metros Disponibles: '+mdisponibles);
+                        precio = data[0]['precio'];
+                        $.ajax({
+                            data:{'id': data[0]['materia_id']},
+                            url:"{% url 'material-ajax-material' %}",
+                            type:'GET',
+                            success: function(data1){
+                                //alert(data1[0]['id']);
+                                var ht = '<option value="'+data1[0]['id']+'" selected>'+ data1[0]['ancho']+'</option>';
+                                //$('#id_anchocalamina option[value='+data1[0]['id']+']').attr('selected','selected');
+                                $('#id_anchocalamina').html(ht);
+                            },
+                            failure: function(data1){
+                                console.log('error')
+                            }
+                        });
+                    },
+                    failure: function(data){
+                        console.log('error')
+                    }
+                });
+            }else{
+                $('#id_costo_u').val(0)
+            }
+        });
+        $('#id_color').change(function () {
+            var color = $(this).val();
+            if(color){
+                $.ajax({
+                    data:{'color': color},
+                    url:"{% url 'pedido-ajax-material' %}",
+                    type:'GET',
+                    success: function(data){
+                        $('#id_ancho').html(data);
+                    },
+                    failure: function(data){
+                        console.log('error')
+                    }
+                });
+            }
+        });
+        $('#id_cantidad').keyup(function () {
+            if($(this).val()){
+                cantidad = $(this).val();
+                tmetros = large * cantidad;
+                var costo_t = tmetros * precio;
+                var disponibles = mdisponibles - tmetros;
+                $('#informacionid').html('Metros Disponibles: '+mdisponibles+' Metros Restantes: '+disponibles);
+                $('#id_costo_t').val(costo_t);
+                $('#id_total_m').val(tmetros);
+            }
+            else{
+                cantidad = 0;
+            }
+        });
+        $('#id_largo').keyup(function () {
+            large = $('#id_largo').val();
+            if(large!=null){
+                tmetros = large * cantidad;
+                var costo_t = tmetros * precio;
+            $('#id_costo_t').val(costo_t);
+                $('#id_total_m').val(large * cantidad);
+            }else{
+                tmetros = 0 * cantidad;
+                var costo_t = tmetros * precio;
+            $('#id_costo_t').val(costo_t);
+                $('#id_total_m').val(0 * cantidad);
+            }
+        });
+        $('#id_color').attr('readonly', 'readonly');
+        $('#id_anchocalamina').attr('readonly', 'readonly');
+    });
+</script>
+{% endblock %}
