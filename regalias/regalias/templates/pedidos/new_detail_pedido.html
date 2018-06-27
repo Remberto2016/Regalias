@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Detalle Pedido
+Detalle Cotización
 {% endblock %}
 
 {% block content %}
@@ -19,12 +19,12 @@ Detalle Pedido
     </div>
     <div class="col-md-3">
         <a href="{% url 'pedido-confirm' pedido.id %}" class="btn btn-primary">
-            <i class="fa fa-money-bill-alt"></i> Confirmar Pedido
+            <i class="fa fa-money-bill-alt"></i> Confirmar Cotización
         </a>
     </div>
     <div class="col-md-3">
         <a href="{% url 'pedido-delete' pedido.id %}" class="btn btn-danger" title="Cancelar Pedido">
-            <i class="fa fa-money-bill-alt"></i> Cancelar Pedido
+            <i class="fa fa-money-bill-alt"></i> Cancelar Cotización
         </a>
     </div>
 </div>

@@ -54,7 +54,16 @@
 
                     <div class="profile" style="background-color:#0f1126;">
                         <div class="profile_pic" style="background-color:#0f1126;">
-                            <img src="{% static 'avatar/avatarm.jpg' %}" alt="..." class="img-circle profile_img">
+                            {% if user.perfil %}
+                                {% if user.perfil.sexo == 'Masculino' %}
+                                    <img src="{% static 'avatar/avatarm.jpg' %}" alt="..." class="img-circle profile_img">
+                                {% else %}
+                                    <img src="{% static 'avatar/avatarf.jpg' %}" alt="..." class="img-circle profile_img">
+                                {% endif %}
+                            {% else %}
+                                <img src="{% static 'avatar/avatarm.jpg' %}" alt="..." class="img-circle profile_img">
+                            {% endif %}
+
                         </div>
                         <div class="profile_info" style="background-color:#0f1126;">
                             {% if user.is_authenticated %}

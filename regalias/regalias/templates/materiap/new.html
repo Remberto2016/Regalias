@@ -11,7 +11,6 @@ Registrar Materia Prima
             {% include 'includes/__form_calamina.html' %}
 
         <div role="tabpanel" class="tab-pane" id="profile">
-
         </div>
     </div>
 </div>
@@ -22,7 +21,7 @@ Registrar Materia Prima
 $(document).ready(function () {
     var html = '<option>------</option>';
     {% for color in coloresss %}
-        html += '<option value="{{ color.color }}">{{ color.color }}</option>';
+        html += '<option value="{{ color.color }}" id="{{ color.codigo }}">{{ color.color }}</option>';
     {% endfor %}
     //hiden();
     $('#id_color').html(html);
@@ -45,6 +44,20 @@ $(document).ready(function () {
             $('#id_unidad').val('Bobina');
         }
     }
+    $('#id_colores').change(function () {
+        var color = $(this).val();
+        $.ajax({
+            data:{'id': color},
+            url:"{% url 'material-ajax-color-colored' %}",
+            type:'GET',
+            success: function(data){
+                $('#informarioncolor').css('background-color', data[0].codigo)
+            },
+            failure: function(data){
+                console.log('error')
+            }
+        });
+    })
 
 });
 </script>

@@ -48,4 +48,8 @@ urlpatterns = [
 
 
     path('ajax/material', views.ajax_get_material, name='material-ajax-material'),
+
+    path('ajax/colored/list', views.ajax_color_codigo, name='material-ajax-color-colored'),
+    path('ajax/colored/colored/list', views.ajax_color_colored, name='material-ajax-color-colored-nombre'),
+
 ]

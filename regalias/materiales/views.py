@@ -52,7 +52,6 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 
 @login_required(login_url='/login/')
 def new(request):
-
     colores = Color.objects.all()
     if request.method == 'POST':
         form = MateriaPForm(request.POST)
@@ -60,7 +59,7 @@ def new(request):
             m = form.save(commit=False)
             if form.cleaned_data['colores'] != None:
                 c_id = form.cleaned_data['colores']
-                #print(c_id)
+                print(c_id.codigo)
                 #color = Color.objects.get(id=c_id)
                 m.color = c_id
             m.user = request.user
@@ -446,7 +445,7 @@ def stock_clavo(request, precio_id):
 def ajax_get_material(request):
     if request.is_ajax():
         id = request.GET['id']
-        material = MateriaPrima.objects.filter(id = id).values('espesor', 'ancho', 'color', 'stock', 'longitud', 'id')
+        material = MateriaPrima.objects.filter(id = id).values('espesor', 'ancho', 'color', 'stock', 'longitud', 'id', 'precioc')
         return JsonResponse(list(material), safe=False)
     else:
         return Http404
@@ -493,3 +492,22 @@ def new_popup(request):
         'form':form,
         'colores':colores,
     })
+
+def ajax_color_codigo(request):
+    if request.is_ajax():
+        color = request.GET['id']
+        color = Color.objects.filter(id=color)
+        q1 = color.values('color', 'codigo')
+        return JsonResponse(list(q1), safe=False)
+    else:
+        raise Http404
+
+
+def ajax_color_colored(request):
+    if request.is_ajax():
+        color = request.GET['id']
+        color = Color.objects.filter(color=color)
+        q1 = color.values('color', 'codigo')
+        return JsonResponse(list(q1), safe=False)
+    else:
+        raise Http404

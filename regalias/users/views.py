@@ -13,8 +13,8 @@ from django.contrib.auth.models import Permission, Group, User
 
 from regalias.utility import admin_log_change, admin_log_addition
 
-from users.models import Empresa,Color, ColorName
-from users.form import UsernameForm, EmpresaForm, ColorForm
+from users.models import Empresa,Color, ColorName, Perfil
+from users.form import UsernameForm, EmpresaForm, ColorForm, UserForm, PerfilForm
 from pedidos.models import Pedido
 from ventas.models import Venta
 from clientes.models import Cliente
@@ -51,9 +51,14 @@ def user_login(request):
                         messages.add_message(request, messages.INFO, msm)
                         return HttpResponseRedirect(str(request.GET['next']))
                     else:
-                        msm = "Inicio de Sesion Existoso  <strong>Gracias Por Su Visita</strong>"
-                        messages.add_message(request, messages.SUCCESS, msm)
-                        return HttpResponseRedirect(reverse(user_index))
+                        if access.first_name:
+                            msm = "Inicio de Sesion Existoso  <strong>Gracias Por Su Visita</strong>"
+                            messages.add_message(request, messages.SUCCESS, msm)
+                            return HttpResponseRedirect(reverse(user_index))
+                        else:
+                            msm = "Debe completar su información"
+                            messages.add_message(request, messages.SUCCESS, msm)
+                            return HttpResponseRedirect(reverse(update_information))
                 else:
                     sms = "Su Cuenta No Esta Activada <strong>Contactese con el Administrador</strong>"
                     messages.warning(request, sms)
@@ -127,14 +132,20 @@ def user_creation(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            admin_log_addition(request, user, 'Usuario Creado')
-            messages.success(request, 'Usuario Creado Correctamente')
+            u = form.save()
+            admin_log_addition(request, u, 'Usuario Registrado')
+            perfil = Perfil.objects.create(
+                usuarios=u,
+            )
+            perfil.save()
+            admin_log_addition(request, perfil, 'Perfil Creado')
+            sms = 'Usuario %s Registrado Correctamente' % u.username
+            messages.success(request, sms)
             return HttpResponseRedirect(reverse(user_index))
     else:
         form = UserCreationForm()
     return render(request, 'users/new.html', {
-        'form':form,
+        'form': form,
     })
 
 @login_required(login_url='/login/')
@@ -259,9 +270,18 @@ def new_color(request):
     if request.method == 'POST':
         form = ColorForm(request.POST)
         if form.is_valid():
-            color = form.save()
+            color = form.save(commit=False)
+            color.codigo = form.cleaned_data['hex']
+            color.save()
+            if not ColorName.objects.filter(hexa=color.codigo):
+                c = ColorName.objects.create(
+                    nombre_c=color.color,
+                    hexa=color.codigo,
+                )
+                c.save()
             admin_log_addition(request, color, 'Color Creado')
             sms = 'Color %s Registrado correctamente'%color.color
+
             messages.success(request, sms)
             return HttpResponseRedirect(reverse(index_colores))
     else:
@@ -276,7 +296,9 @@ def update_color(request, color_id):
     if request.method == 'POST':
         form = ColorForm(request.POST, instance=color)
         if form.is_valid():
-            color = form.save()
+            color = form.save(commit=False)
+            color.codigo = form.cleaned_data['hex']
+            color.save()
             admin_log_change(request, color, 'Color Modificado')
             sms = 'Color %s modificado correctamente'%color.color
             messages.warning(request, sms)
@@ -292,7 +314,9 @@ def new_color_popup(request):
     if request.method == 'POST':
         form = ColorForm(request.POST)
         if form.is_valid():
-            color = form.save()
+            color = form.save(commit=False)
+            color.codigo = form.cleaned_data['hex']
+            color.save()
             admin_log_addition(request, color, 'Color Creado')
             return render(request, 'close_popup.html', {
                 'c': color,
@@ -311,3 +335,25 @@ def color_ajax(request):
         return JsonResponse(list(colors), safe=False)
     else:
         raise Http404
+
+@login_required(login_url='/login/')
+def update_information(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=request.user)
+        formperfil = PerfilForm(request.POST, instance=request.user.perfil)
+        if form.is_valid() and formperfil.is_valid():
+            user = form.save()
+            perfil = formperfil.save(commit=False)
+            perfil.user = user
+            perfil.save()
+            admin_log_change(request, user, 'Datos modificados')
+            admin_log_addition(request, perfil, 'Perfil modificado')
+            messages.info(request, 'Perfil Modificado Correctamente')
+            return HttpResponseRedirect(reverse(user_index))
+    else:
+        form = UserForm(instance=request.user)
+        formperfil = PerfilForm(instance=request.user.perfil)
+    return render(request, 'users/complete_information.html', {
+        'form':form,
+        'formperfil':formperfil,
+    })

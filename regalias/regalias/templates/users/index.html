@@ -5,11 +5,6 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
-  <div class="s12">
-    <h2>Bienvenido {{ request.user.username }}</h2>
-  </div>
-</div>
 {% load helperReportes %}
 <div class="row top_tiles">
   <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -168,7 +163,7 @@ function drawChartventas() {
 function drawChartpedidos() {
   var data = new google.visualization.DataTable();
   data.addColumn('string', 'Mes');
-  data.addColumn('number', 'Pedidos');
+  data.addColumn('number', 'Cotizaciones');
   data.addRows([
     ['Enero', {% count_pedidos pedidos 1 %}],
     ['Febrero', {% count_pedidos pedidos 2 %}],

@@ -12,68 +12,80 @@ Registrar Precio
 {% for field in form %}
 <div class="form-group">
     {% if field.errors %}
-    <div class="mypadding2 bg-red fg-white margin10 no-margin-right no-margin-left">
-        <i class="fa fa-exclamation-triangle"></i>{{ field.errors }}
-    </div>
+        <div class="mypadding2 bg-red fg-white margin10 no-margin-right no-margin-left">
+            <i class="fa fa-exclamation-triangle"></i>{{ field.errors }}
+        </div>
     {% endif %}
     {{ field.label_tag }}
     {% if field.html_name == 'precio' %}
-    <div class="col-sm-9 col-md-9 col-lg-9">
-        {{ field }}
-        {% if field.help_text %}
-        <small class="fg-green block padding10 no-padding-top">
-            <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
-        </small>
+        <div class="col-sm-9 col-md-9 col-lg-9">
+            {{ field }}
+            {% if field.help_text %}
+            <small class="fg-green block padding10 no-padding-top">
+                <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+            </small>
+            {% endif %}
+        </div>
+        <div class="row tile_count col-sm-12" align="center" style="border:1px solid;border-radius: 5px;">
+            <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
+                <span class="count_top"><i class="fa fa-clock-o"></i> Longitud Total </span>
+                <div class="count" id="informacionid" style="font-size: 1em;"></div>
+                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i></span>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
+                <span class="count_top"><i class="fa fa-clock-o"></i> Venta Total</span>
+                <div class="count" id="informacionide" style="font-size: 1em;"></div>
+                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i></span>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
+                <span class="count_top"><i class="fa fa-clock-o"></i> Precio M.L.</span>
+                <div class="count" id="informacionides" style="font-size: 1em;"></div>
+                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i></span>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
+                <span class="count_top"><i class="fa fa-clock-o"></i> Ganancia</span>
+                <div class="count" id="gananaciaids" style="font-size: 1em;"></div>
+                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i></span>
+            </div>
+        </div>
+    {% else %}
+        {% if field.html_name == 'materia' %}
+            <div class="col-sm-8">
+                {{ field }}
+                {% if field.help_text %}
+                    <small class="fg-green block padding10 no-padding-top">
+                        <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+                    </small>
+                {% endif %}
+            </div>
+            <div class="col-sm-1" style="line-height: 30px">
+                <a href="{% url 'materia-new-popup' %}" class="btn btn-success add-another" title="Registrar Materia Prima" id="{{ field.auto_id }}">
+                    <i class="fa fa-plus-circle "></i>
+                </a>
+            </div>
+        {% else %}
+            {% if field.html_name == 'color' %}
+                <div class="col-sm-8">
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="fg-green block padding10 no-padding-top" >
+                            <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+                        </small>
+                    {% endif %}
+                </div>
+                <div class="col-sm-1" style="border-radius: 5px; border: 1px solid; height: 33px;" id="informarioncolor">
+                </div>
+            {% else %}
+                <div class="col-sm-9">
+                    {{ field }}
+                    {% if field.help_text %}
+                    <small class="fg-green block padding10 no-padding-top">
+                        <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+                    </small>
+                </div>
+            {% endif %}
         {% endif %}
-    </div>
-    <div class="row tile_count col-sm-12" align="center" style="border:1px solid;border-radius: 5px;">
-        <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
-          <span class="count_top"><i class="fa fa-clock-o"></i> Longitud Total </span>
-          <div class="count" id="informacionid" style="font-size: 1em;"></div>
-          <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i></span>
-      </div>
-      <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
-          <span class="count_top"><i class="fa fa-clock-o"></i> Venta Total</span>
-          <div class="count" id="informacionide" style="font-size: 1em;"></div>
-          <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i></span>
-      </div>
-      <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
-          <span class="count_top"><i class="fa fa-clock-o"></i> Precio M.L.</span>
-          <div class="count" id="informacionides" style="font-size: 1em;"></div>
-          <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i></span>
-      </div>
-      <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
-          <span class="count_top"><i class="fa fa-clock-o"></i> Ganancia</span>
-          <div class="count" id="" style="font-size: 1em;"></div>
-          <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i></i></span>
-      </div>
-    </div>
-  {% else %}
-  {% if field.html_name == 'materia' %}
-
-    <div class="col-sm-8">
-    {{ field }}
-    {% if field.help_text %}
-    <small class="fg-green block padding10 no-padding-top">
-        <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
-    </small>
     {% endif %}
-    </div>
-    <div class="col-sm-1" style="line-height: 30px">
-    <a href="{% url 'materia-new-popup' %}" class="btn btn-success add-another" title="Registrar Ciudad" id="{{ field.auto_id }}">
-        <i class="fa fa-plus-circle "></i>
-    </a>
-    </div>
-{% else %}
-<div class="col-sm-9">
-    {{ field }}
-    {% if field.help_text %}
-    <small class="fg-green block padding10 no-padding-top">
-        <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
-    </small>
-    {% endif %}
-</div>
-{% endif %}
 {% endif %}
 </div>
 {% endfor %}
@@ -95,21 +107,37 @@ $(document).ready(function () {
     $('#id_materia').html(html);
     var longitud = 0;
     var informacion = '';
+    var precioc = 0;
     //material-ajax-material
     $('#id_materia').change(function () {
         var id = $(this).val();
+        var color = '';
         $.ajax({
             data:{'id': id},
             url:"{% url 'material-ajax-material' %}",
             type:'GET',
             success: function(data){
+                color = data[0]['color'];
                 $('#id_precio').val('');
-                $('#id_color').val(data[0]['color']);
+                $('#id_color').val(color);
                 $('#id_espesor').val(data[0]['espesor']);
                 $('#informacionid').html(+data[0]['stock']+' ml.');
+                precioc = data[0]['precioc'];
                 longitud = data[0]['stock'];
                 informacion = $('#informacionide').html(0);
                 informaciones = $('#informacionides').html(0);
+                informacioness = $('#gananaciaids').html(0);
+                $.ajax({
+                    data:{'id': color},
+                    url:"{% url 'material-ajax-color-colored-nombre' %}",
+                    type:'GET',
+                    success: function(data){
+                        $('#informarioncolor').css('background-color', data[0].codigo)
+                    },
+                    failure: function(data){
+                        console.log('error')
+                    }
+                });
             },
             failure: function(data){
                 console.log('error')
@@ -119,8 +147,16 @@ $(document).ready(function () {
     $('#id_precio').keyup(function () {
         var precio = $(this).val();
         var g = precio * longitud;
+        var x = g - precioc;
         $('#informacionide').html(+ g + ' Bs.');
-        $('#informacionides').html(precio+ ' Bs.');
+        $('#informacionides').html(+ precio+ ' Bs.');
+        if (x>=0) {
+          $('#gananaciaids').html(+x+' Bs.').css("color", "#26b99a");  
+        }
+        else  {
+            $('#gananaciaids').html(x +' Bs.').css("color", "#d9534f");
+        }
+        
     });
 });
 </script>

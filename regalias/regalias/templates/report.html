@@ -7,23 +7,23 @@
     <style>
     @page {
         size: letter;
-        margin-left: 1cm;
-        margin-top: 2.3cm;
-        margin-right: 1cm;
-        margin-bottom:1cm;
+        margin-left: 1.5cm;
+        margin-top: 3cm;
+        margin-right: 1.5cm;
+        margin-bottom:1.5cm;
         @frame header {
             -pdf-frame-content: headerContent;
-            /*top:0.5cm;*/
-            margin-left: 1cm;
-            margin-right: 1cm;
+            margin-top:0.5cm;
+            margin-left: 1.5cm;
+            margin-right: 1.5cm;
             margin-bottom: 2cm;
         }
         @frame footer {
             -pdf-frame-content: footerContent;
             bottom: 0cm;
-            margin-left: 6cm;
-            margin-right: 6cm;
-            height: 1cm;
+            margin-left: 1cm;
+            margin-right: 1cm;
+            height: 1.5cm;
         }
     }
     header h2{
@@ -163,7 +163,7 @@
         margin: 15px;
         border-bottom: 5px solid #000;
     }
-        .celdas{
+    .celdas{
         border: 2px solid #000000; 
         padding-bottom:3px; 
         padding-top: 4px;
@@ -174,19 +174,33 @@
 <body>
     <div id="headerContent">
         <header>
-            <div class="cabecera">
-                <img  src="{{ STATIC_URL }}imagenes/Calaminas_Sin Fondo.png" alt="banner" height="150px" width="300px" align="right"/>
+            <table>
+                <td align="left" width="30%">
+                    <img  src="{{ STATIC_URL }}imagenes/Potosi.png" alt="banner" height="90px" width="90px" align="left" />
+                </td>
+                <td> <p style="font-family: courier" align="center"><strong><i>Gobierno Autónomo Departamental de Potosí</br>
+                Fabrica de Calaminas y Clavos</i></strong></p> </td>
+                <td align="right" width="50%"><img  src="{{ STATIC_URL }}imagenes/Calaminas_Sin Fondos.png" alt="banner" height="100px" width="300px" align="right" /></td>
+            </table>
+            <div class="barra">s</div>
 
-            </div>
+        </div>
+        <section class="consulta">
+            {% block cuerpo %}
+            <h1>Hola Reporte!!!!</h1>
+            {% endblock %}
+        </section>
+        <div id="footerContent" style="border-top: black solid 2px; padding-top: 5px;">
+            <table>
+                <td align="center" width="95%" style="font-size: 80%">
+                    <i><strong>Dirección:</strong> Calle La Paz esq. Omiste s/n (Ex Cordepo) - <strong>Telefonos:</strong>(02) 62-27344 / (02) 62-22692 <strong>Fax:</strong> (02) 6122705</br>
+                        <strong>Email:</strong> admin@gmail.com </br> 
+                        <strong>Potosí - Bolivia </strong>
+                    </i>
+                </td>
+                <td align="right" width="5%"> --<pdf:pagenumber>-- </td>
 
-        </header>
-        
-    </div>
-    <div class="barra">.</div> 
-    <section class="consulta">
-        {% block cuerpo %}
-        <h1>Hola Reporte!!!!</h1>
-        {% endblock %}
-    </section>
-</body>
-</html>
+            </table>
+        </div>
+    </body>
+    </html>

@@ -1,0 +1,48 @@
+{% extends '__form.html' %}
+
+{% block title %}
+Completar Perfil
+{% endblock %}
+
+{% block legend %}
+Completar Perfil
+{% endblock %}
+
+{% block cuerpo-form %}
+{% for field in form %}
+    <div class="form-group">
+        {% if field.errors %}
+        <div class="mypadding2 bg-red fg-white margin10 no-margin-right no-margin-left">
+            <i class="fa fa-exclamation-triangle"></i>{{ field.errors }}
+        </div>
+        {% endif %}
+        {{ field.label_tag }}
+        <div class="col-sm-9">
+            {{ field }}
+            {% if field.help_text %}
+            <small class="fg-green block padding10 no-padding-top">
+                <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+            </small>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}
+{% for field in formperfil %}
+    <div class="form-group">
+        {% if field.errors %}
+        <div class="mypadding2 bg-red fg-white margin10 no-margin-right no-margin-left">
+            <i class="fa fa-exclamation-triangle"></i>{{ field.errors }}
+        </div>
+        {% endif %}
+        {{ field.label_tag }}
+        <div class="col-sm-9">
+            {{ field }}
+            {% if field.help_text %}
+            <small class="fg-green block padding10 no-padding-top">
+                <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+            </small>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}
+{% endblock %}

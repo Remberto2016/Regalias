@@ -18,50 +18,52 @@
                 {% for field in form %}
                 <div class="form-group">
                     {% if field.errors %}
-                    <div class="mypadding2 bg-red fg-white margin10 no-margin-right no-margin-left">
-                        <i class="fa fa-exclamation-triangle"></i>{{ field.errors }}
-                    </div>
+                        <div class="mypadding2 bg-red fg-white margin10 no-margin-right no-margin-left">
+                            <i class="fa fa-exclamation-triangle"></i>{{ field.errors }}
+                        </div>
                     {% endif %}
                     {% if field.html_name == 'proveedor' %}
                     {{ field.label_tag }}
-                    <div class="col-sm-8">
-                        {{ field }}
-                        {% if field.help_text %}
-                        <small class="fg-green block padding10 no-padding-top">
-                            <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
-                        </small>
-                        {% endif %}
-                    </div>
-                    <div class="col-sm-1" style="line-height: 30px">
-                        <a href="{% url 'proveedor-new-popup' %}" class="btn btn-success add-another" title="Registrar {{ field.html_name }}" id="{{ field.auto_id }}">
-                            <i class="fa fa-plus-circle "></i>
-                        </a>
-                    </div>
+                        <div class="col-sm-8">
+                            {{ field }}
+                            {% if field.help_text %}
+                            <small class="fg-green block padding10 no-padding-top">
+                                <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+                            </small>
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-1" style="line-height: 30px">
+                            <a href="{% url 'proveedor-new-popup' %}" class="btn btn-success add-another" title="Registrar {{ field.html_name }}" id="{{ field.auto_id }}">
+                                <i class="fa fa-plus-circle "></i>
+                            </a>
+                        </div>
                     {% elif field.html_name == 'colores' %}
-                    {{ field.label_tag }}
-                    <div class="col-sm-8">
-                        {{ field }}
-                        {% if field.help_text %}
-                        <small class="fg-green block padding10 no-padding-top">
-                            <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
-                        </small>
-                        {% endif %}
-                    </div>
-                    <div class="col-sm-1" style="line-height: 30px">
-                        <a href="{% url 'color-new-popup' %}" class="btn btn-success add-another" title="Registrar {{ field.html_name }}" id="{{ field.auto_id }}">
-                            <i class="fa fa-plus-circle "></i>
-                        </a>
-                    </div>
+                        {{ field.label_tag }}
+                        <div class="col-sm-7">
+                            {{ field }}
+                            {% if field.help_text %}
+                            <small class="fg-green block padding10 no-padding-top">
+                                <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+                            </small>
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-1" style="line-height: 30px">
+                            <a href="{% url 'color-new-popup' %}" class="btn btn-success add-another" title="Registrar {{ field.html_name }}" id="{{ field.auto_id }}">
+                                <i class="fa fa-plus-circle "></i>
+                            </a>
+                        </div>
+                        <div class="col-sm-1" style="border-radius: 5px; border: 1px solid;height: 33px;" id="informarioncolor">
+                        </div>
                     {% else %}
-                    {{ field.label_tag }}
-                    <div class="col-sm-9">
-                        {{ field }}
-                        {% if field.help_text %}
-                        <small class="fg-green block padding10 no-padding-top">
-                            <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
-                        </small>
-                        {% endif %}
-                    </div>
+                        {{ field.label_tag }}
+                        <div class="col-sm-9">
+                            {{ field }}
+                            {% if field.help_text %}
+                            <small class="fg-green block padding10 no-padding-top">
+                                <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+                            </small>
+                            {% endif %}
+                        </div>
                     {% endif %}
                 </div>
                 {% endfor %}

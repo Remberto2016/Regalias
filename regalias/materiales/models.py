@@ -74,9 +74,9 @@ class MateriaPrima(models.Model):
         ordering = ['fecha']
 
 class Precio(models.Model):
-    codigo = models.CharField(max_length=10, verbose_name='Codigo')
-    materia = models.ForeignKey(MateriaPrima, null=True, on_delete=models.PROTECT)
-    descripcion = models.CharField(max_length=200, verbose_name='Descripcion')
+    codigo = models.CharField(max_length=10, verbose_name='Codigo', help_text='Codigo de tipo de Calamina')
+    materia = models.ForeignKey(MateriaPrima, null=True, on_delete=models.PROTECT, help_text='Materia Prima')
+    descripcion = models.CharField(max_length=200, verbose_name='Descripcion', help_text='Pequeña descripción')
     precio = models.FloatField(verbose_name='Precio Metro L.', help_text='En Bolivianos')
     espesor = models.FloatField(verbose_name='Espesor', help_text='En Milimetros (mm)', null=True)
     color = models.CharField(max_length=100, verbose_name='Color', default='Sin Color', null=True)

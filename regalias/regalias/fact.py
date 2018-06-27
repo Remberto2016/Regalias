@@ -66,6 +66,7 @@ def base64(number):
 def controlCode(auth, number, nit, date, total, key):
 	code = ''
 	number = verhoeff(number, 2)
+	print(nit)
 	nit = verhoeff(nit, 2)
 	date = verhoeff(date, 2)
 	total = verhoeff(total, 2)

@@ -1,44 +1,58 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Pedidos No Confirmados
+Cotizaciones no Confirmados
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <h3>Pedidos No Confirmados</h3>
-        <table class="table striped hovered border bordered">
-            <thead>
-                <tr>
-                    <th width="30px">#</th>
-                    <th>NIT/C.I.</th>
-                    <th>Razon Social</th>
-                    <th>Cant.Material</th>
-                    <th>CostoT.</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for pedido in pedidos %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ pedido.cliente.nit }}</td>
-                        <td>{{ pedido.cliente.razon }}</td>
-                        <td>{{ pedido.detallepedido_set.count }}</td>
-                        <td>{{ pedido.costo }}</td>
-                        <td>
-                            <a href="{% url 'pedido-delete' pedido.id %}" class="btn btn-danger btn-xs" title="Eliminar Pedido">
-                                <i class="fa fa-eraser"></i>
-                            </a>
-                            <a href="{% url 'pedido-new-detail' pedido.id %}" class="btn btn-warning btn-xs" title="Editar Pedido">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2 class="app">Cotizaciones no Confirmadas </h2>
+      <ul class="nav navbar-right panel_toolbox">       
+        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+        </li>
+        <li><a class="close-link" href=""><i class="fa fa-close"></i></a>
+        </li>
+    </ul>
+    <div class="clearfix"></div>
+</div>
+<div class="x_content">
+  <p class="text-muted font-13 m-b-30">
+    Este es una tabla donde contiene los datos de las cotizaciones no confirmadas.
+</p>
+<table class="table striped hovered border bordered">
+    <thead>
+        <tr>
+            <th width="30px">#</th>
+            <th>NIT/C.I.</th>
+            <th>Razon Social</th>
+            <th>Cant.Material</th>
+            <th>CostoT.</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pedido in pedidos %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ pedido.cliente.nit }}</td>
+            <td>{{ pedido.cliente.razon }}</td>
+            <td>{{ pedido.detallepedido_set.count }}</td>
+            <td>{{ pedido.costo }}</td>
+            <td>
+                <a href="{% url 'pedido-delete' pedido.id %}" class="btn btn-danger btn-xs" title="Eliminar Pedido">
+                    <i class="fa fa-eraser"></i>
+                </a>
+                <a href="{% url 'pedido-new-detail' pedido.id %}" class="btn btn-warning btn-xs" title="Editar Pedido">
+                    <i class="fa fa-edit"></i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+</div>
 </div>
 {% endblock %}
