@@ -29,4 +29,4 @@ class DetallePedidoForm(ModelForm):
 class ConfirmForm(ModelForm):
     class Meta:
         model = Pedido
-        fields = ['plazo', 'entrega']
+        fields = ['plazo', 'entrega', 'persona_entrega', 'telefono_ref']

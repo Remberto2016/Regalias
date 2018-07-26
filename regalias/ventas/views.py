@@ -218,40 +218,49 @@ from regalias.factura import get_code_control, build_string_qr, get_decimal_amou
 from num2words import num2words
 from datetime import timedelta
 from regalias.fact import controlCode
-
+import datetime
 @login_required(login_url='/login/')
 def factura_pdf(request, venta_id):
-    venta = get_object_or_404(Venta, pk = venta_id)
-    detalles = DetalleVenta.objects.filter(venta=venta)
     empresa = Empresa.objects.all().first()
-    #articles = Article.objects.filter(billing_id=billing_id)
-    #get_sum_total_of_billing(billing_id)
-    cliente = Cliente.objects.get(pk=venta.cliente_id)
+    hoy = datetime.datetime.now()
+    if hoy.strftime('%Y-%m-%d') > empresa.vencimiento.strftime('%Y-%m-%d'):
+        messages.error(request, 'YA NO PUEDE EMITIR FACTURAS MIENTRAS NO ACTUALICE LA LLAVE DE DOSIFICACION')
+        return HttpResponseRedirect(reverse('/empresa'))
+    else:
+        venta = get_object_or_404(Venta, pk = venta_id)
+        detalles = DetalleVenta.objects.filter(venta=venta)
+        #articles = Article.objects.filter(billing_id=billing_id)
+        #get_sum_total_of_billing(billing_id)
+        cliente = Cliente.objects.get(pk=venta.cliente_id)
+        code = controlCode(str(empresa.nro),
+                           str(venta.nro_venta),
+                           str(venta.cliente.nit),
+                           str(venta.fecha.strftime('%Y%m%d')),
+                           str('%.0f' % venta.costo),
+                           str(empresa.key))
 
-    code = controlCode(str(empresa.nro), str(venta.nro_venta), str(venta.cliente.nit), str(venta.fecha.strftime('%Y%m%d')), str(int(venta.costo)), str(empresa.key))
+        qr_text = build_string_qr(venta, code)
 
-    qr_text = build_string_qr(venta, code)
+        literal_amount = num2words(int(venta.costo), lang='es')
+        #DECIMALESRESIDUO
+        decimal_amount = get_decimal_amount(venta)
 
-    literal_amount = num2words(int(venta.costo), lang='es')
-    #DECIMALESRESIDUO
-    decimal_amount = get_decimal_amount(venta)
+        limit_date = venta.fecha + timedelta(days=90)
 
-    limit_date = venta.fecha + timedelta(days=90)
+        html_string = render_to_string('ventas/pdf_factura.html', {
+            'empresa':empresa,
+            'pagesize': 'letter',
+            'cliente': cliente,
+            'venta': venta,
+            'detalles': detalles,
+            'code_control': code,
+            'qr_text': qr_text,
+            'literal_amount': literal_amount,
+            'decimal_amount': decimal_amount,
+            'limit_date': limit_date,
+        })
 
-    html_string = render_to_string('ventas/pdf_factura.html', {
-        'empresa':empresa,
-        'pagesize': 'letter',
-        'cliente': cliente,
-        'venta': venta,
-        'detalles': detalles,
-        'code_control': code,
-        'qr_text': qr_text,
-        'literal_amount': literal_amount,
-        'decimal_amount': decimal_amount,
-        'limit_date': limit_date,
-    })
-
-    return render_pdf(html_string)
+        return render_pdf(html_string)
 
 @login_required(login_url='/login/')
 def pdf_recibo_venta(request, venta_id):
@@ -342,6 +351,67 @@ def calamina_add_material(request, venta_id):
         form = DetallePedidoForm()
     return render(request, 'ventas/calamina/add_material.html', {
         'venta':venta,
+        'form':form,
+        'materiales':colors,
+    })
+
+@login_required(login_url='/login/')
+def update_material(request, pedido_id, detalle_id):
+    detalle = get_object_or_404(DetallePedido, pk = detalle_id)
+    colors = MateriaPrima.objects.filter(estado=True, stock__gte = 1)
+    pedido = get_object_or_404(Pedido, pk = pedido_id)
+    if request.method == 'POST':
+        form = DetallePedidoForm(request.POST, detalle)
+        if form.is_valid():
+            stock = 0
+            color = form.cleaned_data['color']
+            materia_id = form.cleaned_data['anchocalamina']
+            precioc = form.cleaned_data['calamina']
+            umedida = form.cleaned_data['unidad']
+            largo = float(form.cleaned_data['largo'])
+            cantidad = form.cleaned_data['cantidad']
+            totalm = float(form.cleaned_data['total_m'])
+            costo_u = float(form.cleaned_data['costo_u'])
+            costo_t = float(form.cleaned_data['costo_t'])
+            tipo = materia_id.tipo
+            #m = MateriaPrima.objects.get(id = int(materia_id))
+            materials = MateriaPrima.objects.filter(estado=True, color=color, stock__gte=float(totalm), ancho=materia_id.ancho)
+            if not materials:
+                messages.error(request, 'No Exite Materia Prima Disponible')
+            else:
+                pedido.costo = pedido.costo - detalle.costo_t
+                pedido.save()
+                detalle.costo_t = 0
+                detalle.costo_u = 0
+                detalle.largo = 0
+                detalle.totalm = 0
+                detalle.cantidad = 0
+                detalle.save()
+                detalle.costo_u = costo_u
+                detalle.costo_t = costo_t
+                detalle.cantidad = cantidad
+                detalle.totalm = totalm
+                detalle.largo = largo
+                #mejorar control
+                for materia in materials:
+                    stock += materia.stock
+                    if stock >= totalm:
+                        detalle.material.add(materia)
+                        materia.salida = materia.salida + totalm
+                        materia.stock = materia.stock - totalm
+                        materia.save()
+                        break
+                detalle.save()
+                pedido.costo = pedido.costo + detalle.costo_t
+                pedido.save()
+                admin_log_addition(request, detalle, 'Detalle Creado')
+                admin_log_change(request, pedido, 'Costo Modificado')
+                messages.success(request, 'Material Agredado Correctemente')
+                return HttpResponseRedirect(reverse(calamina_new_detail_venta, args={pedido.id, }))
+    else:
+        form = DetallePedidoForm(instance=detalle)
+    return render(request, 'pedidos/update_material.html', {
+        'pedido':pedido,
         'form':form,
         'materiales':colors,
     })

@@ -154,22 +154,22 @@
         height: 350px;
     }
     .rectangulo {
-       width: 200px;
-       height: 100px; 
-       border: 1px solid #555;
-       background: #428bca;
-       border-radius: 50px;
-       padding-top: 2px;
-   }
-   .titulos{
+     width: 200px;
+     height: 100px; 
+     border: 1px solid #555;
+     background: #428bca;
+     border-radius: 50px;
+     padding-top: 2px;
+ }
+ .titulos{
     color: #26AAAF;
     text-align: center;
     font-family: courier;
     font-size: 15px;
 
-   }
+}
 
-   </style>
+</style>
 </head>
 <body>
     <table>
@@ -207,96 +207,97 @@
                 <strong>ORIGINAL</strong><br/>
             </th>
         </tr>
-</table>
-<table>
-    <tr>
-        <td>
-            <p class="">
-                <strong>Fecha: </strong>Potosí, {{ venta.fecha }}
-            </p>
-            <p>
-                <strong>Señor(es): </strong>{{ cliente.razon|upper }}
-            </p>
-        </td>
-        <td>
-            <br>
-            <p>
-                <strong>NIT/CI: </strong>{{ venta.cliente.nit }}
-            </p>
-        </td>
-    </tr>
-</table>
-{% load helper_ventas %}
-<table class="table ">
-    <thead>
+    </table>
+    <table>
         <tr>
-            <th width="150px">Cantidad</th>
-            <th>Concepto</th>
-            <th width="150px">P. UNIT.(Bs)</th>
-            <th width="150px">MetroLineales</th>
-            <th width="200px">Total</th>
+            <td>
+                <p class="">
+                    <strong>Fecha: </strong>Potosí, {{ venta.fecha }}
+                </p>
+                <p>
+                    <strong>Señor(es): </strong>{{ cliente.razon|upper }}
+                </p>
+            </td>
+            <td>
+                <br>
+                <p>
+                    <strong>NIT/CI: </strong>{{ venta.cliente.nit }}
+                </p>
+            </td>
         </tr>
-    </thead>
-    <tbody>
-    {% load helper_material %}
-        {% for detalle in detalles %}
+    </table>
+    {% load helper_ventas %}
+    <table class="table ">
+        <thead>
             <tr>
-                <td align="center">{{ detalle.cantidad }} </td>
-                <td>{{ detalle.descripcion }} : {{detalle.material}}</td>
-                <td align="center">{{ detalle.costo_u }}.-</td>
+                <th width="150px">MetroLineales</th>
+                <th>Concepto</th>
+                <th width="150px">P. UNIT.(Bs)</th>
+                
+                <th width="200px">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% load helper_material %}
+            {% for detalle in detalles %}
+            <tr>  
                 <td align="center">
                     {% if not detalle.precio_id %}
-                        {% sumita detalle.largo detalle.cantidad %}
+                    {% sumita detalle.largo detalle.cantidad %}
                     {% else %}
 
                     {% endif %}
                 </td>
+
+                <td>{{ detalle.descripcion }} : {{detalle.material}}</td>
+                <td align="center">{{ detalle.costo_u }}.-</td>
+                
                 <td align="center">{{ detalle.costo_t }}.-</td>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<table class="table1 ">
-    <tr>
-        <br>
-        <td></td>
-        <td align="right" width="200px">COSTO TOTAL </td>
-        <td width="182px" align="center"><strong>{{ venta.costo }}</strong>  </td>
-    </tr>
-    <tr>
-      <td width="750px">SON: {{ literal_amount|upper }} {{ decimal_amount }}/100 Bs.
-      <td align="right" width="200px">DESCUENTOS </td>
-      <td width="182px" align="center"><strong>0,00</strong></td>
-  </tr>
-  <tr>
-    <td width="750px"></td>
-    <td align="right" width="200px">TOTAL A PAGAR</td>
-    <td width="182px" align="center"><strong>{{ venta.costo }}</strong></td>
-    </tr>
-</table>
-<table>
-    <tr>
-        <td width="750px"><strong>Nota.</strong> Una ves retirada la mercaderia no se aceptan cambios ni devoluciones</td>
-    </tr>
-</table>
-<table>
-    <tr>
-        <th colspan="1" >
-            <img src="{{ STATIC_URL }}barcode/{{ venta.id }}.png" alt="">
-        </th>
-        <th colspan="3" align="left">
-            <p>
-                <strong>CÓDIGO DE CONTROL: </strong>{{ code_control }}
-            </p>
-            <p>
-                <strong>FECHA LÍMITE DE EMISIÓN: </strong>{{ limit_date|date:'d/m/Y' }}
-            </p>
-            <p style="font-family:arial;">“La reproducción total o parcial y/o el uso no autorizado de esta Nota Fiscal, constituye un delito a ser sancionado conforme a Ley”</p>
-        </th>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table class="table1 ">
+        <tr>
+            <br>
+            <td></td>
+            <td align="right" width="200px">COSTO TOTAL </td>
+            <td width="182px" align="center"><strong>{{ venta.costo }}</strong>  </td>
+        </tr>
+        <tr>
+          <td width="750px">SON: {{ literal_amount|upper }} {{ decimal_amount }}/100 Bs.
+              <td align="right" width="200px">DESCUENTOS </td>
+              <td width="182px" align="center"><strong>0,00</strong></td>
+          </tr>
+          <tr>
+            <td width="750px"></td>
+            <td align="right" width="200px">TOTAL A PAGAR</td>
+            <td width="182px" align="center"><strong>{{ venta.costo }}</strong></td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td width="750px"><strong>Nota.</strong> Una ves retirada la mercaderia no se aceptan cambios ni devoluciones</td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <th colspan="1" >
+                <img src="{{ STATIC_URL }}barcode/{{ venta.id }}.png" alt="">
+            </th>
+            <th colspan="3" align="left">
+                <p>
+                    <strong>CÓDIGO DE CONTROL: </strong>{{ code_control }}
+                </p>
+                <p>
+                    <strong>FECHA LÍMITE DE EMISIÓN: </strong>{{ limit_date|date:'d/m/Y' }}
+                </p>
+                <p style="font-family:arial;">“La reproducción total o parcial y/o el uso no autorizado de esta Nota Fiscal, constituye un delito a ser sancionado conforme a Ley”</p>
+            </th>
 
-    </tr>
-</table>
+        </tr>
+    </table>
 
-<p align="center"> ley N° 453 Si se ha vulnerado algun derecho puedes exigir la repocicion o restauracion </p>
+    <p align="center"> {{ empresa.sms }} </p>
 </body>
 </html>

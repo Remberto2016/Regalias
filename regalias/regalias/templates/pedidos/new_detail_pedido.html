@@ -5,73 +5,96 @@ Detalle Cotización
 {% endblock %}
 
 {% block content %}
-{% include 'includes/__info_pedido.html' %}
 <div class="row">
-    <div class="col-md-3">
-        <a href="{% url 'pedido-pdf-proforma' pedido.id %}" class="btn btn-info" target="_blank">
-            <i class="fa fa-camera-retro"></i> Proforma
-        </a>
-    </div>
-    <div class="col-md-3">
-        <a href="{% url 'pedido-new-add-material' pedido.id %}" class="btn btn-success">
-            <i class="fa fa-plus-circle"></i> Agregar Material
-        </a>
-    </div>
-    <div class="col-md-3">
-        <a href="{% url 'pedido-confirm' pedido.id %}" class="btn btn-primary">
-            <i class="fa fa-money-bill-alt"></i> Confirmar Cotización
-        </a>
-    </div>
-    <div class="col-md-3">
-        <a href="{% url 'pedido-delete' pedido.id %}" class="btn btn-danger" title="Cancelar Pedido">
-            <i class="fa fa-money-bill-alt"></i> Cancelar Cotización
-        </a>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            {% include 'includes/__info_pedido.html' %}
+            <hr>
+            <div class="col-md-3">
+                <a href="{% url 'pedido-pdf-proforma' pedido.id %}" class="btn btn-info" target="_blank">
+                    <i class="fa fa-camera-retro"></i> Proforma
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a href="{% url 'pedido-new-add-material' pedido.id %}" class="btn btn-success">
+                    <i class="fa fa-plus-circle"></i> Agregar Material
+                </a>
+            </div>
+            <div class="col-md-3">
+                {% if detalles %}
+                    <a href="{% url 'pedido-confirm' pedido.id %}" class="btn btn-primary">
+                        <i class="fa fa-money-bill-alt"></i> Confirmar Cotización
+                    </a>
+                {% endif %}
+            </div>
+            <div class="col-md-3">
+                <a href="{% url 'pedido-delete' pedido.id %}" class="btn btn-danger " title="Cancelar Pedido">
+                    <i class="fa fa-money-bill-alt"></i> Cancelar Cotización
+                </a>
+            </div>
+            <hr>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2 class="app">Materiales Agregados <small style="font-family:arial">Lista de materiales</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                  </ul>
+                  <div class="clearfix"></div>
+              </div>
+              <div class="x_content">
+                <table class="table striped hovered border bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Cantidad</th>
+                            <th>Unidad</th>
+                            <th>Descripcion</th>
+                            <th>Color</th>
+                            <th>Largo(ML)</th>
+                            <th>Ancho(ML)</th>
+                            <th>Total(ML)</th>
+                            <th>ConMateriaP.</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for detalle in detalles %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ detalle.cantidad }}</td>
+                            <td>{{ detalle.unidad }}</td>
+                            <td>{{ detalle.descripcion }}</td>
+                            <td>{{ detalle.color }}</td>
+                            <td>{{ detalle.largo }}</td>
+                            <td>{{ detalle.ancho }}</td>
+                            <td>{{ detalle.totalm }}</td>
+                            <td>
+                                {% for materia in detalle.material.all %}
+                                <p>Bobina: {{ materia.nro_serie }}</p>
+                                {% endfor %}
+
+                            </td>
+                            <td>
+                                <a href="{% url 'pedido-new-delete-material' detalle.id %}" class="btn btn-danger btn-xs" title="Eliminar Material">
+                                    <i class="fa fa-eraser"></i>
+                                </a>
+
+                                <a href="{% url 'pedido-update-material' pedido.id detalle.id %}" class="btn btn-warning btn-xs" title="Editar Material">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                            </td>
+                        </tr>                
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
-<div class="row">
-    <h3>Materiales Agregados</h3>
-    <div class="col colspan12">
-        <table class="table striped hovered border bordered">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Cantidad</th>
-                    <th>Unidad</th>
-                    <th>Descripcion</th>
-                    <th>Color</th>
-                    <th>Largo(ML)</th>
-                    <th>Ancho(ML)</th>
-                    <th>Total(ML)</th>
-                    <th>ConMateriaP.</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for detalle in detalles %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ detalle.cantidad }}</td>
-                        <td>{{ detalle.unidad }}</td>
-                        <td>{{ detalle.descripcion }}</td>
-                        <td>{{ detalle.color }}</td>
-                        <td>{{ detalle.largo }}</td>
-                        <td>{{ detalle.ancho }}</td>
-                        <td>{{ detalle.totalm }}</td>
-                        <td>
-                            {% for materia in detalle.material.all %}
-                                <p>Bobina: {{ materia.nro_serie }}</p>
-                            {% endfor %}
-
-                        </td>
-                        <td>
-                            <a href="{% url 'pedido-new-delete-material' detalle.id %}" class="btn btn-danger btn-xs" title="Eliminar Material">
-                                <i class="fa fa-eraser"></i>
-                            </a>
-                        </td>
-                    </tr>                
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+</div>
 </div>
 {% endblock %}

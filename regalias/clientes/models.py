@@ -14,7 +14,7 @@ GENERO = (
 )
 
 class Pais(models.Model):
-    pais = models.CharField(max_length=30, verbose_name='País')
+    pais = models.CharField(max_length=30, verbose_name='Nombre', unique=True)
     def __str__(self):
         return self.pais
     def __unicode__(self):
@@ -25,7 +25,7 @@ class Pais(models.Model):
         verbose_name_plural = 'Paices'
 
 class Ciudad(models.Model):
-    ciudad = models.CharField(max_length=30, verbose_name='Ciudad')
+    ciudad = models.CharField(max_length=30, verbose_name='Nombre', unique=True)
     pais = models.ForeignKey(Pais, on_delete=models.PROTECT)
     def __str__(self):
         return self.ciudad
@@ -38,7 +38,7 @@ class Ciudad(models.Model):
 
 
 class Cliente(models.Model):
-    nit = models.CharField(max_length=20, verbose_name='NIT/CI', null=True)
+    nit = models.CharField(max_length=20, verbose_name='NIT/CI', null=True, unique=True)
     razon = models.CharField(max_length=100, verbose_name='Nombre o Razon Social', null=True)
     direccion = models.CharField(max_length=50, verbose_name='Direccion')
     telefono = models.CharField(max_length=15, verbose_name='Telefono/Ceular')

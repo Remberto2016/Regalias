@@ -12,6 +12,8 @@ class Pedido(models.Model):
     entrega = models.CharField(max_length=300, null=True, verbose_name='Lugar de Entrega', help_text='Direccion' )
     plazo = models.IntegerField(default=1, verbose_name='Plazo de Entrega', help_text='En Dias')
     nro_pedido = models.IntegerField(null=True)
+    persona_entrega = models.CharField(max_length=100, null=True, verbose_name='Nombres y Apellidos', help_text='Persona de referencia para entrega')
+    telefono_ref = models.IntegerField(verbose_name='Telefono Persona Referencia', null=True)
     def __unicode__(self):
         return '%s %s'%(self.fecha, self.cliente)
     def __str__(self):

@@ -12,7 +12,10 @@ class UsernameForm(ModelForm):
 class EmpresaForm(ModelForm):
     class Meta:
         model = Empresa
-        fields = '__all__'
+        fields = ['nit', 'nro', 'key', 'sms', 'vencimiento']
+        widgets= {
+        'vencimiento':TextInput(attrs={'readonly': 'readonly'}),
+        }
 
 class ColorForm(ModelForm):
     hex = forms.CharField(label='Seleccione Color', widget=TextInput(attrs={'type':'color', 'required':'required'}))

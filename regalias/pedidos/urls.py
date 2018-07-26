@@ -6,6 +6,7 @@ urlpatterns = [
     path('new/clientes', views.new_list_cliente, name='pedido-list-clientes'),
     path('new/<int:cliente_id>/pedido', views.new_pedido, name='pedido-new'),
     path('new/<int:pedido_id>/detail', views.new_detail_pedido, name='pedido-new-detail'),
+    path('new/<int:pedido_id>/<int:detalle_id>/update/material', views.update_material, name='pedido-update-material'),
     path('new/<int:pedido_id>/add/material', views.add_material, name='pedido-new-add-material'),
     path('new/<int:detalle_id>/delete/material', views.delete_material, name='pedido-new-delete-material'),
     path('confirm/<int:pedido_id>', views.confirm_pedido, name='pedido-confirm'),

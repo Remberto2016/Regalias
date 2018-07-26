@@ -22,6 +22,8 @@ from materiales.models import Proveedor, MateriaPrima
 
 import datetime
 
+from datetime import timedelta
+
 def home(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse(user_index))
@@ -224,7 +226,12 @@ def deactivate_superuser(request, user_id):
 @login_required(login_url='/login/')
 def info_empresa(request):
     if Empresa.objects.all():
+        hoy = datetime.datetime.now()
         empresa = Empresa.objects.all().first()
+        error = empresa.vencimiento - timedelta(days=30)
+        print(error)
+        if hoy.strftime('%Y-%m-%d') >= error.strftime('%Y-%m-%d'):
+            messages.error(request, 'La Llave de dosificacion esta por expirar')
         return render(request, 'empresa/index.html', {
             'empresa': empresa
         })
@@ -236,7 +243,9 @@ def new_empresa(request):
     if request.method == 'POST':
         form = EmpresaForm(request.POST)
         if form.is_valid():
-            form.save()
+            empresa = form.save(commit=False)
+            empresa.vencimiento = datetime.datetime.now() + timedelta(days=180)
+            empresa.save()
             return HttpResponseRedirect(reverse(info_empresa))
     else:
         form = EmpresaForm()
@@ -247,10 +256,15 @@ def new_empresa(request):
 @login_required(login_url='/login/')
 def update_empresa(request):
     empresa = Empresa.objects.all().first()
+    key1 = empresa.key
     if request.method == 'POST':
         form = EmpresaForm(request.POST, instance=empresa)
         if form.is_valid():
-            form.save()
+            key = form.cleaned_data['key']
+            empresa = form.save(commit=False)
+            if key != key1:
+                empresa.vencimiento = datetime.datetime.now() + timedelta(days=180)
+            empresa.save()
             return HttpResponseRedirect(reverse(info_empresa))
     else:
         form = EmpresaForm(instance=empresa)

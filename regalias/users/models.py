@@ -7,6 +7,8 @@ class Empresa(models.Model):
     nit = models.CharField(max_length=300, verbose_name='NIT Empresa')
     nro = models.CharField(max_length=300, verbose_name='Numero de Autorizacion')
     key = models.CharField(max_length=500, verbose_name='Llave de Dosificacion')
+    vencimiento = models.DateField(null=True)
+    sms = models.TextField(max_length=500, null=True, verbose_name='Mensaje de Factura')
     def __unicode__(self):
         return '%s'%self.nit
     def __str__(self):

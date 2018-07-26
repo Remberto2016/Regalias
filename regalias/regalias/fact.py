@@ -64,38 +64,40 @@ def base64(number):
 
 
 def controlCode(auth, number, nit, date, total, key):
-	code = ''
-	number = verhoeff(number, 2)
-	print(nit)
-	nit = verhoeff(nit, 2)
-	date = verhoeff(date, 2)
-	total = verhoeff(total, 2)
-	vf = verhoeff(str(
+    print(auth)
+    print(number)
+    print(nit)
+    print(date)
+    #total = '35959'
+    print(total)
+    print(key)
+    code = ''
+    number = verhoeff(number, 2)
+    nit = verhoeff(nit, 2)
+    date = verhoeff(date, 2)
+    total = verhoeff(total, 2)
+    vf = verhoeff(str(
 		int(number) +
 		int(nit) +
 		int(date) +
 		int(total)
 	), 5)[-5:]
-
-	input = [auth, number, nit, date, total]
-	idx = 0
-	for i in range(5):
-		code += input[i] + key[idx:idx+1+int(vf[i])]
-		idx += 1+int(vf[i])
-	code = arc4(code, key + vf)
-
-	final_sum = 0
-	total_sum = 0
-	partial_sum = [0, 0, 0, 0, 0]
-	for i in range(len(code)):
-		partial_sum[i % 5] += ord(code[i])
-		total_sum += ord(code[i])
-	for i in range(5):
-		final_sum += math.floor((total_sum * partial_sum[i]) / (1 + int(vf[i])))
-
-	matched = []
-	for regexp in re.findall('.{2}', arc4(base64(final_sum), key + vf)):
-		matched.append(regexp)
-	code = '-'.join(matched)
-
-	return code
+    input = [auth, number, nit, date, total]
+    idx = 0
+    for i in range(5):
+        code += input[i] + key[idx:idx+1+int(vf[i])]
+        idx += 1+int(vf[i])
+    code = arc4(code, key + vf)
+    final_sum = 0
+    total_sum = 0
+    partial_sum = [0, 0, 0, 0, 0]
+    for i in range(len(code)):
+        partial_sum[i % 5] += ord(code[i])
+        total_sum += ord(code[i])
+    for i in range(5):
+        final_sum += math.floor((total_sum * partial_sum[i]) / (1 + int(vf[i])))
+    matched = []
+    for regexp in re.findall('.{2}', arc4(base64(final_sum), key + vf)):
+        matched.append(regexp)
+    code = '-'.join(matched)
+    return code

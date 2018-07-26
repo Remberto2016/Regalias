@@ -135,6 +135,67 @@ def add_material(request, pedido_id):
     })
 
 @login_required(login_url='/login/')
+def update_material(request, pedido_id, detalle_id):
+    detalle = get_object_or_404(DetallePedido, pk = detalle_id)
+    colors = MateriaPrima.objects.filter(estado=True, stock__gte = 1)
+    pedido = get_object_or_404(Pedido, pk = pedido_id)
+    if request.method == 'POST':
+        form = DetallePedidoForm(request.POST, detalle)
+        if form.is_valid():
+            stock = 0
+            color = form.cleaned_data['color']
+            materia_id = form.cleaned_data['anchocalamina']
+            precioc = form.cleaned_data['calamina']
+            umedida = form.cleaned_data['unidad']
+            largo = float(form.cleaned_data['largo'])
+            cantidad = form.cleaned_data['cantidad']
+            totalm = float(form.cleaned_data['total_m'])
+            costo_u = float(form.cleaned_data['costo_u'])
+            costo_t = float(form.cleaned_data['costo_t'])
+            tipo = materia_id.tipo
+            #m = MateriaPrima.objects.get(id = int(materia_id))
+            materials = MateriaPrima.objects.filter(estado=True, color=color, stock__gte=float(totalm), ancho=materia_id.ancho)
+            if not materials:
+                messages.error(request, 'No Exite Materia Prima Disponible')
+            else:
+                pedido.costo = pedido.costo - detalle.costo_t
+                pedido.save()
+                detalle.costo_t = 0
+                detalle.costo_u = 0
+                detalle.largo = 0
+                detalle.totalm = 0
+                detalle.cantidad = 0
+                detalle.save()
+                detalle.costo_u = costo_u
+                detalle.costo_t = costo_t
+                detalle.cantidad = cantidad
+                detalle.totalm = totalm
+                detalle.largo = largo
+                #mejorar control
+                for materia in materials:
+                    stock += materia.stock
+                    if stock >= totalm:
+                        detalle.material.add(materia)
+                        materia.salida = materia.salida + totalm
+                        materia.stock = materia.stock - totalm
+                        materia.save()
+                        break
+                detalle.save()
+                pedido.costo = pedido.costo + detalle.costo_t
+                pedido.save()
+                admin_log_addition(request, detalle, 'Detalle Creado')
+                admin_log_change(request, pedido, 'Costo Modificado')
+                messages.success(request, 'Material Agredado Correctemente')
+                return HttpResponseRedirect(reverse(new_detail_pedido, args={pedido.id, }))
+    else:
+        form = DetallePedidoForm(instance=detalle)
+    return render(request, 'pedidos/update_material.html', {
+        'pedido':pedido,
+        'form':form,
+        'materiales':colors,
+    })
+
+@login_required(login_url='/login/')
 def ajax_get_precio(request):
     if request.is_ajax():
         id = request.GET['precio_id']
