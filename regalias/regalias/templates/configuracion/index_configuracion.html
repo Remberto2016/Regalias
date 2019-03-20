@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+{% block title %}
+Configuración
+{% endblock %}
+{% block content %}
+<div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2 class="app">Lista de codigos </h2>
+			<ul class="nav navbar-right panel_toolbox">
+
+				<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+				</li>
+				<li><a class="close-link" href=""><i class="fa fa-close"></i></a>
+				</li>
+			</ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>Bobina</h2>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<table class="table striped hovered border bordered" width="100%">
+							<thead>
+								<tr>
+									<th width="10px">#</th>
+									<th>Codigo Materia Prima</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for codprimas in codprima %}
+								<tr>
+									<td>{{ forloop.counter }}</td>
+
+									<td>{{ codprimas.codigo }}</td>
+									<td>
+										
+										<a href="{% url 'update-codigo-materia-prima-configuracion-popup' codprimas.id %}" type="button" class="btn btn-warning btn-xs add-another" data-toggle="tooltip" title="Modificar Codigo!" id="register_codigo"><i class="fa fa-pencil-square"></i>
+										</a>
+										<!--a href="" class="btn btn-danger btn-xs" data-toggle="tooltip" title="Baja Codigo!" id="baja_codigo">
+											<i class="fa fa-times-circle"></i>
+										</a>
+										
+										<a href="" class="btn btn-success btn-xs" title="Activar Codigo">
+											<i class="fa fa-calendar-check-o"></i>
+										</a-->
+									</td>
+								</tr>
+
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<div class="x_panel tile ">
+					<div class="x_title">
+						<h2>Precio Calamina</h2>
+						
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<table class="table striped hovered border bordered" width="100%">
+							<thead>
+								<tr>
+									<th width="10px">#</th>
+									<th>Codigo Precio Calamina</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for codprecios in codprecio %}
+								<tr>
+									<td>{{ forloop.counter }}</td>
+									<td>{{ codprecios.codigo }}</td>
+									<td>
+										<a href="{% url 'update-codigo-precio-calamina-popup' codprecios.id %}" type="button" class="btn btn-warning btn-xs add-another" data-toggle="tooltip" title="Modificar Codigo!" id="register_codigo"><i class="fa fa-pencil-square"></i>
+										</a>
+										<!--/a><a href="#" class="btn btn-danger btn-xs" title="Baja Usuario">
+											<i class="fa fa-times-circle"></i>
+										</a-->
+									</td>
+								</tr>
+
+								{% endfor %}
+
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		<div class="x_content">
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<div class="x_panel tile ">
+					<div class="x_title">
+						<h2>Tipo Calamina</h2>
+						
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<table class="table striped hovered border bordered" width="100%">
+							<thead>
+								<tr>
+									<th width="10px">#</th>
+									<th>Tipo Calamina</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for codtipos in codtipo %}
+								<tr>
+									<td>{{ forloop.counter }}</td>
+									<td>{{ codtipos.tipo }}</td>
+									<td>
+										<a href="{% url 'update-tipo-calamina-popup' codtipos.id %}" type="button" class="btn btn-warning btn-xs add-another" data-toggle="tooltip" title="Modificar Codigo!" id="register_codigo"><i class="fa fa-pencil-square"></i>
+										</a>
+										<!--/a><a href="#" class="btn btn-danger btn-xs" title="Baja Usuario">
+											<i class="fa fa-times-circle"></i>
+										</a-->
+									</td>
+								</tr>
+
+								{% endfor %}
+
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>Clavo</h2>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<table class="table striped  border-bordered" width="100%">
+							<thead>
+								<tr>
+									<th width="10px">#</th>
+									<th>Codigo Clavo</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for codclavos in codclavo %}
+								<tr>
+									<td>{{ forloop.counter }}</td>
+									<td>{{ codclavos.codigo }}</td>
+									<td>
+										<a href="{% url 'update-codigo-clavo-popup' codclavos.id %}" type="button" class="btn btn-warning btn-xs add-another" data-toggle="tooltip" title="Modificar Codigo!" id="register_codigo"><i class="fa fa-pencil-square"></i>
+										</a>
+										<!--/a><a href="#" class="btn btn-danger btn-xs" title="Baja Usuario">
+											<i class="fa fa-times-circle"></i>
+										</a-->
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
+</div>
+{% endblock %}
+{% block js %}
+<script>
+$(document).ready(function() {
+	$( '.add-another' ).click(function(e) {
+		e.preventDefault(  );
+		showAddAnotherPopup( $( this ) );
+	});
+});
+
+/* Credit: django.contrib.admin (BSD) */
+
+function showAddAnotherPopup(triggeringLink) {
+    /*
+
+    Pause here with Firebug's script debugger.
+
+    */
+    var name = triggeringLink.attr( 'id' ).replace(/^add_/, '');
+    name = id_to_windowname(name);
+    href = triggeringLink.attr( 'href' );
+
+    if (href.indexOf('?') == -1) {
+    	href += '?popup=1';
+    } else {
+    	href += '&popup=1';
+    }
+
+    href += '&winName=' + name;
+
+    var win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
+    win.focus();
+
+    return false;
+}
+
+function dismissAddAnotherPopup(win, newId, newRepr) {
+    // newId and newRepr are expected to have previously been escaped by
+    newId = html_unescape(newId);
+    newRepr = html_unescape(newRepr);
+    var name = windowname_to_id(win.name);
+    var elem = document.getElementById(name);
+
+    if (elem) {
+    	if (elem.nodeName == 'SELECT') {
+    		var o = new Option(newRepr, newId);
+    		elem.options[elem.options.length] = o;
+    		o.selected = true;
+    	}
+    } else {
+    	console.log("Could not get input id for win " + name);
+    }
+
+    win.close();
+    location.reload();
+}
+
+function html_unescape(text) {
+ // Unescape a string that was escaped using django.utils.html.escape.
+ text = text.replace(/</g, '');
+ text = text.replace(/"/g, '"');
+ text = text.replace(/'/g, "'");
+ text = text.replace(/&/g, '&');
+ return text;
+}
+
+// IE doesn't accept periods or dashes in the window name, but the element IDs
+// we use to generate popup window names may contain them, therefore we map them
+// to allowed characters in a reversible way so that we can locate the correct
+// element when the popup window is dismissed.
+function id_to_windowname(text) {
+	text = text.replace(/\./g, '__dot__');
+	text = text.replace(/\-/g, '__dash__');
+	text = text.replace(/\[/g, '__braceleft__');
+	text = text.replace(/\]/g, '__braceright__');
+	return text;
+}
+
+function windowname_to_id(text) {
+	return text;
+}
+</script>
+{% endblock js %}
+{% include '__popup_script.html' %}

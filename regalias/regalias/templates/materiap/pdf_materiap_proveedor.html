@@ -5,66 +5,79 @@ Materia Prima
 {% endblock %}
 
 {% block cuerpo %}
-<h1>Materia Prima</h1>
-<table>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>
-            <h3 class="left" align="left">NºPOTOSI/{{ fecha.month }}/{{ fecha.year }}</h3>
-        </td>
-    </tr>
-</table>
 
+<style>
 
-<table>
-    <tr>
-        <td class="">
-            <strong>Proveedor: </strong>{{ proveedor.proveedor }}
-        </td>
-        <td>
-            <strong>Telefono: </strong>{{ proveedor.telefono }}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <strong>Direccion: </strong>{{ proveedor.direccion }}
-        </td>
-        <td>
-            <strong>Email: </strong>{{ proveedor.email }}
-        </td>
-    </tr>
-</table>
-<table class="table">
-<tr>
-        <td>Detalle de Materiales</td>
-    </tr>
-</table>
-<table class="table striped hovered border bordered">
-    <thead>
+.app th{
+    background-color: #d7d7d7;
+    border :1px solid white;
+    font-family: courier;
+}
+.app td{
+    text-align:center;
+    border-bottom: 1px solid #d7d7d7;
+    
+}
+</style>
+<h2 align="center">DETALLE DE MATERIAL POR PROVEEDOR </h2>
+<table >
         <tr>
-            <th width="30px">#</th>
-            <th>Marca</th>
-            <th>Detalle</th>
-            <th>Peso</th>
-            <th>T. Superficie</th>
-            <th>Estandar</th>
-            <th>Certificacion</th>
+            <h3 class="" align="right">NºPOTOSI /{{ fecha.month }}/{{ fecha.year }}</h3>
+            <th class="celdas" colspan="4" width="100%" align="left" style="font-family: courier; font-size:15px; border: white;background-color:#d7d7d7;"> I. DATOS IDENTIFICACIÓN DE PROVEEDOR<strong></strong> </th>
+        </tr>
+        <tr></tr>
+        <tr  style="font-family: courier; font-size:12px;">
+            <td width="17%">
+                <p> <strong> PROVEEDOR: </strong></br>
+                 <strong> NIT/C.I. </strong></br>
+                 <strong> PAÍS / CIUDAD: </strong></br>
+             </p>
+         </td>
+         <td width="35%">
+            <p> {{ proveedor.proveedor |upper}}</br>
+            {{ proveedor.nit |upper}}</br>
+        {{ proveedor.origen.pais |upper}} / {{ proveedor.origen |upper}} </br>
+    </p>
+</td>
+<td width="12%">
+    <p>
+        <strong> DIRECIÓN: </strong></br>
+        <strong> TELÉFONO: </strong> </br>
+        <strong> EMAIL: </strong></br>
+    </p>
+</td>
+<td width="36%">
+    <p>{{ proveedor.direccion |upper}} </br>
+    {{ proveedor.telefono |upper}}</br>
+{{ proveedor.email}} </br>
+
+</p>
+</td>
+</tr>
+</table>
+<table style="font-size:11px; padding-top:2px; ">
+    <h3 style="font-family:courier; font-size:15px;">II. DETALLE DE MATERIALES</h3>
+    <thead >
+        <tr class="app">
+            <th  width="6%">#</th>
+            <th  width="13%">FECHA</th>
+            <th  width="15%">CODIGO</th>
+            <th  width="45%">DETALLE</th>
+            <th  width="9%">PESO</th>
+            <th  width="14%">PRECIO (Bs.)</th>
+
         </tr>
     </thead>
-    <tbody>
+    <tbody  >
         {% for material in materiales %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ material.marca }}</td>
-                <td>{{ material.detalle }}</td>
-                <td>{{ material.peso }} {{ material.medida }}</td>
-                <td>{{ material.superficie }}</td>
-                <td>{{ material.estandar }}</td>
-                <td>{{ material.certificacion }}</td>
-            </tr>
+        <tr class="app">
+            <td >{{ forloop.counter }}</td>
+            <td >{{ material.fecha |upper}}</td>
+            <td >{{ material.codigo  | upper}}</td>
+            <td >{{ material.detalle | upper}}</td>
+            <td >{{ material.peso| upper}}</td>
+            <td style="background-color:#d7d7d7; border: 1px solid white;" >{{ material.precioc | upper}}</td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>

@@ -4,7 +4,7 @@ from django import forms
 
 from users.models import Color
 from clientes.models import Pais
-from materiales.models import MateriaPrima, Proveedor, Precio, PrecioClavos
+from materiales.models import MateriaPrima, Proveedor, Precio, PrecioClavos, TipoCalamina, PrecioCalamina, CodigoCalamina, CodigoMateriaPrima, CodigoClavo
 
 import datetime
 class MateriaPForm(ModelForm):
@@ -20,12 +20,12 @@ class ProveedorForm(ModelForm):
     pais = forms.ModelChoiceField(label='Pais', queryset=Pais.objects.all())
     class Meta:
         model = Proveedor
-        fields = ['proveedor', 'telefono', 'pais', 'origen', 'direccion', 'email']
+        fields = ['nit', 'proveedor', 'telefono', 'pais', 'origen', 'direccion', 'email']
 
 class PrecioForm(ModelForm):
     class Meta:
         model = Precio
-        exclude = ['estado']
+        exclude = ['estado', 'descripcion']
         widgets = {
             'codigo':TextInput(attrs={'readonly':'readonly'}),
             'espesor':TextInput(attrs={'readonly': 'readonly'}),
@@ -63,9 +63,36 @@ class PrecioClavoForm(ModelForm):
     class Meta:
         model = PrecioClavos
         exclude = ['estado']
-        widgets = {
-        'codigo':TextInput(attrs={'readonly':'readonly'}),
-        }
-
+        
 class StockClavos(forms.Form):
     cantidad = forms.IntegerField(label='Cantidad de Material', widget=TextInput(attrs={'min':'1'}))
+
+class TipoCalaminaForm(ModelForm):
+    class Meta:
+        model = TipoCalamina
+        fields = '__all__'
+
+class CodigoCalaminaForm(ModelForm):
+    class Meta:
+        model = CodigoCalamina
+        fields = '__all__'
+
+class PrecioCalaminaForm(ModelForm):
+    class Meta:
+        model = PrecioCalamina
+        exclude = ['estado', 'nro_codigo']
+        
+class PrecioCalaminaPrecioForm(ModelForm):
+    class Meta:
+        model = PrecioCalamina
+        exclude = ['estado', 'nro_codigo', 'tipo', 'codigo', 'color', 'espesor','ancho']
+
+class CodigoMateriaPrimaForm(ModelForm):
+    class Meta:
+        model = CodigoMateriaPrima
+        fields = '__all__'
+
+class CodigoClavoForm(ModelForm):
+    class Meta:
+        model = CodigoClavo
+        fields = '__all__'

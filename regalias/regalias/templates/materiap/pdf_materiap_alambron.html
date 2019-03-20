@@ -5,33 +5,54 @@ Materia Prima
 {% endblock %}
 
 {% block cuerpo %}
-<h1>Materia Prima</h1>
-<table class="table striped hovered border bordered">
-    <thead>
+<h2 align="center">MATERIA PRIMA</h2>
+<table >
+    {% for material in materiales %}   
+    <div> 
+        <tr></tr>
         <tr>
-            <th width="20px">#</th>
-            <th>Fecha</th>
-            <th>Tipo</th>
-            <th>Peso</th>
-            <th width="70px">Espesor</th>
-
-
+            <th class="celdas" colspan="5" width="100%" align="left" style="font-family: courier; font-size:15px; border: white;background-color:#d7d7d7;">{{ forloop.counter }}  DATOS TECNICOS DE ALAMBRON: <strong>{{ material.codigo |upper}}</strong> </th>
         </tr>
-    </thead>
-    <tbody>
-        {% for material in materiales %}
-        {% if material.tipo == 'Clavos' %}
-        <tr >
-            <td>{{ forloop.counter }}</td>
-            <td>{{material.fecha}}</td>
-            <td> Alambron: {{material.nro_serie}} </td>
-            <td>{{ material.peso }} {{ material.medida }}</td>
-            <td>{{ material.espesor }}</td>
+        <tr></tr>
+        <tr  style="font-family: courier; font-size:12px;">
+            <td width="15%">
+                <strong> UNIDAD: </strong></br>
+                <strong> CODIGO: </strong></br>
+                <strong> TIPO: </strong></br>
+                <strong> NUM. SERIE: </strong></br> 
+                <strong> MARCA: </strong> </br>
+                <strong> CANTIDAD: </strong> </br> 
+            </td>
+            <td width="15%">
+                {{ material.unidad |upper}}</br> 
+                {{ material.codigo |upper}}</br>
+                {{ material.tipo |upper}}</br>
+                {{ material.nro_serie |upper}}</br>
+                {{ material.marca |upper}}</br>
+                {{ material.cantidad |upper }}</br>    
+            </td>
+            <td width="20%"></td>
+            <td width="20%">
+                <strong> ESPESOR: </strong></br> 
+                <strong> PESO: </strong></br>
+                <strong> FECHA: </strong></br> 
+                <strong> PRECIO: </strong> </br>
+                <strong> PROVEEDOR: </strong></br> 
+                <strong> USUARIO: </strong></br> 
+                
+            </td>
+            <td width="32%">
+                {{ material.espesor |upper}} mm.</br>
+                {{ material.peso |upper}} {{ material.medida |upper}}</br>
+                {{ material.fecha |upper}}</br>
+                {{ material.precioc |upper}} Bs.</br>
+                {{ material.proveedor |upper}}</br>
+                {{material.user.first_name|upper}} {{ material.user.last_name |upper}} </br>
+                
+            </td>
         </tr>
-        
-        {% endif %}
-
-        {% endfor %}
-    </tbody>
+    </div>
+   
+    {% endfor %}
 </table>
 {% endblock %}

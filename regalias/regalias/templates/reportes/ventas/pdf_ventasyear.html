@@ -5,39 +5,64 @@ Ventas Gestion {{ fecha.year }}
 {% endblock %}
 
 {% block cuerpo %}
+<style>
+
+.app th{
+    background-color: #d7d7d7;
+    border :1px solid white;
+    font-family: courier;
+}
+.app td{
+
+    border-bottom: 1px solid #d7d7d7;
+    font-family: courier;
+    vertical-align: top; 
+}
+</style>
 {% load helper_ventas %}
-<h1 class="center">Reporte Ventas</h1>
-<h2>Ventas en la Gestion: {{ fecha.year }}</h2>
+<h1 class="center" style="font-family:courier">REPORTE VENTAS</h1>
+<h2 style="font-family:courier">VENTAS EN LA GESTION: {{ fecha.year }}</h2>
 <div class="col-md-12">
-    <table class="table striped hovered">
-        <thead>
-            <tr>
-                <th width="30px">#</th>
-                <th>Fecha</th>
-                <th width="">Cliente</th>
-                <th>NIT/CI</th>
-                <th>Cantidad Materiales</th>
-                <th width="20%">Total Precio(Bs)</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for venta in ventas %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ venta.fecha|date:"d-M-Y" }}</td>
-                    <td>{{ venta.cliente.razon }}</td>
-                    <td>{{ venta.cliente.nit }}</td>
-                    <td class="center">{{ venta.detalleventa_set.select_related.count }}</td>
-                    <td class="right">{{ venta.costo }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <table class="table" width="100%">
-        <tr>
-            <th width="84%">TOTALES</th>
-            <td width="16%" class="right">{% sum_ventas ventas %}</td>
+   <table style="font-size:13px; padding-top:3px; ">
+    <thead >
+        <tr class="app">
+            <th  width="10%">#</th>
+            <th  width="20%">CANT.</th>
+            <th colspan="2" width="40%">DETALLE</th>
+            <th  width="30%">TOTAL (Bs)</th>
         </tr>
-    </table>
+    </thead>
+    <tbody>
+        {% for venta in ventas %}
+        <tr class="app">
+            <td align="center">{{ forloop.counter }}</td>
+            <td align="center">{{ venta.detalleventa_set.select_related.count }}</td>
+            <td width="10%">
+                <p>
+                    <strong>FECHA: </strong></br>
+                    <strong>CLIENTE: </strong></br>
+                    <strong>NIT: </strong></br>
+                    <strong>USUARIO: </strong></br>
+                </p>
+            </td>
+            <td width="30%">
+                <p>{{venta.fecha|date:'d/m/y'}}</br>
+                {{ venta.cliente.razon |upper}}</br>
+            {{venta.cliente.nit}}</br>
+        {{venta.user.first_name|upper}} {{venta.user.last_name|upper}}</br>
+    </p>
+</td>
+<td align="right">{{ venta.costo }} Bs.</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<table style="font-size:13px; padding-top:3px; ">
+    <tr class="app">
+        <td width="70%" align="right"><strong>TOTALES</strong></td>
+        <td width="30%" class="right"><strong>{% sum_ventas ventas %} Bs.</strong></td>
+    </tr>
+</table>
 </div>
 {% endblock %}

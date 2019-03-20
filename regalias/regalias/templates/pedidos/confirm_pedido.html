@@ -9,9 +9,15 @@ Confirmar Cotización
 {% endblock %}
 
 {% block info-form %}
-{% include 'includes/__info_pedido.html' %}
-{% endblock %}
+<div class="col-md-12 col-sm-12 col-xs-12">
+	<div class="dashboard_graph x_panel">
+		{% include 'includes/__info_pedido.html' %}
 
-{% block submit %}
-Confirmar
+		{% endblock %}
+
+		{% block submit %}
+		Confirmar
+
 {% endblock %}
+	</div>
+</div>

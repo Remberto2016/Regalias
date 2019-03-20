@@ -13,7 +13,7 @@ from django.db.models import ProtectedError, Max
 from regalias.utility import admin_log_addition, admin_log_change, render_pdf
 
 from clientes.models import Cliente
-from materiales.models import Precio, MateriaPrima
+from materiales.models import Precio, MateriaPrima, PrecioCalamina
 from pedidos.models import Pedido, DetallePedido
 
 from pedidos.form import DetallePedidoForm, ConfirmForm
@@ -39,6 +39,7 @@ from pedidos.models import Pedido, DetallePedido
 from pedidos.form import DetallePedidoForm, ConfirmForm
 import datetime
 
+from datetime import timedelta
 @login_required(login_url='/login/')
 def index(request):
     pedidos = Pedido.objects.filter(estado=True, venta=False)
@@ -49,6 +50,7 @@ def index(request):
 @login_required(login_url='/login/')
 def new_list_cliente(request):
     clientes = Cliente.objects.filter(estado=True)
+    messages.warning(request, 'Selecione Clente Para la Cotización')
     return render(request, 'pedidos/new_list_clientes.html', {
         'clientes':clientes,
     })
@@ -68,13 +70,65 @@ def new_pedido(request, cliente_id):
 def new_detail_pedido(request, pedido_id):
     pedido =  get_object_or_404(Pedido, pk = pedido_id)
     detalles = DetallePedido.objects.filter(pedido=pedido)
+    precios = PrecioCalamina.objects.filter(estado=True)
     return render(request, 'pedidos/new_detail_pedido.html', {
         'pedido':pedido,
         'detalles':detalles,
+        'precios':precios,
     })
+
+
+@login_required(login_url='/login')
+def add_new_material_calamina(request, pedido_id):
+    pedido = get_object_or_404(Pedido, pk=pedido_id)
+    if request.method == 'POST':
+        stock = 0
+        codigo = request.POST['preciocalamina_id'] #PrecioCalamina_id
+        preciocalamina = get_object_or_404(PrecioCalamina, pk = codigo)
+        cantidad = request.POST['cantidad_id']
+        largo = request.POST['largo_id']
+        totalm = float(cantidad) * float(largo)
+        materials = MateriaPrima.objects.filter(estado=True, color=preciocalamina.color.color, espesor=preciocalamina.espesor, stock__gte=float(totalm))
+        #=color, stock__gte=float(totalm), ancho=materia_id.ancho)
+        if not materials:
+            messages.error(request, 'No Exite Materia Prima Disponible')
+            return HttpResponseRedirect(reverse(add_new_material_calamina, args={pedido.id, }))
+        else:
+            detalle = DetallePedido.objects.create(
+                unidad = 'Calamina',
+                preciocalamina=preciocalamina,
+                descripcion=preciocalamina.tipo.tipo,
+                cantidad=int(cantidad),
+                largo=largo,
+                costo_u=preciocalamina.precio,
+                costo_t=preciocalamina.precio * totalm,
+                pedido=pedido,
+                color=preciocalamina.color.color,
+                ancho=preciocalamina.ancho,
+                totalm=totalm,
+            )
+            detalle.save()
+            for materia in materials:
+                stock += materia.stock
+                stock += materia.stock
+                if stock >= totalm:
+                    detalle.material.add(materia)
+                    materia.salida = materia.salida + totalm
+                    materia.stock = materia.stock - totalm
+                    materia.save()
+                    break
+            pedido.costo = pedido.costo + detalle.costo_t
+            pedido.save()
+            admin_log_addition(request, detalle, 'Detalle pedido Creado')
+            admin_log_change(request, pedido, 'Costo Modificado')
+            messages.success(request, 'Material Agredado Correctemente')
+            return HttpResponseRedirect(reverse(new_detail_pedido, args={pedido_id, }))
+    else:
+        return HttpResponseRedirect(reverse(new_detail_pedido, args={pedido_id, }))
 
 @login_required(login_url='/login/')
 def add_material(request, pedido_id):
+    #
     colors = MateriaPrima.objects.filter(estado=True, stock__gte = 1)
     pedido = get_object_or_404(Pedido, pk = pedido_id)
     if request.method == 'POST':
@@ -157,6 +211,7 @@ def update_material(request, pedido_id, detalle_id):
             materials = MateriaPrima.objects.filter(estado=True, color=color, stock__gte=float(totalm), ancho=materia_id.ancho)
             if not materials:
                 messages.error(request, 'No Exite Materia Prima Disponible')
+                return HttpResponseRedirect(reverse(new_detail_pedido, args={pedido.id, }))
             else:
                 pedido.costo = pedido.costo - detalle.costo_t
                 pedido.save()
@@ -249,6 +304,8 @@ def confirm_pedido(request, pedido_id):
             pedido.nro_pedido = nro
             pedido.estado = True
             pedido.fecha = datetime.datetime.now()
+            pedido.usuario = request.user
+            
             pedido.save()
             messages.success(request, 'Pedido Confirmado Correctamente')
             return HttpResponseRedirect(reverse(detail_pedido, args={pedido.id, }))
@@ -261,7 +318,7 @@ def confirm_pedido(request, pedido_id):
 
 @login_required(login_url='/login/')
 def pedidos_no_confirmados(request):
-    pedidos = Pedido.objects.filter(estado=False)
+    pedidos = Pedido.objects.filter(estado=False, venta=False)
     return render(request, 'pedidos/no_confirmados.html', {
         'pedidos':pedidos,
     })
@@ -273,7 +330,7 @@ def delete_pedido(request, pedido_id):
     for d in detalle:
         detallem = d.material.first()
         material = MateriaPrima.objects.get(id=detallem.id)
-        material.stock = material.stock + detalle.totalm
+        material.stock = material.stock + d.totalm
         material.save()
         d.delete()
     pedido.delete()
@@ -322,3 +379,26 @@ def pdf_proforma(request, pedido_id):
         'request': request,
     })
     return render_pdf(html)
+
+@login_required(login_url='/login')
+def list_orden_produccion(request):
+    pedidos = Pedido.objects.filter(estado=True, venta=True)
+    return render(request, 'pedidos/list_orden_produccion.html', {
+        'pedidos':pedidos,
+    })
+
+@login_required(login_url='/login/')
+def realizar_orden(request, pedido_id):
+    pedido = get_object_or_404(Pedido, pk=pedido_id)
+    pedido.estado = False
+    pedido.save()
+    admin_log_change(request, pedido, 'Orden de Produccion Realizado')
+    messages.success(request, 'Orden de Produccion Realizado')
+    return HttpResponseRedirect(reverse(list_orden_produccion))
+
+@login_required(login_url='/login')
+def list_orden_produccion_realizado(request):
+    pedidos = Pedido.objects.filter(estado=False, venta=True)
+    return render(request, 'pedidos/list_orden_produccion_realizado.html', {
+        'pedidos':pedidos,
+    })

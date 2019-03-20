@@ -1,5 +1,5 @@
 #encoding:utf-8
-from django.forms import ModelForm, TextInput
+from django.forms import ModelForm, TextInput, Textarea
 from django import forms
 
 
@@ -25,4 +25,10 @@ class DetalleVentaForm(ModelForm):
                                           queryset=PrecioClavos.objects.filter(estado=True), required=True)
     class Meta:
         model = DetalleVenta
-        fields = ['materiaprima', 'unidad', 'material', 'descripcion', 'cantidad', 'costo_u', 'costo_t']
+        fields = ['materiaprima', 'unidad', 'descripcion', 'cantidad', 'costo_u', 'costo_t']
+        exclude = ['material']
+        widgets = {
+        'costo_u':TextInput(attrs={'readonly': 'readonly'}),
+        'costo_t':TextInput(attrs={'readonly': 'readonly'}),
+        'descripcion':Textarea(attrs={'rows':3}),
+        }

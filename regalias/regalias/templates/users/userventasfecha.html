@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Ventas por Fecha
+{% endblock %}
+
+{% block content %}
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="dashboard_graph x_panel">
+    <div class="row x_title">
+      <div class="col-md-6">
+         <a href="{% url 'user-pdf-ventas-fechas' user.id inicio.year inicio.month inicio.day fin.year fin.month fin.day %}" class="btn btn-info" target="_blank">
+            <i class="fa fa-file-pdf-o"></i> Pasar A PDF
+        </a>
+    </div>
+    <div class="col-md-6">
+
+    </div>
+</div>
+{# incluir formulario busqueda #}
+{% include 'includes/__form_get.html' %}
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <h3>Ventas de Usuario {{ user.first_name|upper }} {{ user.last_name|upper }}</h3>
+    <h3>Ventas desde fecha: {{ inicio|date }} <strong>hasta:</strong> {{ fin|date }}</h3>
+    <div class="col-md-12">
+        <table class="table striped hovered">
+            <thead>
+                <tr>
+                    <th width="30px">#</th>
+                    <th>Cliente</th>
+                    <th>NIT/CI</th>
+                    <th>Cantidad Materiales</th>
+                    <th>Total Precio(Bs)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for venta in ventas %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ venta.cliente.razon }}</td>
+                    <td>{{ venta.cliente.nit }}</td>
+                    <td>{{ venta.detalleventa_set.select_related.count }}</td>
+                    <td>{{ venta.costo }}</td>
+                    <td>
+                        <a href="{% url 'reporte-venta-detail' venta.id %}" class="btn btn-info btn-xs" title="Detalle Venta">
+                            <i class="fa fa-info-circle"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}

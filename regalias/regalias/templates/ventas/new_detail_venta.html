@@ -5,63 +5,79 @@ Detalle Venta
 {% endblock %}
 
 {% block content %}
-{% include 'includes/__info_venta.html' %}
 <div class="row">
-    <div class="col-md-3">
-        <a href="{% url 'venta-pdf-detail' venta.id %}" class="btn btn-info" target="_blank">
-            <i class="fa fa-camera-retro"></i> Proforma
-        </a>
-    </div>
-
-    <div class="col-md-3">
-        <a href="{% url 'venta-new-add-material' venta.id %}" class="btn btn-success">
-            <i class="fa fa-plus-circle"></i> Agregar Material
-        </a>
-    </div>
-    <div class="col-md-3">
-        <a href="{% url 'venta-confirm' venta.id %}" class="btn btn-primary">
-            <i class="fa fa-money-bill-alt"></i> Confirmar Venta
-        </a>
-    </div>
-    <div class="col-md-3">
-        <a href="{% url 'venta-delete' venta.id %}" class="btn btn-danger">
-            <i class="fa fa-money-bill-alt"></i> Cancelar Venta
-        </a>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            {% include 'includes/__info_venta.html' %}
+                <div class="col-md-3">
+                    <a href="{% url 'venta-pdf-detail' venta.id %}" class="btn btn-info" target="_blank">
+                        <i class="fa fa-camera-retro"></i> Proforma
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="{% url 'venta-new-add-material' venta.id %}" class="btn btn-success">
+                        <i class="fa fa-plus-circle"></i> Agregar Material
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    {% if detalles %}
+                    <a href="{% url 'venta-confirm' venta.id %}" class="btn btn-primary">
+                        <i class="fa fa-money-bill-alt"></i> Confirmar Venta
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="col-md-3">
+                    <a href="{% url 'venta-delete' venta.id %}" class="btn btn-danger">
+                        <i class="fa fa-money-bill-alt"></i> Cancelar Venta
+                    </a>
+                </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2 class="app">Materiales Agregados <small style="font-family:arial">Lista de materiales</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                  </ul>
+                  <div class="clearfix"></div>
+              </div>
+              <div class="x_content">
+                <table class="table striped hovered table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Material</th>
+                            <th>Descripcion</th>
+                            <th>Cantidad</th>
+                            <th>Costo U.</th>
+                            <th>Costo T.</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for detalle in detalles %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ detalle.}} Clavos</td>
+                            <td>{{ detalle.descripcion }}</td>
+                            <td>{{ detalle.cantidad }}</td>
+                            <td>{{ detalle.costo_u }}</td>
+                            <td>{{ detalle.costo_t }}</td>
+                            <td>
+                                <a href="{% url 'venta-new-delete-material' detalle.id %}" class="btn btn-danger" title="Eliminar Material">
+                                    <i class="fa fa-eraser"></i>
+                                </a>
+                            </td>
+                        </tr>                
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
-<div class="row">
-    <h3>Materiales Agregados</h3>
-    <div class="col-md-12">
-        <table class="table striped hovered table-bordered">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Material</th>
-                    <th>Descripcion</th>
-                    <th>Cantidad</th>
-                    <th>Costo U.</th>
-                    <th>Costo T.</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for detalle in detalles %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ detalle.material }}</td>
-                        <td>{{ detalle.descripcion }}</td>
-                        <td>{{ detalle.cantidad }}</td>
-                        <td>{{ detalle.costo_u }}</td>
-                        <td>{{ detalle.costo_t }}</td>
-                        <td>
-                            <a href="{% url 'venta-new-delete-material' detalle.id %}" class="btn btn-danger btn-xs" title="Eliminar Material">
-                                <i class="fa fa-eraser"></i>
-                            </a>
-                        </td>
-                    </tr>                
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+</div>
 </div>
 {% endblock %}

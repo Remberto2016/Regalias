@@ -13,8 +13,11 @@ Nuestros Precios
 <div class="col-md-12 col-sm-12 col-xs-12">
   <div class="x_panel">
     <div class="x_title">
-      <h2 class="app">Nuestros Precios  de Calaminas</h2>
+      <h2 class="app">Precios Calaminas <small style="font-family:arial">Lista de Calaminas</small></h2>
       <ul class="nav navbar-right panel_toolbox">
+        <li><a href="{% url 'precio-new' %}" type="button" href="" class="btn btn-success" data-toggle="tooltip" title="Nuevo Precio!" id="register_precio">
+          <strong style="color:black">AGREGAR <span style="color:black;" class="glyphicon glyphicon-plus" ></span> </strong></a>
+      </li>
         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
         </li>
         <li><a class="close-link" href=""><i class="fa fa-close"></i></a>
@@ -26,40 +29,208 @@ Nuestros Precios
   <p class="text-muted font-13 m-b-30">
     Este es una tabla donde contiene los datos de los los precios de calaminas registrados.
 </p>
-        <table class="table striped hovered border bordered">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Codigo</th>
-                    <th>Descripcion</th>
-                    <th>Precio</th>
-                    <th>Espesor(mm)</th>
-                    <th>Color</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for precio in precios %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ precio.codigo }}</td>
-                        <td>{{ precio.descripcion }}</td>
-                        <td><span class="badge" style="background-color:#3a87ad">{{ precio.precio }} Bs. </span> </td>
-                        <td>{{ precio.espesor }}</td>
-                        <td>{{ precio.color }}</td>
-                        <td>
-                            <a href="{% url 'precio-update' precio.id %}" class="btn btn-warning btn-xs" title="Editar Precio">
-                                <i class="fa fa-pencil-square"></i>
-                            </a>
-                            <a href="{% url 'precio-baja' precio.id %}" class="btn btn-danger btn-xs" title="Baja Precio">
-                                <i class="fa fa-times-circle"></i>
-                            </a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+<table class="table striped hovered border bordered" width="100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>CODIGO</th>
+            <th>TIPO CALAMINA</th>
+            <th>COLOR</th>
+            <th>ESPESOR(mm)</th>
+            <th>PRECIO (Bs.)</th>
+            
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for precio in precios %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ precio.codigo |upper}}</td>
+            <td>{{ precio.tipo |upper}}</td>
+            <td>{{ precio.color |upper}}</td>
+            <td>{{ precio.espesor |upper}}</td>
+            <td><span class="badge" style="background-color:#3a87ad">{{ precio.precio |upper}} Bs. </span> </td>
+            
+            
+            <td>
+                <a href="{% url 'precio-update' precio.id %}" class="btn btn-warning btn-xs" title="Editar Precio">
+                    <i class="fa fa-pencil-square"></i>
+                </a>
+                <button type="button" class="btn btn-primary btn-xs openmodal" data-toggle="modal" data-target=".bs-example-modal-lg{{ precio.id }}" title="Detalle Precio">
+                    <i class="fa fa-info-circle"></i>
+                </button>
+                <a href="{% url 'precio-baja' precio.id %}" class="btn btn-danger btn-xs" title="Baja Precio">
+                    <i class="fa fa-times-circle"></i>
+                </a>
+                <a href="{% url 'precio-precio-update-popup' precio.id%}" type="button" class="btn btn-success add-another btn-xs" data-toggle="tooltip" title="Modificar Costo!" id="modificar_costo" ><i class="fa fa-list-alt"></i>
+                </a>
+                <div class="modal fade bs-example-modal-lg{{ precio.id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                    <div class="modal-dialog modal-md" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title app" align="center">{{precio.tipo}}</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12" >
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th width="10%"></th>
+                                                    <th width="40%"></th>
+                                                    <th width="50%"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td><h4> <strong> Codigo: </strong></h4>
+                                                        <h4> <strong> Descripcion: </strong></h4>
+                                                        <h4> <strong> Precio: </strong> </h4>
+                                                        <h4> <strong> Espesor: </strong> </h4>
+                                                        <h4> <strong> Color: </strong> </h4>
+                                                    </td>
+                                                    <td>
+                                                        <h4> {{ precio.codigo }}</h4>
+                                                        <h4> {{ precio.tipo }}</h4>
+                                                        <h4> <span class="badge" style="background-color:#3a87ad">{{ precio.precio }} Bs. </span> </h4>
+                                                        <h4> {{ precio.espesor }}</h4>
+                                                        <h4> {{ precio.color }}</h4>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="modal-footer" >
+                                    <div class="" align="center">
+                                        <button  style="" type="submit" class="btn btn-success btn-default" data-dismiss="modal">Aceptar</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+$(document).ready(function() {
+    $( '.add-another' ).click(function(e) {
+        e.preventDefault(  );
+        showAddAnotherPopup( $( this ) );
+    });
+});
+
+/* Credit: django.contrib.admin (BSD) */
+
+function showAddAnotherPopup(triggeringLink) {
+    /*
+
+    Pause here with Firebug's script debugger.
+
+    */
+    var name = triggeringLink.attr( 'id' ).replace(/^add_/, '');
+    name = id_to_windowname(name);
+    href = triggeringLink.attr( 'href' );
+
+    if (href.indexOf('?') == -1) {
+        href += '?popup=1';
+    } else {
+        href += '&popup=1';
+    }
+
+    href += '&winName=' + name;
+
+    var win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
+    win.focus();
+
+    return false;
+}
+
+function dismissAddAnotherPopup(win, newId, newRepr) {
+    // newId and newRepr are expected to have previously been escaped by
+    newId = html_unescape(newId);
+    newRepr = html_unescape(newRepr);
+    var name = windowname_to_id(win.name);
+    var elem = document.getElementById(name);
+
+    if (elem) {
+        if (elem.nodeName == 'SELECT') {
+            var o = new Option(newRepr, newId);
+            elem.options[elem.options.length] = o;
+            o.selected = true;
+        }
+    } else {
+        console.log("Could not get input id for win " + name);
+    }
+
+    win.close();
+    location.reload();
+}
+
+function html_unescape(text) {
+ // Unescape a string that was escaped using django.utils.html.escape.
+ text = text.replace(/</g, '');
+ text = text.replace(/"/g, '"');
+ text = text.replace(/'/g, "'");
+ text = text.replace(/&/g, '&');
+ return text;
+}
+
+// IE doesn't accept periods or dashes in the window name, but the element IDs
+// we use to generate popup window names may contain them, therefore we map them
+// to allowed characters in a reversible way so that we can locate the correct
+// element when the popup window is dismissed.
+function id_to_windowname(text) {
+    text = text.replace(/\./g, '__dot__');
+    text = text.replace(/\-/g, '__dash__');
+    text = text.replace(/\[/g, '__braceleft__');
+    text = text.replace(/\]/g, '__braceright__');
+    return text;
+}
+
+function windowname_to_id(text) {
+    return text;
+}
+
+function pruebaDivAPdf() {
+    var pdf = new jsPDF('p', 'pt', 'letter');
+    source = $('#imprimir')[0];
+
+    specialElementHandlers = {
+        '#bypassme': function (element, renderer) {
+            return true
+        }
+    };
+    margins = {
+        top: 80,
+        bottom: 60,
+        left: 40,
+        width: 522
+    };
+
+    pdf.fromHTML(
+        source,
+        margins.left, // x coord
+        margins.top, { // y coord
+            'width': margins.width,
+            'elementHandlers': specialElementHandlers
+        },
+
+        function (dispose) {
+            pdf.save('Prueba.pdf');
+        }, margins
+        );
+}
+</script>
 {% endblock %}

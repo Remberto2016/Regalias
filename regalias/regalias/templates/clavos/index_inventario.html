@@ -9,108 +9,118 @@ Nuestro Inventario
 <div class="col-md-12 col-sm-12 col-xs-12">
   <div class="x_panel">
     <div class="x_title">
-      <h2 class="app">Lista de Productos </h2>
+      <h2 class="app">Inventario Clavos</h2>
       <ul class="nav navbar-right panel_toolbox">
-        <!--li><a href="" class="btn btn-danger " target="_blank" data-toggle="tooltip" title="Psar a PDF!">
-            <strong style="color:black;"><i class="fa fa-file-pdf-o"></i></strong>
+        <li><a href="{% url 'pdf-inventario-clavo' %}" class="btn btn-danger " target="_blank" data-toggle="tooltip" title="Psar a PDF!">
+            <strong style="color:black;">PDF <i class="fa fa-file-pdf-o"></i></strong>
         </a></li>
-        <li><a href="" type="button" href="" class="btn btn-success" data-toggle="tooltip" title="Nuevo Cliente!"><span class="glyphicon glyphicon-plus" ></span></a></li-->
-            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-            </li>
-            <li><a class="close-link" href=""><i class="fa fa-close"></i></a>
-            </li>
-        </ul>
-        <div class="clearfix"></div>
-    </div>
-    <div class="x_content">
-      <p class="text-muted font-13 m-b-30">
-        Este es una tabla donde contiene los datos de clavos registrados.
-    </p>
-    <table class="table striped hovered border bordered">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Codigo</th>
-                <th>Tipo</th>
-                <th>Descripcion</th>
-                <th>Longitud(mm)</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>Salida</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for inventario in inventarios %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ inventario.codigo }}</td>
-                <td>{{inventario.tipo}}</td>
-                <td>{{ inventario.descripcion }}</td>
-                <td>{{ inventario.longitud }}</td>
-                <td> <span class="badge" style="background-color:#3a87ad">{{ inventario.precio }} Bs.</span></td>
-                <td><span class="badge" style="background-color:#468847">{{ inventario.stock }} U. </span></td>
-                <td>{% salidamaterial inventario %}</td>
-                <td>
+        <!--li><a href="" type="button" href="" class="btn btn-success" data-toggle="tooltip" title="Nuevo Cliente!"><span class="glyphicon glyphicon-plus" ></span></a></li-->
+        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+        </li>
+        <li><a class="close-link" href=""><i class="fa fa-close"></i></a>
+        </li>
+    </ul>
+    <div class="clearfix"></div>
+</div>
+<div class="x_content">
+  <p class="text-muted font-13 m-b-30">
+    Este es una tabla donde contiene los datos de clavos registrados.
+</p>
+<table class="table striped hovered border bordered" width="100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>CODIGO</th>
+            <th>TIPO</th>
+            <th>DETALLE</th>
+            <th>LONGITUD(mm)</th>
+            <th>PRECIO</th>
+            <th>STOCK</th>
+            <th>SALIDA</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for inventario in inventarios %}
+        <tr>
+            <td>{{ forloop.counter |upper}}</td>
+            <td>{{ inventario.codigo |upper}}</td>
+            <td>{{ inventario.tipo|upper}}</td>
+            <td>{{ inventario.descripcion |upper}}</td>
+            <td>{{ inventario.longitud |upper}}</td>
+            <td> <span class="badge" style="background-color:#3a87ad">{{ inventario.precio |upper}} Bs.</span></td>
+            <td><span class="badge" style="background-color:#468847">{{ inventario.stock |upper}} U. </span></td>
+            <td>{% salidamaterial inventario %}</td>
+            <td>
                     <!--a href="{% url 'precio-update-clavo' inventario.id %}" class="btn btn-warning btn-xs" title="Editar Material">
                         <i class="fa fa-pencil-square"></i>
                     </a>
                     <a href="{% url 'precio-baja-clavo' inventario.id %}" class="btn btn-danger btn-xs" title="Baja Precio">
                         <i class="fa fa-times-circle"></i>
                     </a-->
+                    {% if user.is_superuser %}
                     <a href="{% url 'precio-stock-clavo' inventario.id %}" class="btn btn-success btn-xs" title="Aumentar Stock">
                         <i class="fa fa-edit"></i>
                     </a>
-                    <button type="button" class="btn btn-primary btn-xs openmodal" data-toggle="modal" data-target=".bs-example-modal-lg{{ inventario.id }}" title="Detalle Entrada">
-                        <i class="fa fa-list-alt"></i>
-                    </button>
 
-                    <div class="modal fade bs-example-modal-lg{{ inventario.id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-                        <div class="modal-dialog modal-md" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title app" >Detalle de Entradas</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <p> Codigo: {{inventario.codigo}}</p>
-                                            <p> Descripcion: {{inventario.descripcion}}</p>
-                                            <p>Stock Actual: {{inventario.stock}}</p>
-                                            <table class="table bordered col-md-12" style="width: 100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Fecha</th>
-                                                        <th>Cantidad</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {% for d in inventario.detalleprecioclavo_set.select_related.all %}
-                                                    <tr>
-                                                        <td>{{ forloop.counter }}</td>
-                                                        <td>{{ d.fecha }}</td>
-                                                        <td>{{ d.cantidad }}</td>
-                                                        <td></td>
-                                                    </tr>
-                                                    {% endfor %}
+                    
+                </a>
+                <button type="button" class="btn btn-primary btn-xs openmodal" data-toggle="modal" data-target=".bs-example-modal-lg{{ inventario.id }}" title="Detalle Entrada">
+                    <i class="fa fa-list-alt"></i>
+                </button>
+                
+                
+                {% endif %}
+                
+                
+                <div class="modal fade bs-example-modal-lg{{ inventario.id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                    <div class="modal-dialog modal-md" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title app" >Detalle de Entradas</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p> Codigo: {{inventario.codigo}}</p>
+                                        <p> Descripcion: {{inventario.descripcion}}</p>
+                                        <p>Stock Actual: {{inventario.stock}}</p>
+                                        <table class="table bordered col-md-12" style="width: 100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Fecha</th>
+                                                    <th>Cantidad</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for d in inventario.detalleprecioclavo_set.select_related.all %} 
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ d.fecha }}</td>
+                                                    <td>{{ d.cantidad }}</td>
+                                                    <td>{{ d.precioclavo }}</td>
+                                                    <td>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
 
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <br><br><br><br><br>
                                 </div>
+                                <br><br><br><br><br>
                             </div>
                         </div>
                     </div>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 </div>
 </div>
 </div>

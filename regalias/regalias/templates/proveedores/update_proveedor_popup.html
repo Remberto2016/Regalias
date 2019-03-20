@@ -1,0 +1,38 @@
+{% extends '__form_popup.html' %}
+
+{% block title %}
+Modificar Proveedor
+{% endblock %}
+
+{% block legend %}
+Modificar Proveedor
+{% endblock %}
+
+{% block submit %}
+Modificar
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).ready(function () {
+        $('#id_pais').change(medida);
+        function medida(){
+            if($(this).val()){
+                var id = $(this).val();
+
+                $.ajax({
+                    data:{'id': id},
+                    url:"{% url 'cliente-ajax-ciudades' %}",
+                    type:'GET',
+                    success: function(data){
+                        $('#id_origen').html(data);
+                    },
+                    failure: function(data){
+                        console.log('error')
+                    }
+                });
+            }
+        }
+    });
+</script>
+{% endblock %}

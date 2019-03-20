@@ -8,7 +8,7 @@ Nuestros Clientes
 <div class="col-md-12 col-sm-12 col-xs-12">
   <div class="x_panel">
     <div class="x_title">
-      <h2 class="app">Lista de clientes dados de baja</h2>
+      <h2 class="app">Clientes Bajas <small style="font-family:arial">Lista de Clientes </small></h2>
       <ul class="nav navbar-right panel_toolbox">
         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
         </li>
@@ -21,17 +21,17 @@ Nuestros Clientes
   <p class="text-muted font-13 m-b-30">
     Este es una tabla donde contiene los datos de los clientes registrados que estan dados de baja.
 </p>
-<div class="cell colspan12">
-    <table class="table striped hovered border bordered">
+<div class="">
+    <table class="table striped hovered border bordered" width="100%">
         <thead>
             <tr>
                 <th width="30px">#</th>
-                <th>NIT / C.I.</th>
-                <th>Nombres</th>
-                <th>Telefono</th>
-                <th>Direccion</th>
-                <th>Pais</th>
-                <th>Ciudad</th>
+                <th>C.I. / NIT</th>
+                <th>NOMBRE O RAZON SOCIAL</th>
+                <th>TELÉFONO</th>
+                <th>DIRECCIÓN</th>
+                <th>PAÍS / CIUDAD</th>
+                
                 <th></th>
             </tr>
         </thead>
@@ -40,76 +40,20 @@ Nuestros Clientes
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ cliente.nit }}</td>
-                <td>{{ cliente.razon }}</td>
-                <td>{{ cliente.telefono }}</td>
-                <td>{{ cliente.direccion }}</td>
-                <td>{{ cliente.ciudad.pais }}</td>
-                <td>{{ cliente.ciudad }}</td>
+                <td>{{ cliente.razon |upper}}</td>
+                <td>{{ cliente.telefono |upper}}</td>
+                <td>{{ cliente.direccion |upper}}</td>
+                <td>{{ cliente.ciudad.pais |upper}} / {{ cliente.ciudad |upper}}</td>
                 <td>
                     <a href="{% url 'cliente-activate' cliente.id %}" class="btn btn-success btn-xs" title="Activar Cliente">
                         <i class="fa fa-check-square"></i>
                     </a>
-                    <button type="button" class="btn btn-primary btn-xs openmodal" data-toggle="modal" data-target=".bs-example-modal-lg{{ cliente.id }}" title="Detalle Cliente">
-                        <i class="fa fa-info-circle"></i>
-                    </button>
-                    <div class="modal fade bs-example-modal-lg{{ cliente.id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-                        <div class="modal-dialog modal-md" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title app" align="center">{{cliente.razon}}</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-md-12" >
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th width="10%"> </th>
-                                                        <th width="40%"></th>
-
-                                                        <th width="50%"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td><h4> <strong>Nit / C.I.: </strong></h4>
-                                                            <h4> <strong>Nombre: </strong></h4>
-                                                            <h4> <strong>Telefono:</strong> </h4>
-                                                            <h4> <strong>Direccíon:</strong> </h4>
-                                                            <h4> <strong>Email:</strong> </h4>
-                                                            <h4> <strong>Pais / Ciudad:</strong> </h4>
-                                                        </td>
-                                                        <td>
-                                                            <h4>{{ cliente.nit }}</h4>
-                                                            <h4>{{cliente.razon}}</h4>
-                                                            <h4>{{cliente.telefono}}</h4>
-                                                            <h4>{{cliente.direccion}}</h4>
-                                                            <h4>{{cliente.email}}</h4>
-                                                            <h4>{{ cliente.ciudad.pais }} / {{ cliente.ciudad }}</h4>
-                                                        </td>
-                                                    </tr>
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer" >
-                                        <div class="" align="center">
-                                            <button  style="" type="submit" class="btn btn-success btn-default" data-dismiss="modal">Aceptar</button></div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 </div>
 </div>
 </div>

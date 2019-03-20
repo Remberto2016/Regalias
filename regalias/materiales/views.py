@@ -13,20 +13,20 @@ from django.db.models import ProtectedError, Sum, Max
 from regalias.utility import admin_log_addition, admin_log_change, render_pdf
 
 from users.models import Color
-from materiales.models import MateriaPrima, Proveedor, Precio, PrecioClavos, DetallePrecioClavo
-from materiales.form import MateriaPForm, ProveedorForm, SearchProveedor, PrecioForm, PrecioClavoForm, StockClavos
+from materiales.models import MateriaPrima, Proveedor, Precio, PrecioClavos, DetallePrecioClavo, TipoCalamina, CodigoCalamina, PrecioCalamina, CodigoMateriaPrima, CodigoClavo
+from materiales.form import MateriaPForm, ProveedorForm, SearchProveedor, PrecioForm, PrecioClavoForm, StockClavos, TipoCalaminaForm, PrecioCalaminaForm, CodigoCalaminaForm, CodigoMateriaPrimaForm, PrecioCalaminaPrecioForm, CodigoClavoForm
 
 import datetime
 
 @login_required(login_url='/login/')
 def index(request):
-    materiales = MateriaPrima.objects.filter(estado=True)
+    materiales = MateriaPrima.objects.filter(estado=True, unidad='Bobina')
     return render(request, 'materiap/index.html', {
         'materiales':materiales,
     })
 @login_required(login_url='/login/')
 def index_alambron(request):
-    materiales = MateriaPrima.objects.filter(estado=True)
+    materiales = MateriaPrima.objects.filter(estado=True, unidad='Alambron')
     referer = request.META.get('HTTP_REFERER')
     print(referer)
     return render(request, 'materiap/index-alambron.html', {
@@ -118,6 +118,15 @@ def materia_usada(request):
     })
 
 @login_required(login_url='/login/')
+def activate_materia(request, materia_id):
+    materia = get_object_or_404(MateriaPrima, pk = materia_id)
+    materia.estado = True
+    materia.save()
+    admin_log_change(request, materia, 'Material Activado')
+    messages.info(request, 'Material Activado')
+    return HttpResponseRedirect(reverse(index))
+
+@login_required(login_url='/login/')
 def index_proveedor(request):
     proveedores = Proveedor.objects.filter(estado=True)
     return render(request, 'proveedores/index.html', {
@@ -199,7 +208,7 @@ def pdf_proveedores(request):
 
 @login_required(login_url='/login/')
 def pdf_materia_prima(request):
-    materiales = MateriaPrima.objects.filter(estado = True)
+    materiales = MateriaPrima.objects.filter(estado = True, unidad='Bobina')
     html = render_to_string('materiap/pdf_materiap.html', {
         'materiales':materiales,
     })
@@ -207,7 +216,7 @@ def pdf_materia_prima(request):
 
 @login_required(login_url='/login/')
 def pdf_materia_prima_alambron(request):
-    materiales = MateriaPrima.objects.filter(estado = True)
+    materiales = MateriaPrima.objects.filter(estado = True, unidad='Alambron' )
     html = render_to_string('materiap/pdf_materiap_alambron.html', {
         'materiales':materiales,
     })
@@ -240,7 +249,9 @@ def pdf_materiap_proveedor(request, proveedor_id, mes, year):
     hoy = datetime.date(int(year), int(mes), 1)
     proveedor = get_object_or_404(Proveedor, pk = proveedor_id)
     materiales = MateriaPrima.objects.filter(proveedor=proveedor, fecha__month=mes, fecha__year=year)
+    
     html = render_to_string('materiap/pdf_materiap_proveedor.html', {
+        
         'materiales':materiales,
         'proveedor':proveedor,
         'fecha': hoy,
@@ -249,44 +260,66 @@ def pdf_materiap_proveedor(request, proveedor_id, mes, year):
 
 @login_required(login_url='/login/')
 def index_precios(request):
-    precios = Precio.objects.filter(estado=True)
+    precios = PrecioCalamina.objects.filter(estado=True)
     return render(request, 'materiap/index_precio.html', {
         'precios':precios,
     })
 
 @login_required(login_url='/login/')
 def new_precio(request):
-    precios = Precio.objects.all()
-    if precios:
-        llave = precios.aggregate(Max('id'))
-        key = llave['id__max'] + 100
-    else:
-        key = 100
-    colores = Color.objects.all()
-    materias = MateriaPrima.objects.filter(tipo='Calamina')
     if request.method == 'POST':
-        form = PrecioForm(request.POST)
+        form = PrecioCalaminaForm(request.POST)
         if form.is_valid():
-            precio = form.save()
-            admin_log_addition(request, precio, 'Precio Creado')
+            precio = form.save(commit=False)
+            precio.save()
+            admin_log_addition(request, precio, 'Precio Calamina Creado')
             sms = 'Precio Creado Correctamente'
             messages.success(request, sms)
             return HttpResponseRedirect(reverse(index_precios))
     else:
-        form = PrecioForm()
-    return render(request, 'materiap/new_precio.html', {
+        form = PrecioCalaminaForm()
+    return render(request, 'materiap/new_precio_calamina.html', {
         'form':form,
-        'colores':colores,
-        'materias':materias,
-        'key': key,
+    })
+
+@login_required(login_url='/login')
+def new_codigo_calamina_popup(request):
+    if request.method == 'POST':
+        form = CodigoCalaminaForm(request.POST)
+        if form.is_valid():
+            c = form.save()
+            admin_log_addition(request, c, 'Codigo Registrado')
+            return render(request, 'close_popup.html', {
+                'c': c,
+            })
+    else:
+        form = CodigoCalaminaForm()
+    return render(request, 'materiap/new_codigocalamina_popup.html', {
+        'form':form,
+    })
+
+@login_required(login_url='/login')
+def new_tipocalamina_popup(request):
+    if request.method == 'POST':
+        form = TipoCalaminaForm(request.POST)
+        if form.is_valid():
+            c = form.save()
+            admin_log_addition(request, c, 'Tipo Calamina Registrado')
+            return render(request, 'close_popup.html', {
+                'c': c,
+            })
+    else:
+        form = TipoCalaminaForm()
+    return render(request, 'materiap/new_tipocalamina_popup.html', {
+        'form':form,
     })
 
 @login_required(login_url='/login/')
 def update_precio(request, precio_id):
     colores = Color.objects.all()
-    precio = get_object_or_404(Precio, pk = precio_id)
+    precio = get_object_or_404(PrecioCalamina, pk = precio_id)
     if request.method == 'POST':
-        form = PrecioForm(request.POST, instance=precio)
+        form = PrecioCalaminaForm(request.POST, instance=precio)
         if form.is_valid():
             precio = form.save()
             admin_log_change(request, precio, 'Precio Modificado')
@@ -294,15 +327,34 @@ def update_precio(request, precio_id):
             messages.warning(request, sms)
             return HttpResponseRedirect(reverse(index_precios))
     else:
-        form = PrecioForm(instance=precio)
+        form = PrecioCalaminaForm(instance=precio)
     return render(request, 'materiap/update_precio.html', {
+        'form':form,
+        'colores':colores,
+    })
+@login_required(login_url='/login/')
+def update_precio_precio_popup(request, precio_id):
+    colores = Color.objects.all()
+    precio = get_object_or_404(PrecioCalamina, pk = precio_id)
+    if request.method == 'POST':
+        form = PrecioCalaminaPrecioForm(request.POST, instance=precio)
+        if form.is_valid():
+            precio = form.save()
+            admin_log_change(request, precio, 'Costo Modificado')
+            sms = 'Costo Modificado Correctamente'
+            messages.success(request, sms)
+            return render(request, 'close_popup.html', {
+            })
+    else:
+        form = PrecioCalaminaPrecioForm(instance=precio)
+    return render(request, 'materiap/update_precio_precio_popup.html', {
         'form':form,
         'colores':colores,
     })
 
 @login_required(login_url='/login/')
 def baja_precio(request, precio_id):
-    precio = get_object_or_404(Precio, pk = precio_id)
+    precio = get_object_or_404(PrecioCalamina, pk = precio_id)
     precio.estado = False
     precio.save()
     admin_log_change(request, precio, 'Precio Dado De Baja')
@@ -312,14 +364,14 @@ def baja_precio(request, precio_id):
 
 @login_required(login_url='/login/')
 def precios_baja(request):
-    precios = Precio.objects.filter(estado=False)
+    precios = PrecioCalamina.objects.filter(estado=False)
     return render(request, 'materiap/index_precio_baja.html', {
         'precios':precios,
     })
 
 @login_required(login_url='/login/')
 def active_precio(request, precio_id):
-    precio = get_object_or_404(Precio, pk=precio_id)
+    precio = get_object_or_404(PrecioCalamina, pk=precio_id)
     precio.estado = True
     precio.save()
     admin_log_change(request, precio, 'Precio Activado Correctamente')
@@ -337,12 +389,6 @@ def index_precios_clavos(request):
 
 @login_required(login_url='/login/')
 def new_precio_clavo(request):
-    precios = PrecioClavos.objects.all()
-    if precios:
-        llave = precios.aggregate(Max('id'))
-        key = llave['id__max'] + 100
-    else:
-        key = 100
     if request.method == 'POST':
         form = PrecioClavoForm(request.POST)
         if form.is_valid():
@@ -352,8 +398,7 @@ def new_precio_clavo(request):
             messages.success(request, sms)
             return HttpResponseRedirect(reverse(index_precios_clavos))
     else:
-        form = PrecioClavoForm(initial={'codigo':'CLA - %s'%key})
-        form = PrecioClavoForm(initial={'codigo':'CLA - %s'%key})
+        form = PrecioClavoForm()
     return render(request, 'clavos/new_precio.html', {
         'form':form,
 
@@ -402,6 +447,14 @@ def active_precio_clavo(request, precio_id):
     sms = 'Precio activado correctamente'
     messages.success(request, sms)
     return HttpResponseRedirect(reverse(precios_baja_clavo))
+
+@login_required(login_url='/login/')
+def pdf_inventario_clavo(request):
+    inventarios = PrecioClavos.objects.filter(estado=True)
+    html = render_to_string('clavos/pdf_inventario_clavo.html', {
+        'inventarios':inventarios,
+    })
+    return render_pdf(html)
 
 @login_required(login_url='/login/')
 def index_inventario(request):
@@ -511,3 +564,138 @@ def ajax_color_colored(request):
         return JsonResponse(list(q1), safe=False)
     else:
         raise Http404
+
+
+@login_required(login_url='/login/')
+def new_popup_codigomateria(request):
+    if request.method == 'POST':
+        form = CodigoMateriaPrimaForm(request.POST)
+        if form.is_valid():
+            pro = form.save()
+            admin_log_addition(request, pro, 'Codigo Registrado')
+            return render(request, 'close_popup.html', {
+                'c':pro,
+            })
+    else:
+        form = CodigoMateriaPrimaForm()
+    return render(request, 'materiap/new_codigo_materia_popup.html', {
+        'form':form,
+    })
+
+@login_required(login_url='/login/')
+def update_proveedor_popup(request, proveedor_id):
+    proveedor = get_object_or_404(Proveedor, pk = proveedor_id)
+    if request.method == 'POST':
+        form = ProveedorForm(request.POST, instance=proveedor)
+        if form.is_valid():
+            pro = form.save()
+            admin_log_change(request, pro, 'Proveedor Modificado')
+            messages.warning(request, 'Proveedor Modificado Correctamente')
+            return render(request, 'close_popup.html',{
+            })
+    else:
+        form = ProveedorForm(instance=proveedor)
+    return render(request, 'proveedores/update_proveedor_popup.html', {
+        'form':form,
+    })
+
+@login_required(login_url='/login')
+def new_codigo_clavo_popup(request):
+    if request.method == 'POST':
+        form = CodigoClavoForm(request.POST)
+        if form.is_valid():
+            c = form.save()
+            admin_log_addition(request, c, 'Codigo Registrado')
+            return render(request, 'close_popup.html', {
+                'c': c,
+            })
+    else:
+        form = CodigoClavoForm()
+    return render(request, 'clavos/new_codigoclavo_popup.html', {
+        'form':form,
+    })
+#--------------------------------------------------------
+@login_required(login_url='/login')
+def codigos_materiales_primas(request):
+    codprima = CodigoMateriaPrima.objects.filter()
+    codtipo = TipoCalamina.objects.all()
+    codprecio = CodigoCalamina.objects.all()
+    codclavo = CodigoClavo.objects.all()
+    return render(request, 'configuracion/index_configuracion.html', {
+        'codprima':codprima,
+        'codprecio':codprecio,
+        'codtipo':codtipo,
+        'codclavo':codclavo,
+        
+    })
+
+@login_required(login_url='/login/')
+def update_codigo_materia_prima(request, codprimas_id):
+    codigomateriaprima = get_object_or_404(CodigoMateriaPrima, pk = codprimas_id)
+    if request.method == 'POST':
+        form = CodigoMateriaPrimaForm(request.POST, instance=codigomateriaprima)
+        if form.is_valid():
+            cpm = form.save()
+            admin_log_change(request, cpm, 'Codigo Modificado')
+            messages.warning(request, 'Codigo Modificado Correctamente')
+            return render(request, 'close_popup.html',{
+            })
+    else:
+        form = CodigoMateriaPrimaForm(instance=codigomateriaprima)
+    return render(request, 'configuracion/update_codigo_materia_prima_popup.html', {
+        'form':form,
+    })
+
+@login_required(login_url='/login')
+def update_codigo_precio_calamina(request, codprecios_id):
+    codigopreciocalamina = get_object_or_404(CodigoCalamina, pk = codprecios_id)
+    if request.method == 'POST':
+        form = CodigoCalaminaForm(request.POST, instance=codigopreciocalamina)
+        if form.is_valid():
+            cpc = form.save()
+            admin_log_change(request, cpc, 'Codigo Modificado')
+            messages.warning(request, 'Codigo Modificado Correctamente')
+            return render(request, 'close_popup.html',{
+
+                })
+    else:
+        form = CodigoCalaminaForm(instance=codigopreciocalamina)
+    return render(request, 'configuracion/update_codigo_precio_calamina_popup.html',{
+        'form':form,
+    })
+
+@login_required(login_url='/login')
+def update_tipo_calamina(request, codtipos_id):
+    codigotipocalamina = get_object_or_404(TipoCalamina, pk = codtipos_id)
+    if request.method == 'POST':
+        form = TipoCalaminaForm(request.POST, instance=codigotipocalamina)
+        if form.is_valid():
+            ctc = form.save()
+        admin_log_change(request, ctc, 'Codigo Modificado')
+        messages.warning(request, 'Codigo Modificado Correctamente')
+        return render (request, 'close_popup.html',{
+
+        })
+    else:
+        form = TipoCalaminaForm(instance=codigotipocalamina)
+    return render(request,  'configuracion/update_tipo_calamina-popup.html',{
+        'form':form,
+        })
+
+@login_required(login_url='/login')
+def update_codigo_clavo(request, codclavos_id):
+    codigoprecioclavo = get_object_or_404(CodigoClavo, pk = codclavos_id)
+    if request.method == 'POST':
+        form = CodigoClavoForm(request.POST, instance=codigoprecioclavo)
+        if form.is_valid():
+            cpcl = form.save()
+        admin_log_change(request, ctcl, 'Codigo Modificado')
+        messages.warning(request, 'Codigo Modificado Correctamente')
+        return render (request, 'close_popup.html',{
+
+        })
+    else:
+        form = CodigoClavoForm(instance=codigoprecioclavo)
+    return render(request,  'configuracion/update_codigo_clavo-popup.html',{
+        'form':form,
+        })

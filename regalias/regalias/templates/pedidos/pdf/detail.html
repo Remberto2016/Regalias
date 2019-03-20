@@ -6,40 +6,70 @@ Detalle Pedido
 
 {% block cuerpo %}
 {% include 'pedidos/pdf/__info_pedido.html' %}
-<h2>Materiales Agregados</h2>
 {% load helper_pedido %}
-<table class="table striped hovered border bordered">
-    <thead>
-        <tr>
-            <th width="30px">#</th>
-            <th>Descripcion</th>
-            <th>Unidad</th>
-            <th width="120px">Cantidad</th>
-            <th>Largo(ml)</th>
-            <th>Color</th>
-            <th width="120px">Costo U.(Bs)</th>
-            <th width="124px">Costo T.(Bs)</th>
+<style>
+
+.app th{
+    background-color: #d7d7d7;
+    border :1px solid white;
+    font-family: courier;
+}
+.app td{
+    text-align:center;
+    border-bottom: 1px solid #d7d7d7;
+    
+}
+</style>
+<h3 style="font-family:courier; font-size:15px; ">III. DATOS MATERIALES</h3>
+<table style="font-size:11px; padding-top:3px; ">
+    <thead >
+        <tr class="app">
+            <th  width="6%">#</th>
+            <th  width="7%">CANT.</th>
+            <th  width="27%">DETALLE</th>
+            <th  width="15%">COLOR</th>
+            <th  width="8%">LARGO (M)</th>
+            <th  width="8%">ANCHO (M)</th>
+            <th  width="11%">TOTAL (ML)</th>
+            <th  width="7%">P/U (Bs)</th>
+            <th  width="11%">TOTAL (Bs)</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody  >
         {% for detalle in detalles %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ detalle.descripcion }}</td>
-                <td>{{ detalle.unidad }}</td>
-                <td>{{ detalle.cantidad }}</td>
-                <td>{{ detalle.largo }}</td>
-                <td>{{ detalle.color }}</td>
-                <td>{{ detalle.costo_u }}</td>
-                <td>{{ detalle.costo_t }}</td>
-            </tr>
+        <tr class="app">
+            <td >{{ forloop.counter }}</td>
+            <td style="background-color:#d7d7d7; border: 1px solid white;">{{ detalle.cantidad | upper}}</td>
+            {% if detalle.unidad == 'Calamina' %}
+                <td >{{ detalle.preciocalamina.tipo |upper}}</td>
+                <td >{{detalle.preciocalamina.color | upper}}</td>
+                <td >{{detalle.largo | upper}}</td>
+                <td >{{detalle.preciocalamina.ancho | upper}}</td>
+                <td style="background-color:#d7d7d7; border: 1px solid white;">{{detalle.totalm | upper}}</td>
+                {% else %}
+                    <td >{{ detalle.descripcion |upper}}</td>
+                    <td >--</td>
+                    <td >--</td>
+                    <td >--</td>
+                    <td >--</td>  
+            
+            {% endif %}            
+            <td >{{ detalle.costo_u | upper}}</td>
+            <td style="background-color:#d7d7d7; border: 1px solid white;">{{ detalle.costo_t | upper}}</td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>
-    <table class="table">
-    <tr>
-        <th width="89%">Costo Total</th>
-        <th width="11%">{% sum_pedidos detalles %}</th>
+{% load helper_pedido %}
+<table style="font-size:11px; padding-top:3px; ">
+    <tr class="app">
+        <td width="6%">Pzas.</td>
+        <td width="7%" style="background-color:#d7d7d7; border: 1px solid white;"><strong>{% total_cantidad detalles %}</strong></td>
+        <td width="42%"></td> 
+        <td width="16%"> Total Metros Lineales</td>
+        <td width="11%"  style="background-color:#d7d7d7; border: 1px solid white;"> <strong> {% total_metros detalles  %} ml.</strong></td>
+        <td width="7%"></td>
+        <td width="11%" style="background-color:#d7d7d7; border: 1px solid white;"><strong>{{ pedido.costo | upper}} Bs.</strong></td>
     </tr>
-    </table>
+</table>
 {% endblock %}

@@ -8,12 +8,14 @@ Nuestros Precios
 <div class="col-md-12 col-sm-12 col-xs-12">
   <div class="x_panel">
     <div class="x_title">
-      <h2 class="app">Precios Clavos  </h2>
+      <h2 class="app">Precios Clavos  <small style="font-family:arial">Lista de Clavos</small></h2>
       <ul class="nav navbar-right panel_toolbox">
         <!--li><a href="" class="btn btn-danger " target="_blank" data-toggle="tooltip" title="Psar a PDF!">
             <strong style="color:black;"><i class="fa fa-file-pdf-o"></i></strong>
-        </a></li>
-        <li><a href="" type="button" href="" class="btn btn-success" data-toggle="tooltip" title="Nuevo Cliente!"><span class="glyphicon glyphicon-plus" ></span></a></li-->
+        </a></li-->
+        <li><a href="{% url 'precio-new-clavo' %}" type="button" href="" class="btn btn-success" data-toggle="tooltip" title="Nuevo Precio!" id="register_precio">
+          <strong style="color:black">AGREGAR <span style="color:black;" class="glyphicon glyphicon-plus" ></span> </strong></a>
+      </li>
             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
             </li>
             <li><a class="close-link" href=""><i class="fa fa-close"></i></a>
@@ -25,15 +27,15 @@ Nuestros Precios
       <p class="text-muted font-13 m-b-30">
         Este es una tabla donde contiene los datos de los precios de clavos registrados.
     </p>
-    <table class="table striped hovered border bordered">
+    <table class="table striped hovered border bordered" width="100%">
         <thead>
             <tr>
                 <th>#</th>
-                <th>Codigo</th>
-                <th>Descripcion</th>
-                <th>Precio</th>
-                <th>Longitud(mm)</th>
-                <th>Stock</th>
+                <th>CODIGO</th>
+                <th>DESCRIPCCIÓN</th>                
+                <th>LONGITUD (mm)</th>                
+                <th>PRECIO (Bs.)</th>
+                <th>STOCK </th>
                 <th></th>
             </tr>
         </thead>
@@ -41,11 +43,11 @@ Nuestros Precios
             {% for precio in precios %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ precio.codigo }}</td>
-                <td>{{ precio.descripcion }}</td>
-                <td><span class="badge" style="background-color:#3a87ad">{{ precio.precio }} Bs. </span></td>
-                <td>{{ precio.longitud }}</td>
-                <td>{{ precio.stock }}</td>
+                <td>{{ precio.codigo |upper}}</td>
+                <td>{{ precio.descripcion |upper}}</td>
+                <td>{{ precio.longitud |upper}}</td>
+                <td><span class="badge" style="background-color:#3a87ad">{{ precio.precio |upper}} Bs. </span></td>
+                    <td><span class="badge" style="background-color:#26b99a">{{ precio.stock |upper}} : {{precio.tipo}}</span></td>               
                 <td>
                     <a href="{% url 'precio-update-clavo' precio.id %}" class="btn btn-warning btn-xs" title="Editar Precio">
                         <i class="fa fa-pencil-square"></i>

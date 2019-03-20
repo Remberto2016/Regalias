@@ -5,8 +5,23 @@ Nuestros Usuarios
 {% endblock %}
 
 {% block content %}
-<div class="row colspan12">
-    <table class="table striped hovered border bordered">
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="x_panel">
+    <div class="x_title">
+        <h2 class="app">Nuestros Usuarios <small> Lista de Usuarios</small></h2> 
+        <ul class="nav navbar-right panel_toolbox">       
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+      <p class="text-muted font-13 m-b-30">
+        Este es una tabla donde contiene los datos de los usuarios registrados.
+    </p>
+    <table class="table striped hovered border bordered" width="100%">
         <thead>
             <tr>
                 <th width="30px">#</th>
@@ -18,57 +33,129 @@ Nuestros Usuarios
         </thead>
         <tbody>
             {% for user in users %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ user.username }}</td>
-                    <td>
-                        {% if user.is_superuser %}
-                            <a href="#" class="btn btn-success btn-xs">
-                                <i class="fa fa-check-circle"></i>
-                            </a>
-                        {% else %}
-                            <a href="#" class="btn btn-danger btn-xs">
-                                <i class="fa fa-times-circle"></i>
-                            </a>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if user.is_active %}
-                            <a href="#" class="btn btn-success btn-xs">
-                                <i class="fa fa-check-circle"></i>
-                            </a>
-                        {% else %}
-                            <a href="#" class="btn btn-danger btn-xs">
-                                <i class="fa fa-times-circle"></i>
-                            </a>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="{% url 'user-permission' user.id %}" class="btn btn-warning btn-xs" title="Permisos Usuario">
-                            <i class="fa fa-pencil-square"></i>
-                        </a>
-                        {% if user.is_active %}
-                            <a href="{% url 'user-baja' user.id %}" class="btn btn-danger btn-xs" title="Baja Usuario">
-                                <i class="fa fa-times-circle"></i>
-                            </a>
-                        {% else %}
-                            <a href="{% url 'user-activate' user.id %}" class="btn btn-success btn-xs" title="Activar Usuario">
-                                <i class="fa fa-calendar-check-o"></i>
-                            </a>
-                        {% endif %}
-                        {% if user.is_superuser %}
-                            <a href="{% url 'user-admin-baja' user.id %}" class="btn btn-danger btn-xs" title="Desactivar Administrador">
-                                <i class="fa fa-user-times"></i>
-                            </a>
-                        {% else %}
-                            <a href="{% url 'user-admin-activate' user.id %}" class="btn btn-primary btn-xs" title="Activar Administrador">
-                                <i class="fa fa-user-plus"></i>
-                            </a>
-                        {% endif %}
-                    </td>
-                </tr>
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ user.username }}</td>
+                <td>
+                    {% if user.is_superuser %}
+                    <a href="#" class="btn btn-success btn-xs">Administrador
+                        <i class="fa fa-check-circle"></i>
+                    </a>
+                    {% else %}
+                    <a href="#" class="btn btn-danger btn-xs"> No administrador
+                        <i class="fa fa-times-circle"></i>
+                    </a>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if user.is_active %}
+                    <a href="#" class="btn btn-success btn-xs">Activo
+                        <i class="fa fa-check-circle"></i>
+                    </a>
+                    {% else %}
+                    <a href="#" class="btn btn-danger btn-xs">Inactivo
+                        <i class="fa fa-times-circle"></i>
+                    </a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'user-permission' user.id %}" class="btn btn-warning btn-xs" title="Permisos Usuario">
+                        <i class="fa fa-pencil-square"></i>
+                    </a>
+                    {% if user.is_active %}
+                    <a href="{% url 'user-baja' user.id %}" class="btn btn-danger btn-xs" title="Baja Usuario">
+                        <i class="fa fa-times-circle"></i>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'user-activate' user.id %}" class="btn btn-success btn-xs" title="Activar Usuario">
+                        <i class="fa fa-calendar-check-o"></i>
+                    </a>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                    <a href="{% url 'user-admin-baja' user.id %}" class="btn btn-danger btn-xs" title="Desactivar Administrador">
+                        <i class="fa fa-user-times"></i>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'user-admin-activate' user.id %}" class="btn btn-primary btn-xs" title="Activar Administrador">
+                        <i class="fa fa-user-plus"></i>
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'user-ventas' user.id %}" class="btn btn-info btn-xs" title="Ventas Usuario">
+                        <i class="fa fa-money"></i>
+                    </a>
+                     <button type="button" class="btn btn-primary  btn-xs openmodal" data-toggle="modal" data-target=".bs-example-modal-lg{{ user.id }}" title="Detalle Usuario">
+                        <i class="fa fa-info-circle"></i>
+                    </button>
+                    <div class="modal fade bs-example-modal-lg{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                        <div class="modal-dialog modal-md" role="document" >
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title app" align="center">{{user.username}}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-9" >
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th width="10%"></th>
+                                                        <th width="40%"></th>
+                                                        <th width="55%"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td><h4> <strong> Username: </strong></h4>
+                                                            <h4> <strong> Nombre: </strong></h4>
+                                                            <h4> <strong> Tipo Usuario: </strong> </h4>
+                                                            <h4> <strong> Estado: </strong> </h4>
+                                                            <h4> <strong> Email: </strong> </h4>
+                                                           
+                                                        </td>
+                                                        <td>                                                        
+                                                            <h4><strong>{{ user.username }}</strong></h4>
+                                                            <h4><strong>{{ user.first_name }} {{user.last_name}}</strong></h4>
+                                                            {% if user.is_superuser %}
+                                                                <h4><strong>Administrador</strong></h4>
+                                                                {% else %}
+                                                                    <h4><strong> No Administrador</strong></h4>
+                                                            
+                                                            {% endif %}
+                                                            {% if user.is_active %}
+                                                                <h4><strong>Activo</strong></h4>
+                                                                {% else %}
+                                                                    <h4><strong> No Activo</strong></h4>
+                                                            
+                                                            {% endif %}
+                                                            <h4><strong>{{ user.email}}</strong></h4>
+                                                            
+                                                            
+                                                        </td>
+                                                        <td></td>
+                                                    </tr>
+                                                  
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" >
+                                        <div class="" align="center">
+                                            <button  style="" type="submit" class="btn btn-success btn-default" data-dismiss="modal">Aceptar</button></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
+</div>
+</div>
 </div>
 {% endblock %}

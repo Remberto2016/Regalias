@@ -1,27 +1,75 @@
-<h1>Informacion de Venta  </h1>
-<table class="table1">
-    <tr>
-        <td>
-            <p>
-                <strong>Cliente: </strong>{{ venta.cliente.razon }}
-            </p>
-            <p>
-                <strong>Cedula de Identidad: </strong>{{ venta.cliente.nit }}
-            </p>
-            <p>
-                <strong>Pais / Ciudad: </strong>{{ venta.cliente.ciudad.pais }} / {{ venta.cliente.ciudad }}
-            </p>
-        </td>
-        <td>
-            <p>
-                <strong>Fecha de Venta: </strong>{{ venta.fecha }}
-            </p>
-            <p>
-                <strong>Costo Total: </strong>{{ venta.costo }}  Bs.
-            </p>
-            <p>
-                <strong>Cantidad Materiales: </strong>{{ venta.detalleventa_set.select_related.count }}
-            </p>
-        </td>
-    </tr>
+<h2 align="center">DETALLE DE VENTA</h2>
+<table >
+    <div> 
+        <tr>
+            <th class="celdas" colspan="4" width="100%" align="left" style="font-family: courier; font-size:15px; border: white;background-color:#d7d7d7;"> I. DATOS IDENTIFICACIÓN DE CLIENTE <strong></strong> </th>
+        </tr>
+        <tr></tr>
+        <tr  style="font-family: courier; font-size:12px;">
+            <td width="17%">
+                <p> <strong> CLIENTE: </strong></br>
+                   <strong> NIT/C.I. </strong></br>
+                   <strong> PAÍS / CIUDAD: </strong></br>
+               </p>
+
+           </td>
+           <td width="35%">
+            <p> {{ venta.cliente.razon |upper}}</br>
+            {{ venta.cliente.nit |upper}}</br>
+        {{ venta.cliente.ciudad.pais |upper}} / {{ venta.cliente.ciudad |upper}} </br>
+    </p>
+
+
+</td>
+
+<td width="12%">
+    <p>
+        <strong> DIRECIÓN: </strong></br>
+        <strong> TELÉFONO: </strong> </br>
+        <strong> EMAIL: </strong></br>
+    </p>
+
+</td>
+<td width="36%">
+    <p>{{ venta.cliente.direccion |upper}} </br>
+    {{ venta.cliente.telefono |upper}}</br>
+{{ venta.cliente.email}} </br>
+
+</p>
+
+
+</td>
+</tr>
+</div>
+
+</table>
+<table >
+    <div> 
+        <tr></tr>
+        <tr>
+            <th class="celdas" colspan="2" width="100%" align="left" style="font-family: courier; font-size:15px; border: white;background-color:#d7d7d7;"> II. DATOS TECNICOS VENTA <strong></strong> </th>
+        </tr>
+        <tr></tr>
+        <tr  style="font-family: courier; font-size:12px;">
+            <td width="18%">
+                <p><strong> NRO. VENTA: </strong></br>
+                    <strong> FECHA: </strong></br>
+                    <strong> VENTA COSTO: </strong></br>
+                    <strong> CANT. MATERIAL: </strong></br>
+                    <strong> USUARIO: </strong></br>
+
+                </p>
+            </td>
+            <td width="82%">
+                <p> {{ venta.nro_venta |upper}}</br>
+                {{ venta.fecha |upper}}</br>
+            {{ venta.costo |upper}} Bs. </br>
+        {{ venta.detalleventa_set.select_related.count }} </br>
+    {{venta.user.first_name|upper}} {{venta.user.last_name|upper}}</br>
+
+    </p>
+</td>
+</tr>
+</div>
+
 </table>

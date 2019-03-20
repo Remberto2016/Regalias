@@ -5,7 +5,7 @@ Detalle Pedido {{ pedido.id }}
 {% endblock %}
 {% block cuerpo %}
 <h1 style="font-family: courier;" align="center">Orden De Producción </h1>
-<table class="" style="font-size:10px;">
+<table class="" style="font-size:11px;">
     <tr>
         <td width="80%"></td>
         <td class="" width="10%" align="right"> <strong>Nro.Prod.</strong> </td>
@@ -14,7 +14,7 @@ Detalle Pedido {{ pedido.id }}
     </tr>
 </table>
     <br>
-<table class="" style="font-size:10px;">
+<table class="" style="font-size:12px;">
     <tr>
         <td width="17%" align="right"><strong>Lugar y Fecha:</strong> </td>
         <td width="5px"></td>
@@ -25,15 +25,13 @@ Detalle Pedido {{ pedido.id }}
     </tr>
 </table>
 <h2 align="center">Materiales Agregados</h2>
-
-<table class="table striped hovered border bordered">
+<table class="table striped hovered border bordered" width="100%">
     <thead>
         <tr>
             <th width="50px">#</th>
             <th width="80px">Cantidad</th>
-            <th width="80px">Unidad</th>
-            <th width="300px">Descripcion</th>
-            <th width="70px">Color</th>
+            <th width="200px">Descripcion</th>
+            <th width="100px">Color</th>
             <th width="90px">Largo(ML)</th>
             <th width="90px">Ancho(ML)</th>
             <th width="90px">Total(ML)</th>
@@ -45,7 +43,6 @@ Detalle Pedido {{ pedido.id }}
         <tr>
             <td>{{ forloop.counter }}</td>
             <td>{{ detalle.cantidad }}</td>
-            <td>{{ detalle.unidad }}</td>
             <td>{{ detalle.descripcion }}</td>
             <td>{{ detalle.color }}</td>
             <td>{{ detalle.largo }}</td>
@@ -53,7 +50,7 @@ Detalle Pedido {{ pedido.id }}
             <td>{{ detalle.totalm }}</td>
             <td>
                 {% for materia in detalle.material.all %}
-                <p>Bobina: {{ materia.nro_serie }}</p>
+                <p>{{ materia.codigo }}</p>
                 {% endfor %}
             </td>
         </tr>
@@ -62,35 +59,35 @@ Detalle Pedido {{ pedido.id }}
     </tbody>
 </table>
 {% load helper_pedido %}
-<table class="table striped hovered border bordered">
+<table class="table striped hovered border bordered" width="100%">
             <tr>
             <th width="50px">Pzas.</th>
             <td width="80px">{% total_cantidad detalles %}</td>
-            <td width="380px"></td>
-            <th width="250px"> Total Metros Lineales</th>
+            <td width="200px"></td>
+            <th width="280px"> Total Metros Lineales</th>
             <td width="190px" align="left"> <strong>
-                {% total_metros detalles %}
+                {% total_metros detalles %} ml.
             </strong></td>
         </tr>
 </table>
 <hr>
-<table>
+<table >
     <tr>
-        <th width="70%">
-            <p style="font-size: 14px">
-                <strong>Personal Solicitante:</strong> {{ request.user.first_name }} {{ request.user.last_name }}
-            </p>
-        </th>
-        <th width="30%">
+        <td width="15%"></td>
+        <td width="60%" style="font-size:12px;">
+            
+                <strong>Elaborado por:</strong> {{ pedido.usuario.first_name }} {{ pedido.usuario.last_name }} 
+        </td>
+        <td width="25%" align="center">
             <br><br><br>
             <hr>
-            Firma(Sello de Pie)
-        </th>
+            <strong>Firma(Sello de Pie)</strong>
+        </td>
     </tr>
 </table>
 {% include 'pedidos/pdf/__info_produccion.html' %}
-<br>
 <table>
+    <hr>
     <tr><th>
         <h3 align="left">Despacho:</h3></th>
     </tr>

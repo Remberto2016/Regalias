@@ -3,43 +3,78 @@
 {% block title %}
 Ventas Fecha {{ fecha|date }}
 {% endblock %}
-
+<td>{{ detalle.cantidad }}</td>
 {% block cuerpo %}
+<style>
+
+.app th{
+    background-color: #d7d7d7;
+    border :1px solid white;
+    font-family: courier;
+}
+.app td{
+
+    border-bottom: 1px solid #d7d7d7;
+    font-family: courier;
+    vertical-align: top; 
+}
+</style>
 {% load helperReportes %}
-<h1 class="center">Reporte Materiales</h1>
-<h2>Salida de Material en fecha: {{ fecha|date }}</h2>
-<h2>Tipo de Material: {{ material }}</h2>
+<h1 class="center" style="font-family:courier;">REPORTE MATERIALES</h1>
+<h2 style="font-family:courier">SALIDA DE MATERIAL EN FECHA: {{ fecha|date |upper }}</h2>
+<h2 style="font-family:courier;">TIPO DE MATERIAL: {{ material|upper }}</h2>
 <div class="col-md-12">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Fecha Salida</th>
-                <th>Tipo</th>
-                <th>Material</th>
-                <th>Unidad</th>
-                <th>Cantidad</th>
+    <table style="font-size:13px; padding-top:3px; ">
+        <thead >
+            <tr class="app">
+                <th  width="10%">#</th>
+                <th  width="15%">CANT.</th>
+                <th colspan="2" width="45%">DETALLE</th>
+                <th  width="30%">TOTAL (Bs)</th>
             </tr>
         </thead>
         <tbody>
             {% for detalle in detalles %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ detalle.venta.fecha|date }}</td>
-                    <td>{{ detalle.tipo }}</td>
-                    <td>{{ detalle.descripcion }}</td>
-                    <td>{{ detalle.unidad }}</td>
-                    <td>{{ detalle.cantidad }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <table class="table" width="100%">
-        <tr>
-            <th width="84%">TOTALES</th>
-            <td width="16%" class="right">{% sum_cant_salidas detalles %}</td>
-        </tr>
-    </table>
+            <tr class="app">
+                <td align="center">{{ forloop.counter }}</td>
+                <td align="center">{{ detalle.cantidad }}</td>
+                <td width="15%">
+                    <p>
+                        <strong>FECHA: </strong></br>
+                        
+                        <strong>MATERIAL: </strong></br>
+                        <strong>DESCRIPCIÓN: </strong></br>
+                        <strong>USUARIO: </strong></br>
+                    </p>
+                </td>
+                <td width="30%">
+                    <p>{{detalle.venta.fecha|date|upper}}</br>
+                        {% if detalle.unidad == 'Calamina' %}
+                            {{ detalle.unidad |upper}}</br>
+                            {% else %}
+                                CLAVOS </br>
+                        
+                        {% endif %}
+                    
+                       
+                        {{detalle.descripcion |upper}}</br>
+                        {{detalle.venta.user.first_name|upper}} {{detalle.venta.user.last_name|upper}}</br>
+                     </p>
+                 </td>
+                 <td align="right">{{detalle.costo_t|upper}} Bs.</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% load helper_ventas %}
+<table style="font-size:13px; padding-top:3px; ">
+    <tr class="app">
+        <td width="10%" align="right"><strong>SALIDAS</strong></td>
+        <td width="15%" align="center"><strong>{% sum_cant_salidas detalles %}</strong></td>
+        <td width="50%" align="right"><strong>TOTALES</strong></td>
+        <td width="30%" class="right"><strong> {% sum_ventas_t detalles %}Bs.</strong></td>
+    </tr>
+</table>
 </div>
 
 {% endblock %}

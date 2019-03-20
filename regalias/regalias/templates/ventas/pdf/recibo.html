@@ -5,31 +5,42 @@ Recibo Oficial
 {% endblock %}
 
 {% block cuerpo %}
-<h1 align="center">Recibo Oficial</h1>
-<table class="table">
+<style>
+    .app{
+        font-family: courier;
+        font-size:12px;
+    }
+</style>
+<h1 align="center" class="app">RECIBO OFICIAL</h1>
+<table style="font-size:11px" class="app">
     <tr>
-        <td style="border: white" width="20%">Empresa:</td>
-        <th> {{ venta.cliente.razon|upper }}</th>
+        <td width="15%" align="right" class="app"><strong>EMPRESA:</strong> </td>
+        <td width="5%"></td>
+        <td width="80%" class="celdas app" align="center" style="background-color:#d7d7d7;">{{ venta.cliente.razon|upper }}</td>
+        
     </tr>
     <tr></tr>
-    <tr>
-        <td style="border: white" width="20%">NIT/CI:</td>
-        <th> {{ venta.cliente.nit }}</th>
+     <tr>
+        <td width="15%" align="right"><strong>NIT / CI:</strong> </td>
+        <td width="5%"></td>
+        <td width="80%" class="celdas" align="center" style="background-color:#d7d7d7;">{{ venta.cliente.nit |upper}}</td>
+        
     </tr>
 
 </table>
 <br>
-<table class="table">
+<table  class="app">
     <tr>
-        <td width="20%" style="border: white">Recibi la Suma de:</td>
-        <td width="5%" style="border: white">Bs.</td>
-        <th width="75%">{{ venta.costo }}</th>
+        <td width="20%" style="border: white" align="right">RECIBI LA SUMA DE: </td>
+        <td width="10%" style="border: white" align="center"><strong>Bs.</strong></td>
+        <td width="30%" class="celdas" style="background-color:#d7d7d7;" align="center"><strong style="font-size:15px;">{{ venta.costo | upper}}</strong></td>
+        <td width="40%"></td>
     </tr>
     <tr></tr>
     <tr>
         <td width="20%" style="border: white"></td>
-        <td width="5%" style="border: white">Son</td>
-        <th width="75%">{{ literal_amount|upper }} {{ decimal_amount }} /100</th>
+        <td width="10%" style="border: white" align="center"><strong>SON</strong></td>
+        <td width="70%" colspan="2" class="celdas" style="background-color:#d7d7d7;" align="center">{{ literal_amount|upper }} {{ decimal_amount }} /100</td>
     </tr>
 </table>
 
@@ -66,22 +77,23 @@ Recibo Oficial
         </th>
     </tr>
 </table-->
-<div class="row">
+<div class="row ">
   <td width="40%"><h2>POR CONCEPTO DE:</h2></td>  
   <div class="col-md-12">
-    <table width="100%" border="" cellpadding="5px" class="table">
+    <table width="100%" border="" cellpadding="5px" class="table app" style="font-size:9px">
         <tbody>
 
             {% for detalle in detalles %}
-            {% if detalle.material == 'Clavos' %}
+            {% if detalle.unidad == 'Calamina' %}
             <tr>
                 <td width="40%" style="border: white"></td>
-                <th align="left">{{ detalle.cantidad }} {{ detalle.descripcion }}   </th>
+                <td align="left" style="background-color:#d7d7d7;" style="font-size:6px"> {{ detalle.cantidad }} Pzas. de {{detalle.tipo}} de {{detalle.preciocalamina.espesor}}  X {{detalle.preciocalamina.ancho}}</td>
+                
             </tr>
             {% else %}
             <tr>
                 <td width="40%" style="border: white"></td>
-                <th align="left">{{ detalle.cantidad }} Pzas. {{ detalle.descripcion }}  {{detalle.ancho}} {{detalle.material}}</th>
+                <td align="left" style="background-color:#d7d7d7;">{{ detalle.cantidad }} {{ detalle.unidad }} de {{detalle.descripcion}}  </td>
             </tr>
 
             {% endif %}
@@ -92,21 +104,21 @@ Recibo Oficial
     <table class="table">
         <tr>
             <td width="40%" style="border: white"></td>
-                <th align="right">
-                    <strong>Nro. de Produccion: </strong>{{ venta.nro_venta }}/{{ venta.fecha|date:"Y" }}
-                </th>
+            <td align="right" style="background-color:#d7d7d7;" class="app">
+                Segun Orden de Produccion: Nro. <strong>{{ venta.nro_venta }}/{{ venta.fecha|date:"Y" }}</strong>
+            </td>
         </tr>
     </table>
 </div>
 </div>
-<br><br>
-<table>
+<br>
+<table class="app">
     <hr style="border-top: 5px double #8c8b8b;">
     <tr>
-        <td colspan="2" align="center" style="background-color: #73879C; height: 20px;
+        <td colspan="2" align="center" style="background-color: #d7d7d7; height: 20px;
         vertical-align: bottom;"><strong > ENTREGUE CONFORME </strong></td>
         <td width="50px"></td>
-        <td colspan="2" align="center" style="background-color: #73879C; height: 20px;
+        <td colspan="2" align="center" style="background-color: #d7d7d7; height: 20px;
         vertical-align: bottom;"><strong>RECIBÍ CONFORME</strong></td>
     </tr>
     <tr></tr>

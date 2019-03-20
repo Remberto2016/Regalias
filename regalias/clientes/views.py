@@ -46,7 +46,7 @@ def new_ciudad(request):
             c = form.save()
             admin_log_addition(request, c, 'Ciudad Creada')
             messages.success(request, 'Ciudad Registrada Correctamente')
-            return HttpResponseRedirect(ref)
+            return HttpResponseRedirect(reverse(index))
     else:
         form = CiudadForm()
     return render(request, 'clientes/new_ciudad.html', {
@@ -183,3 +183,21 @@ def new_cliente_popup(request):
     return render(request, 'clientes/new_cliente_popup.html', {
         'form':form,
     })
+
+@login_required(login_url='/login/')
+def update_cliente_popup(request, cliente_id):
+    cliente = get_object_or_404(Cliente, pk = cliente_id)
+    if request.method == 'POST':
+        form = ClienteForm(request.POST, instance=cliente)
+        if form.is_valid():
+            p = form.save()
+            admin_log_addition(request, p, 'Cliente Modificado')
+            messages.warning(request, 'Cliente Modificado Correctamente')
+            return render(request, 'close_popup.html', {
+            })
+    else:
+        form = ClienteForm(instance=cliente)
+    return render(request, 'clientes/update_cliente_popup.html', {
+        'form':form,
+    })
+

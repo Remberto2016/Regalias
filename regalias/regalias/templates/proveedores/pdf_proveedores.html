@@ -5,27 +5,43 @@ Proveedores
 {% endblock %}
 
 {% block cuerpo %}
-<h1>Nuestros Proveedores</h1>
-<table class="table striped hovered border bordered">
-    <thead>
+<h2 align="center">DETALLE DE PROVEEDORES</h2>
+<table >
+    {% for proveedor in proveedores  %}
+    <div> 
         <tr>
-            <th width="30px">#</th>
-            <th>Proveedor</th>
-            <th>Telefono</th>
-            <th>Direccion</th>
-            <th>Email</th>
+            <th class="celdas" colspan="4" width="100%" align="left" style="font-family: courier; font-size:15px; border: white;background-color:#d7d7d7;"> {{ forloop.counter }} DATOS DE: {{proveedor.proveedor|upper}} <strong></strong> </th>
         </tr>
-    </thead>
-    <tbody>
-        {% for proveedor in proveedores %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ proveedor.proveedor }}</td>
-                <td>{{ proveedor.telefono }}</td>
-                <td>{{ proveedor.direccion }}</td>
-                <td>{{ proveedor.email }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
+        <tr></tr>
+        <tr  style="font-family: courier; font-size:12px;">
+
+            <td width="17%">
+                <p> <strong> NOMBRE: </strong></br>
+                   <strong> NIT/C.I. </strong></br>
+                   <strong> PAÍS / CIUDAD: </strong></br>
+               </p>
+           </td>
+           <td width="35%">            
+            <p> {{ proveedor.proveedor |upper}}</br>
+                {{ proveedor.nit |upper}}</br>
+                {{ proveedor.origen.pais |upper}} / {{ proveedor.origen |upper}} </br>
+            </p>
+            </td>
+            <td width="12%">
+                <p>
+                    <strong> DIRECIÓN: </strong></br>
+                    <strong> TELÉFONO: </strong> </br>
+                    <strong> EMAIL: </strong></br>
+                </p>
+            </td>
+            <td width="36%">
+                        <p>{{ proveedor.direccion |upper}} </br>
+                        {{ proveedor.telefono |upper}}</br>
+                    {{ proveedor.email}} </br>
+                    </p>
+            </td>
+            {% endfor %}
+        </tr>
+    </div>
 </table>
 {% endblock %}

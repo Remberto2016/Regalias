@@ -5,16 +5,26 @@ Nuestros Clientes
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <a href="{% url 'cliente-new-popup' %}" class="btn btn-success add-another" id="register_cliente">
-            <i class="glyphicon glyphicon-plus"></i> Registrar Cliente
-        </a>
-    </div>
-</div>
-<h2>Seleccione Cliente Para Venta</h2>
-<div class="cell colspan12">
-    <table class="table striped hovered border bordered">
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2 class="app">Seleccione Cliente Para la Venta <small style="font-family:arial">Lista de Clientes</small></h2>
+        <ul class="nav navbar-right panel_toolbox">
+           <li><a href="{% url 'cliente-pdf' %}" class="btn btn-danger " target="_blank" data-toggle="tooltip" title="Psar a PDF!">
+              <strong style="color:black;">PDF <i class="fa fa-file-pdf-o"></i></strong></a>
+          </li>
+          <li><a href="{% url 'cliente-new-popup' %}" type="button" href="" class="btn btn-success add-another" data-toggle="tooltip" title="Nuevo Cliente!" id="register_cliente">
+              <strong style="color:black">AGREGAR <span style="color:black;" class="glyphicon glyphicon-plus" ></span> </strong></a>
+          </li>
+          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+          </li>
+          <li><a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+      </ul>
+      <div class="clearfix"></div>
+  </div>
+  <div class="x_content">
+    <table class="table striped hovered border bordered" width="100%">
         <thead>
             <tr>
                 <th width="30px">#</th>
@@ -29,29 +39,31 @@ Nuestros Clientes
         </thead>
         <tbody>
             {% for cliente in clientes %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ cliente.nit }}</td>
-                    <td>{{ cliente.razon }}</td>
-                    <td>{{ cliente.telefono }}</td>
-                    <td>{{ cliente.direccion }}</td>
-                    <td>{{ cliente.ciudad.pais }}</td>
-                    <td>{{ cliente.ciudad }}</td>
-                    <td>
-                        <a href="{% url 'venta-new' cliente.id %}" class="btn btn-xs btn-success" title="Seleccionar Cliente">
-                            <i class="fa fa-credit-card"></i>
-                        </a>
-                    </td>
-                </tr>
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ cliente.nit }}</td>
+                <td>{{ cliente.razon }}</td>
+                <td>{{ cliente.telefono }}</td>
+                <td>{{ cliente.direccion }}</td>
+                <td>{{ cliente.ciudad.pais }}</td>
+                <td>{{ cliente.ciudad }}</td>
+                <td>
+                    <a href="{% url 'venta-new' cliente.id %}" class="btn btn-xs btn-success" title="Seleccionar Cliente">
+                        <i class="fa fa-credit-card"></i>
+                    </a>
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
+</div>
+</div>
 </div>
 {% endblock %}
 
 {% block js %}
 <script>
-    $(document).ready(function() {
+$(document).ready(function() {
     $( '.add-another' ).click(function(e) {
         e.preventDefault(  );
         showAddAnotherPopup( $( this ) );
@@ -107,11 +119,11 @@ function dismissAddAnotherPopup(win, newId, newRepr) {
 
 function html_unescape(text) {
  // Unescape a string that was escaped using django.utils.html.escape.
-    text = text.replace(/</g, '');
-    text = text.replace(/"/g, '"');
-    text = text.replace(/'/g, "'");
-    text = text.replace(/&/g, '&');
-    return text;
+ text = text.replace(/</g, '');
+ text = text.replace(/"/g, '"');
+ text = text.replace(/'/g, "'");
+ text = text.replace(/&/g, '&');
+ return text;
 }
 
 // IE doesn't accept periods or dashes in the window name, but the element IDs

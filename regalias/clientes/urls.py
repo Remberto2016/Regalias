@@ -9,6 +9,7 @@ urlpatterns = [
     path('popup/new/pais', views.new_pais_popup, name='cliente-new-pais-popup'),
     path('new', views.new, name='cliente-new'),
     path('popup/new', views.new_cliente_popup, name='cliente-new-popup'),
+        path('popup/<int:cliente_id>/update', views.update_cliente_popup, name='update_cliente_popup'),
     path('<int:cliente_id>/update', views.update, name='cliente-update'),
     path('<int:cliente_id>/baja', views.baja_cliente, name='cliente-baja'),
     path('<int:cliente_id>/activate', views.activate_cliente, name='cliente-activate'),

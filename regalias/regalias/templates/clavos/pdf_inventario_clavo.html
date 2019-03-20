@@ -1,0 +1,85 @@
+{% extends 'report.html' %}
+
+{% block title %}
+Detalle de Entradas
+{% endblock %}
+
+{% block cuerpo %}
+{% load helper_material %}
+
+<style>
+
+.app th{
+    background-color: #d7d7d7;
+    border :1px solid white;
+    font-family: courier;
+}
+.app td{
+    text-align:center;
+    border-bottom: 1px solid #d7d7d7;
+    
+}
+</style>
+<h2 align="center">DETALLE DE ENTRADAS</h2>
+{% for inventario in inventarios %}
+<table >
+    <tr>
+        <th class="celdas" colspan="4" width="100%" align="left" style="font-family: courier; font-size:15px; border: white;background-color:#d7d7d7;"> I. DATOS IDENTIFICACIÓN DE CLAVO: {{inventario.codigo|upper}}<strong></strong> </th>
+    </tr>
+    <tr></tr>
+    <tr  style="font-family: courier; font-size:12px;">
+        <td width="17%">
+            <strong> CODIGO: </strong></br>
+            <strong> TIPO. </strong></br>
+            <strong> DESCRIPCIÓN: </strong></br>
+            <strong> LONGITUD: </strong></br>
+
+        </td>
+        <td width="35%">
+
+        {{ inventario.codigo |upper }}</br>
+    {{ inventario.tipo |upper }}</br>
+{{ inventario.descripcion |upper }}</br>
+{{ inventario.longitud |upper}} m.m.</br>
+
+
+</td>
+<td width="17%">
+    <strong> PRECIO: </strong></br>
+    <strong> STOCK: </strong></br>
+    <strong> SALIDA: </strong></br>
+</td>
+<td width="35%">
+
+   <span class="badge" style="color:#3a87ad">{{ inventario.precio |upper }} Bs.</span></br>
+   <span class="badge" style="color:#468847">{{ inventario.stock |upper }} U. </span></br>
+{% salidamaterial inventario %}</br>
+
+</td>
+</tr>
+<br>
+
+<table style="font-size:11px; padding-top:3px;">
+    <th class="celdas" colspan="3" width="100%" align="left" style="font-family: courier; font-size:15px; border: white;"> II. DETALLE DE ENTRADA <strong></strong> </th>
+    <thead>
+        <tr class="app">
+            <th >#</th>
+            <th>Fecha</th>
+            <th>Cantidad</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for d in inventario.detalleprecioclavo_set.select_related.all %} 
+        <tr class="app">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ d.fecha | upper}}</td>
+            <td>{{ d.cantidad }}</td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+{% endfor %}
+
+{% endblock %} 
+

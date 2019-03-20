@@ -1,27 +1,65 @@
-<h1>Informacion Pedido</h1>
-<table class="table1">
-    <tr>
-        <td>
-            <p>
-                <strong>Cliente: </strong>{{ pedido.cliente.razon }}
-            </p>
-            <p>
-                <strong>Cedula de Identidad: </strong>{{ pedido.cliente.nit }}
-            </p>
-            <p>
-                <strong>Pais / Ciudad: </strong>{{ pedido.cliente.ciudad.pais }} / {{ pedido.cliente.ciudad }}
-            </p>
-        </td>
-        <td>
-            <p>
-                <strong>Fecha Pedido: </strong>{{ pedido.fecha }}
-            </p>
-            <p>
-                <strong>Costo Total: </strong>{{ pedido.costo }}  Bs.
-            </p>
-            <p>
-                <strong>Cantidad Materiales: </strong>{{ pedido.detallepedido_set.select_related.count }}
-            </p>
-        </td>
-    </tr>
+<h2 align="center">DETALLE DE COTIZACIÓN</h2>
+<table >
+    <div> 
+        <tr>
+            <th class="celdas" colspan="4" width="100%" align="left" style="font-family: courier; font-size:15px; border: white;background-color:#d7d7d7;"> I. DATOS IDENTIFICACIÓN DE CLIENTE <strong></strong> </th>
+        </tr>
+        <tr></tr>
+        <tr  style="font-family: courier; font-size:12px;">
+            <td width="17%">
+                <p> <strong> CLIENTE: </strong></br>
+                   <strong> NIT/C.I. </strong></br>
+                   <strong> PAÍS / CIUDAD: </strong></br>
+               </p>
+
+           </td>
+           <td width="35%">
+            <p> {{ pedido.cliente.razon |upper}}</br>
+            {{ pedido.cliente.nit |upper}}</br>
+        {{ pedido.cliente.ciudad.pais |upper}} / {{ pedido.cliente.ciudad |upper}} </br>
+    </p>
+
+
+</td>
+
+<td width="12%">
+    <p>
+        <strong> DIRECIÓN: </strong></br>
+        <strong> TELÉFONO: </strong> </br>
+        <strong> EMAIL: </strong></br>
+    </p>
+
+</td>
+<td width="36%">
+    <p>{{ pedido.cliente.direccion |upper}} </br>
+    {{ pedido.cliente.telefono |upper}}</br>
+{{ pedido.cliente.email}} </br>
+</p>
+</td>
+</tr>
+</div>
+</table>
+<table >
+    <div> 
+        <tr></tr>
+        <tr>
+            <th class="celdas" colspan="2" width="100%" align="left" style="font-family: courier; font-size:15px; border: white;background-color:#d7d7d7;"> II. DATOS TECNICOS COTIZACIÓN <strong></strong> </th>
+        </tr>
+        <tr></tr>
+        <tr  style="font-family: courier; font-size:12px;">
+            <td width="18%">
+                <p>
+                    <strong> FECHA: </strong></br>
+                    <strong> VENTA COSTO: </strong></br>
+                    <strong> CANT. MATERIAL: </strong></br>
+                </p>
+            </td>
+            <td width="82%">
+                <p> {{ pedido.fecha |upper}}</br>
+            {{ pedido.costo |upper}} Bs. </br>
+        {{ pedido.detallepedido_set.select_related.count }} </br>
+    </p>
+</td>
+</tr>
+</div>
 </table>

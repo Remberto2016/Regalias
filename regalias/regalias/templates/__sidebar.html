@@ -13,11 +13,8 @@
                         <a href="{% url 'empresa_info' %}">Informacion de Empresa</a>
                     </li>
 
-
                 </ul>
             </li>
-
-
             {% endif %}
             {% if 'clientes' in perms %}
             <li>
@@ -42,6 +39,7 @@
             </li>
             {% endif %}
             
+            {% if 'materiales' in perms %}
             <li>
                 <a><i class="fa fa-sitemap"></i> Proveedor <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
@@ -56,41 +54,15 @@
                     </li>
                 </ul>
             </li>
-                <!--li><a><i class="fa fa-briefcase"></i> Precios e Inventario<span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                        <li>
-                            <a href="{% url 'precio-new' %}">Nuevo Precio Calamina</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'precio-index' %}">Lista Precios Calamina</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'precio-list-baja' %}">Precios Baja Calamina</a>
-                        </li>
-
-                        <li>
-                            <a href="{% url 'precio-new-clavo' %}">Nuevo Precio Clavo</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'precio-index-clavos' %}">Lista Precios Clavos</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'precio-list-baja-clavo' %}">Precios Clavos Baja</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'index_inventario' %}">Inventario Clavos</a>
-                        </li>
-
-                    </ul>
-                </li-->
-                {% if 'precios' in perms %}
-                
-
-
-                <li><a><i class="fa fa-sitemap"></i> Precios <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                        <li><a>Calaminas<span class="fa fa-chevron-down"></span></a>
-                            <ul class="nav child_menu">
+            {% endif %}
+            {% if 'precios' in perms %}
+            <li><a><i class="fa fa-money"></i> Precios <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a>Calaminas<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                                <!--li class="sub_menu">
+                                    <a href="{% url 'precio-new' %}">Nuevo Precio Calamina</a>
+                                </li-->
                                 <li class="sub_menu">
                                     <a href="{% url 'precio-new' %}">Nuevo Precio Calamina</a>
                                 </li>
@@ -129,6 +101,11 @@
                 <li><a><i class="fa fa-briefcase"></i> Materiales <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li>
+                            <a href="{% url 'color-index' %}">
+                                Colores
+                            </a>
+                        </li>
+                        <li>
                             <a href="{% url 'materia-new' %}">Nuevo Material</a>
                         </li>
                         <li>
@@ -140,15 +117,11 @@
                         <li>
                             <a href="{% url 'materia-usada' %}">Materiales Usados</a>
                         </li>
-                        <li>
-                            <a href="{% url 'color-index' %}">
-                                Colores
-                            </a>
-                        </li>
                         
                     </ul>
                 </li>
                 {% endif %}
+                {% if 'pedidos' in perms %}
                 <li><a><i class="fa fa-sitemap"></i> Inventario <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li><a>Calaminas<span class="fa fa-chevron-down"></span></a>
@@ -170,7 +143,6 @@
                     </ul>
                 </li>
                 
-                {% if 'pedidos' in perms %}
                 <li>
                     <a><i class="fa fa-archive"></i> Cotizaciones  <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -186,6 +158,13 @@
                         <li>
                             <a href="{% url 'pedido-vendidos' %}">Cotizaciones Vendidos</a>
                         </li>
+                        <li>
+                            <a href="{% url 'pedido-list-orden-production' %}">Ordenes de Produccion</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'pedido-list-orden-production-realizado' %}">Ordenes de Produccion Ejecutado</a>
+                        </li>
+                        
                     </ul>
                 </li>
                 {% endif %}
@@ -202,9 +181,9 @@
                         <li>
                             <a href="{% url 'venta-list-clientes-calamina' %}">Venta de Calaminas</a>
                         </li>
-                        <!--li>
+                        <li>
                             <a href="{% url 'venta-no-confirmados' %}">Ventas sin Confirmar</a>
-                        </li-->
+                        </li>
                         <li>
                             <a href="{% url 'venta-list-pedidos' %}">Venta Cotización </a>
                         </li>
@@ -239,6 +218,19 @@
                     </ul>
                 </li>
                 {% endif %}
+                {% if 'materiales' in perms %}
+                <!--li>
+                    <a><i class="fa fa-gear"></i> Configuración <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li>
+                            <a href="{% url 'index-configuracion' %}">
+                                Materiales
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </li-->               
+                {% endif %}
             <!--li><a><i class="fa fa-list"></i> Reportes <span class="fa fa-chevron-down"></span></a>
             <ul class="nav child_menu">
             <li><a href="#">Clientes</a></li>
@@ -264,15 +256,21 @@
                 <li>
                     <a href="{% url 'user-new' %}">Registrar Usuario</a>
                 </li>
-                <!--li>
-                    <a href="{% url 'user-complete-information' %}">
-                        Perfil de Usuario
-                    </a>
-                </li-->
+                
                 <li>
                     <a href="{% url 'user-list' %}">Lista Usuarios</a>
                 </li>
+                {% else %}
+                    
+                <li>
+                    <a href="{% url 'user-complete-information' %}">
+                        Perfil de Usuario
+                    </a>
+                </li>
                 {% endif %}
+                <li>
+                    <a href="{% url 'mis-ventas' %}">Mis Ventas</a>
+                </li>
                 <li>
                     <a href="{% url 'user-change-username' %}">Modificar Nombre Usuario</a>
                 </li>

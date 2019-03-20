@@ -1,7 +1,7 @@
 <div class="row">
     <div class="x_panel">
       <div class="x_title">
-        <h2 style="font-family:Cooper Black;">{% block legend %}Registrar Material Prima Calamina{% endblock %}</h2>
+        <h2 style="font-family:Cooper Black;">{% block legend %}Registrar Material Prima{% endblock %}</h2>
         <ul class="nav navbar-right panel_toolbox">
           <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
           </li>
@@ -54,6 +54,21 @@
                         </div>
                         <div class="col-sm-1" style="border-radius: 5px; border: 1px solid;height: 33px;" id="informarioncolor">
                         </div>
+                    {% elif field.html_name == 'codigo' %}
+                        {{ field.label_tag }}
+                        <div class="col-sm-8">
+                            {{ field }}
+                            {% if field.help_text %}
+                            <small class="fg-green block padding10 no-padding-top">
+                                <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+                            </small>
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-1" style="line-height: 30px">
+                            <a href="{% url 'materia-new-popup-codigo' %}" class="btn btn-success add-another" title="Registrar {{ field.html_name }}" id="{{ field.auto_id }}">
+                                <i class="fa fa-plus-circle "></i>
+                            </a>
+                        </div>
                     {% else %}
                         {{ field.label_tag }}
                         <div class="col-sm-9">
@@ -72,6 +87,7 @@
                         <button class="btn btn-primary" type="submit">
                             Registrar
                         </button>
+                        <a href="{% block cancel %}javascript:history.go(-1){% endblock %}" class="btn btn-danger">Cancelar</a>
                     </div>
                 </div>
             </fieldset>

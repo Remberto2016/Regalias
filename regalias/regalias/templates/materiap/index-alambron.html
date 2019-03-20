@@ -8,57 +8,136 @@ Materias Primas
 <div class="col-md-12 col-sm-12 col-xs-12">
   <div class="x_panel">
     <div class="x_title">
-      <h2 class="app">Lista de Alambron </h2>
+      <h2 class="app">Alambron <small style="font-family:arial">Lista de Alambron</small></h2>
       <ul class="nav navbar-right panel_toolbox">
-        <li><a href="{% url 'materia-pdf-alambron' %}" class="btn btn-danger " target="_blank" data-toggle="tooltip" title="Psar a PDF!">
-            <strong style="color:black;">PDF <i class="fa fa-file-pdf-o"></i></strong>
-        </a></li>
-        <li><a href="{% url 'materia-new' %}" type="button" href="" class="btn btn-success" data-toggle="tooltip" title="Nuevo Material!"><span class="glyphicon glyphicon-plus" ></span></a></li>
-        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+        <li>
+            <a href="{% url 'materia-pdf-alambron' %}" class="btn btn-danger " target="_blank" data-toggle="tooltip" title="Psar a PDF!">
+                <strong style="color:black;">PDF <i class="fa fa-file-pdf-o"></i></strong>
+            </a>
         </li>
-        <li><a class="close-link" href=""><i class="fa fa-close"></i></a>
-        </li>
-    </ul>
-    <div class="clearfix"></div>
+        <li><a href="{% url 'materia-new' %}" type="button" href="" class="btn btn-success add-another" data-toggle="tooltip" title="Nuevo Material!" id="register_cliente">
+          <strong style="color:black">AGREGAR <span style="color:black;" class="glyphicon glyphicon-plus" ></span> </strong></a>
+      </li>
+      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+      </li>
+      <li><a class="close-link" href=""><i class="fa fa-close"></i></a>
+      </li>
+  </ul>
+  <div class="clearfix"></div>
 </div>
 <div class="x_content">
     <p class="text-muted font-13 m-b-30">
         Este es una tabla donde contiene los datos de los Materiales de Alambron registrados.
     </p>
-    <table class="table striped hovered border bordered">
+    <table class="table striped hovered border bordered" width="100%">
         <thead>
             <tr>
                 <th>#</th>
-                <th>Material</th>
-                <th>Marca</th>
-                <th>Peso</th>
-                <th>Espesor(mm)</th>
+                <th>CODIGO</th>
+                <th>MATERIAL</th>
+                <th>MARCA</th>
+                <th>PESO</th>
+                <th>ESPESOR(mm)</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             {% for material in materiales %}
-            {% if material.tipo == 'Clavos' %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ material.tipo }}</td>
-                <td>{{ material.marca }}</td>
-                
-                <td>{{ material.peso }} {{ material.medida }}</td>
-                <td>{{ material.espesor }}</td>
+                <td>{{ material.codigo |upper}}</td>
+                <td>{{ material.unidad |upper}}</td>
+                <td>{{ material.marca |upper}}</td>
+                <td>{{ material.peso |upper}} {{ material.medida |upper}}</td>
+                <td>{{ material.espesor |upper}}</td>
                 <td>
-                    <a href="{% url 'materia-update' material.id %}" class="btn btn-warning btn-xs" title="Editar Materia Prima">
+                    <a href="{% url 'materia-update' material.id %}" class="btn btn-warning  btn-xs" title="Editar Materia Prima">
                         <i class="fa fa-pencil-square"></i>
                     </a>
-                    <a href="{% url 'materia-detail' material.id %}" class="btn btn-info btn-xs" title="Detalle Materia Prima">
+                    <button type="button" class="btn btn-primary openmodal btn-xs" data-toggle="modal" data-target=".bs-example-modal-lg{{ material.id }}" title="Detalle de Alambron">
+                        <i class="fa fa-info-circle"></i>
+                    </button>
+                    <a href="{% url 'materia-baja' material.id %}" class="btn btn-danger btn-xs" title="Baja Materia Prima">
                         <i class="fa fa-info-circle"></i>
                     </a>
 
+                    <div class="modal fade bs-example-modal-lg{{ material.id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                        <div class="modal-dialog modal-md" role="document" >
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title app" align="center">Alambron: {{material.codigo}}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12" >
+                                            <table>
+                                                <thead>
+
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td><h5> <strong> Codigo: </strong></h5>
+                                                            <h5> <strong> Material: </strong></h5>
+                                                            <h5> <strong> Nun. Serie: </strong> </h5>
+                                                            <h5> <strong> Marca: </strong> </h5>
+                                                            <h5> <strong> Cantidad: </strong> </h5>  
+                                                        </td>
+                                                        <td>
+                                                            <h5> {{ material.codigo }}</h5>
+                                                            <h5> {{ material.unidad }}</h5>
+                                                            <h5> {{ material.nro_serie }}</h5>
+                                                            <h5> {{ material.marca }}</h5>
+                                                            <h5> {{ material.cantidad }}</h5>  
+                                                        </td>
+                                                        <td>
+                                                            <h5> <strong> Espesor: </strong> </h5>
+                                                            <h5> <strong> Peso: </strong></h5>
+                                                            <h5> <strong> Fecha: </strong> </h5>
+                                                            <h5> <strong> Precio: </strong> </h5>
+                                                            <h5> <strong> Proveedor: </strong> </h5>
+                                                        </td>
+                                                        <td>
+                                                            <h5> {{ material.espesor }} (mm)</h5>
+                                                            <h5> {{ material.peso }} {{ material.medida}}</h5>
+                                                            <h5> {{ material.fecha }}</h5>
+                                                            <h5> {{ material.precioc }} Bs.</h5>
+                                                            <h5> {{ material.proveedor}}</h5>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>
+                                                            <div class="x_content">
+                                                                <a href="{% url 'materia-baja' material.id %}" type="button" class="btn btn-danger " data-toggle="tooltip" title="Dar Baja!">
+                                                                    <span class="fa fa-times-circle" ></span> Baja Materia
+                                                                </a>
+
+                                                                <td><a href="{% url 'materia-update' material.id %}" type="button" class="btn btn-warning " data-toggle="tooltip" title="Editar Materia!">
+                                                                    <i class="fa fa-pencil-square"></i> Editar Materia
+                                                                </a>
+                                                            </td>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="modal-footer" >
+                                    <div class="" align="center">
+                                        <button  style="" type="submit" class="btn btn-success btn-default" data-dismiss="modal">Aceptar</button></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </td>
-            </tr>
-            
-            {% endif %}
-            
+            </tr>           
             {% endfor %}
         </tbody>
     </table>

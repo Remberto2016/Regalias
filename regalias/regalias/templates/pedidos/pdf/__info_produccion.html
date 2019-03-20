@@ -1,40 +1,28 @@
 <hr>
-<table class="table1">
+<table class="table1" style="font-size:11px;">
     <tr>
-        <td>
-            <p>
-                <strong>Sr(a): </strong>{{ pedido.cliente.razon|upper}}
-            </p>
-            <p>
-                <strong>Cedula de Identidad: </strong>{{ pedido.cliente.nit }}
-            </p>
-        </td>
-        <td>
-            <p>
-                <strong>NIT: </strong>{{ pedido.cliente.nit }}
-            </p>
-            <p>
-                <strong>Celular/Telefono: </strong>{{ pedido.cliente.telefono }}
-            </p>
-        </td>
+
+        <td width="15%" align="right"><strong>Sr(a):</strong> </td>
+        <td width="5px"></td>
+        <td width="40%" class="celdas" align="center">{{ pedido.cliente.razon|upper}}</td>
+        <td width="10%" align="right"> <strong>NIT / C.I.:</strong> </td>
+        <td width="5px"></td>
+        <td width="25%" class="celdas" align="center">{{ pedido.cliente.nit}}</td>
+    </tr>
+    <tr></tr>
+    <tr>
+        <td width="10%" align="right"><strong>Contacto:</strong> </td>
+        <td width="5px"></td>
+        <td width="40%" class="celdas" align="center">{{ pedido.persona_entrega }} </td>
+        <td width="10%" align="right"> <strong>Cel. / Telf.:</strong> </td>
+        <td width="5px"></td>
+        <td width="25%" class="celdas" align="center">{{ pedido.telefono_ref }}</td>
+    </tr>
+    <tr></tr>
+    <tr>
+        <td width="15%" align="right"><strong>Lugar de Entrega:</strong> </td>
+        <td width="5px"></td>
+        <td colspan="4"  width="30%" class="celdas" align="center">{{ pedido.entrega }}</td>
     </tr>
 </table>
 
-<table class="table">
-    <tr>
-        <td width="150px">
-            <strong>Responsable de Entrega: </strong>
-        </td>
-        <td>
-            {{ pedido.persona_entrega }}    ----    <strong>Telefono Referencia: </strong> {{ pedido.telefono_ref }}
-        </td>
-    </tr>
-    <tr>
-        <td width="150px">
-            <strong>Lugar de Entrega: </strong>
-        </td>
-        <td>
-            {{ pedido.entrega }}
-        </td>
-    </tr>
-</table>

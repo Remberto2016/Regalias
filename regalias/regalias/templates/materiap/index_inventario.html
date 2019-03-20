@@ -26,30 +26,30 @@
       <p class="text-muted font-13 m-b-30">
         Este es una tabla donde contiene los datos del Calaminas registrados.
     </p>
-    <table class="table striped hovered border bordered">
+    <table class="table striped hovered border bordered" width="100%">
         <thead>
             <tr>
                 <th>#</th>
-                <th>Material</th>
-                <th>Detalle</th>
-                <th>Peso</th>
-                <th>Espesor(mm)</th>
-                <th>Ancho(ml)</th>
-                <th>Stock Disponible(ml)</th>
-                <th>Longitud Ini.(ml)</th>
+                <th>CODIGO</th>
+                <th>DETALLE</th>
+                <th>PESO</th>
+                <th>ESPESOR(mm)</th>
+                <th>ANCHO(ml)</th>
+                <th>STOCK DISPONIBLE(ml)</th>
+                <th>LONGITUD INI.(ml)</th>
             </tr>
         </thead>
         <tbody>
             {% for material in materiap %}
                 <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ material.tipo }}</td>
-                    <td>{{ material.detalle }}</td>
-                    <td>{{ material.peso }} {{ material.medida }}</td>
-                    <td>{{ material.espesor }}</td>
-                    <td>{{ material.ancho }}</td>
-                    <td><span class="badge badge-info" style="background-color: #3a87ad;">{{ material.stock }}</span></td>
-                    <td><span class="badge badge-inverse">{{ material.longitud }}</span></td>
+                    <td>{{ forloop.counter|upper }}</td>
+                    <td>{{ material.codigo |upper}}</td>
+                    <td>{{ material.detalle |upper}}</td>
+                    <td>{{ material.peso |upper}} {{ material.medida |upper}}</td>
+                    <td>{{ material.espesor |upper}}</td>
+                    <td>{{ material.ancho |upper}}</td>
+                    <td><span class="badge badge-info" style="background-color: #3a87ad;">{{ material.stock |upper}}</span></td>
+                    <td><span class="badge badge-inverse">{{ material.longitud |upper}}</span></td>
                 </tr>
             {% endfor %}
         </tbody>

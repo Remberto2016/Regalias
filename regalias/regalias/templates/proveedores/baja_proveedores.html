@@ -8,7 +8,7 @@ Nuestros Proveedores
 <div class="col-md-12 col-sm-12 col-xs-12">
   <div class="x_panel">
     <div class="x_title">
-      <h2 class="app">Lista de proveedores dados de baja </h2>
+      <h2 class="app">Proveedores Bajas <small style="font-family:arial">Lista de Proveedores</small></h2>
       <ul class="nav navbar-right panel_toolbox">
         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
         </li>
@@ -21,14 +21,15 @@ Nuestros Proveedores
   <p class="text-muted font-13 m-b-30">
     Este es una tabla donde contiene los datos de los proveedores registrados dados de baja.
 </p>
-<table class="table striped hovered border bordered">
+<table class="table striped hovered border bordered" width="100%">
     <thead>
         <tr>
             <th width="30px">#</th>
-            <th>Proveedor</th>
-            <th>Telefono</th>
-            <th>Direccion</th>
-            <th>Email</th>
+            <th>NOMBRES</th>
+            <th>ORIGEN</th>
+            <th>TELÉFONO</th>
+            <th>DIRECCIÓN</th>
+            <th>EMAIL</th>
             <th></th>
         </tr>
     </thead>
@@ -36,9 +37,10 @@ Nuestros Proveedores
         {% for proveedor in proveedores %}
         <tr>
             <td>{{ forloop.counter }}</td>
-            <td>{{ proveedor.proveedor }}</td>
-            <td>{{ proveedor.telefono }}</td>
-            <td>{{ proveedor.direccion }}</td>
+            <td>{{ proveedor.proveedor |upper}}</td>
+            <td>{{ proveedor.origen.pais |upper}} / {{ proveedor.origen |upper}}</td>
+            <td>{{ proveedor.telefono |upper}}</td>
+            <td>{{ proveedor.direccion |upper}}</td>
             <td>{{ proveedor.email }}</td>
             <td>
                 <a href="{% url 'proveedor-activate' proveedor.id %}" class="btn btn-success btn-xs" title="Editar Proveedor">

@@ -11,10 +11,10 @@ from django.conf import settings
 from django.utils.encoding import smart_str
 from django.contrib.auth.models import Permission, Group, User
 
-from regalias.utility import admin_log_change, admin_log_addition
+from regalias.utility import admin_log_change, admin_log_addition, render_pdf
 
 from users.models import Empresa,Color, ColorName, Perfil
-from users.form import UsernameForm, EmpresaForm, ColorForm, UserForm, PerfilForm
+from users.form import UsernameForm, EmpresaForm, ColorForm, UserForm, PerfilForm, EntreFechasSearchForm
 from pedidos.models import Pedido
 from ventas.models import Venta
 from clientes.models import Cliente
@@ -154,8 +154,10 @@ def user_creation(request):
 def lista_usuarios(request):
     user = get_object_or_404(User, pk = request.user.id)
     users = User.objects.exclude(id = user.id)
+   
     return render(request, 'users/lista_usuario.html', {
         'users':users,
+        
     })
 
 @login_required(login_url='/login/')
@@ -229,7 +231,6 @@ def info_empresa(request):
         hoy = datetime.datetime.now()
         empresa = Empresa.objects.all().first()
         error = empresa.vencimiento - timedelta(days=30)
-        print(error)
         if hoy.strftime('%Y-%m-%d') >= error.strftime('%Y-%m-%d'):
             messages.error(request, 'La Llave de dosificacion esta por expirar')
         return render(request, 'empresa/index.html', {
@@ -371,3 +372,76 @@ def update_information(request):
         'form':form,
         'formperfil':formperfil,
     })
+
+
+@login_required(login_url='/login')
+def ventas_user(request, user_id):
+    inicio = fin = datetime.datetime.now()
+    user = get_object_or_404(User, pk = user_id)
+    form = EntreFechasSearchForm(request.GET or None)
+    if form.is_valid():
+        inicio = form.cleaned_data['inicio']
+        fin = form.cleaned_data['fin']
+    ventas = Venta.objects.filter(
+        user = user, fecha__gte=inicio, fecha__lte=fin
+    )
+    return render(request, 'users/userventasfecha.html', {
+        'form':form,
+        'inicio':inicio,
+        'fin':fin,
+        'ventas':ventas,
+        'user':user,
+    })
+
+
+@login_required(login_url='/login')
+def pdf_ventas_user(request, user_id, iyear, imonth, iday, fyear, fmonth, fday):
+    inicio = datetime.date(iyear, imonth, iday)
+    fin = datetime.date(fyear, fmonth, fday)
+    user = get_object_or_404(User, pk = user_id)
+    ventas = Venta.objects.filter(
+        user = user, fecha__gte=inicio, fecha__lte=fin
+    )
+    html = render_to_string('users/pdf_userventasfecha.html', {
+        'ventas':ventas,
+        'user':user,
+        'inicio':inicio,
+        'fin':fin,
+    })
+    return render_pdf(html)
+
+@login_required(login_url='/login')
+def mis_ventas(request):
+    inicio = fin = datetime.datetime.now()
+    user = request.user
+    form = EntreFechasSearchForm(request.GET or None)
+    if form.is_valid():
+        inicio = form.cleaned_data['inicio']
+        fin = form.cleaned_data['fin']
+    ventas = Venta.objects.filter(
+        user = user, fecha__gte=inicio, fecha__lte=fin
+    )
+    return render(request, 'users/misventasfecha.html', {
+        'form':form,
+        'inicio':inicio,
+        'fin':fin,
+        'ventas':ventas,
+        'user':user,
+    })
+
+
+@login_required(login_url='/login')
+def pdf_misventas(request, iyear, imonth, iday, fyear, fmonth, fday):
+    inicio = datetime.date(iyear, imonth, iday)
+    fin = datetime.date(fyear, fmonth, fday)
+    user = request.user
+    ventas = Venta.objects.filter(
+        user = user, fecha__gte=inicio, fecha__lte=fin
+    )
+    html = render_to_string('users/pdf_misventasfecha.html', {
+        'ventas':ventas,
+        'user':user,
+        'inicio':inicio,
+        'fin':fin,
+    })
+    return render_pdf(html)

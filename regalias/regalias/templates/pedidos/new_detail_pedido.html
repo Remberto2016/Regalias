@@ -5,96 +5,215 @@ Detalle Cotización
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12 col-sm-12 col-xs-12">
-        <div class="x_panel">
-            {% include 'includes/__info_pedido.html' %}
-            <hr>
-            <div class="col-md-3">
-                <a href="{% url 'pedido-pdf-proforma' pedido.id %}" class="btn btn-info" target="_blank">
-                    <i class="fa fa-camera-retro"></i> Proforma
-                </a>
-            </div>
-            <div class="col-md-3">
-                <a href="{% url 'pedido-new-add-material' pedido.id %}" class="btn btn-success">
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        {% include 'includes/__info_pedido.html' %}
+        <hr>
+        <div class="col-md-3">
+            <a href="{% url 'pedido-pdf-proforma' pedido.id %}" class="btn btn-info" target="_blank">
+                <i class="fa fa-camera-retro"></i> Proforma
+            </a>
+        </div>
+        <div class="col-md-3">
+                <!--a href="{% url 'pedido-new-add-material' pedido.id %}" class="btn btn-success">
                     <i class="fa fa-plus-circle"></i> Agregar Material
-                </a>
+                </a-->
             </div>
+            
             <div class="col-md-3">
                 {% if detalles %}
-                    <a href="{% url 'pedido-confirm' pedido.id %}" class="btn btn-primary">
-                        <i class="fa fa-money-bill-alt"></i> Confirmar Cotización
-                    </a>
+                <a href="{% url 'pedido-confirm' pedido.id %}" class="btn btn-primary">
+                    <i class="fa fa-money-bill-alt"></i> Confirmar Cotización
+                </a>
                 {% endif %}
             </div>
+
+
             <div class="col-md-3">
                 <a href="{% url 'pedido-delete' pedido.id %}" class="btn btn-danger " title="Cancelar Pedido">
                     <i class="fa fa-money-bill-alt"></i> Cancelar Cotización
                 </a>
             </div>
+
             <hr>
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
-                  <div class="x_title">
-                    <h2 class="app">Materiales Agregados <small style="font-family:arial">Lista de materiales</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                  </ul>
-                  <div class="clearfix"></div>
-              </div>
-              <div class="x_content">
-                <table class="table striped hovered border bordered">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Cantidad</th>
-                            <th>Unidad</th>
-                            <th>Descripcion</th>
-                            <th>Color</th>
-                            <th>Largo(ML)</th>
-                            <th>Ancho(ML)</th>
-                            <th>Total(ML)</th>
-                            <th>ConMateriaP.</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for detalle in detalles %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ detalle.cantidad }}</td>
-                            <td>{{ detalle.unidad }}</td>
-                            <td>{{ detalle.descripcion }}</td>
-                            <td>{{ detalle.color }}</td>
-                            <td>{{ detalle.largo }}</td>
-                            <td>{{ detalle.ancho }}</td>
-                            <td>{{ detalle.totalm }}</td>
-                            <td>
-                                {% for materia in detalle.material.all %}
-                                <p>Bobina: {{ materia.nro_serie }}</p>
+                    <div class="x_title">
+                        <h2 class="app">Materiales Agregados <small style="font-family:arial">Lista de materiales</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li><a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <table class="table striped border" style="font-size:12px">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Codigo Calamina</th>
+                                    <th>Tipo Calamina</th>
+                                    <th>Color</th>
+                                    <th>Espesor(mm)</th>
+                                    <th>Ancho(ml)</th>
+                                    <th>PrecioMl(Bs)</th>
+                                    <th>Tamaño(ml)</th>
+                                    <th>Cantidad</th>
+                                    <th>Costo Total(Bs)</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for detalle in detalles %}
+                                <tr align="center">
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ detalle.preciocalamina.codigo }}</td>
+                                    <td>{{ detalle.descripcion }}</td>
+                                    <td>{{ detalle.color }}</td>
+                                    <td>{{ detalle.preciocalamina.espesor }}</td>
+                                    <td>{{ detalle.ancho }}</td>
+                                    <td>{{ detalle.costo_u }}</td>
+                                    <td>{{ detalle.largo }}</td>
+                                    <td>{{ detalle.cantidad }}</td>
+                                    <td>{{ detalle.costo_t }}</td>
+                                    <td>
+                                        <a href="{% url 'pedido-new-delete-material' detalle.id %}" title="Eliminar Material" class="btn btn-danger btn-xs|">
+                                            <i class="fa fa-close"></i>
+                                        </a>
+                                    </td>
+                                </tr>
                                 {% endfor %}
-
-                            </td>
-                            <td>
-                                <a href="{% url 'pedido-new-delete-material' detalle.id %}" class="btn btn-danger btn-xs" title="Eliminar Material">
-                                    <i class="fa fa-eraser"></i>
-                                </a>
-
-                                <a href="{% url 'pedido-update-material' pedido.id detalle.id %}" class="btn btn-warning btn-xs" title="Editar Material">
-                                    <i class="fa fa-pencil"></i>
-                                </a>
-                            </td>
-                        </tr>                
-                        {% endfor %}
-                    </tbody>
-                </table>
+                                <form action="{% url 'pedido-new-add-material-calamina-new' pedido.id %}" method="post">{% csrf_token %}
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <div class="form-groups di">
+                                                <input type="text" class="form-control" id="codigo_id" name="codigo_id">
+                                            </div>
+                                            <div class="hide">
+                                                <input type="text" class="form-control" id="preciocalamina_id" name="preciocalamina_id">
+                                            </div>
+                                        </td>
+                                        <td id="tipocalamina" style="position:relative;" align="center"></td>
+                                        <td id="colorcalamina" style="position:relative;" align="center"></td>
+                                        <td id="espesorcalamina" style="position:relative;" align="center"></td>
+                                        <td id="anchocalamina" style="position:relative;" align="center"></td>
+                                        <td id="preciocalamina" style="position:relative; color:black; font-size:15px" align="center"> </td>
+                                        
+                                        <td>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="largo_id" name="largo_id" required>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-group">
+                                                <input type="number" title="La Cantidad Debe ser un numero entero" required class="form-control" id="cantidad_id" name="cantidad_id">
+                                            </div>
+                                        </td>
+                                        <td id="preciototalcalamina"></td>
+                                        <td>
+                                            <button type="submit" class="btn btn-info">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </form>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-</div>
-</div>
-{% endblock %}
+
+    {% endblock %}
+
+    {% block js %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/examples.css' %}">
+    <script src="{% static 'js/typeahead.bundle.js' %}"></script>
+
+    <script>
+    var substringMatcher = function(strs) {
+        return function findMatches(q, cb) {
+            var matches, substringRegex;
+            matches = [];
+            substrRegex = new RegExp(q, 'i');
+            $.each(strs, function(i, str) {
+                if (substrRegex.test(str)) {
+                    matches.push(str);
+                }
+            });
+            cb(matches);
+        };
+    };
+    var states = [
+    {% for precio in precios %}
+    '{{ precio.codigo }}',
+    {% endfor %}
+    ];
+
+    $('#codigo_id').typeahead({
+        hint: true,
+        highlight: true,
+        minLength: 1
+    },
+    {
+        name: 'states',
+        source: substringMatcher(states)
+    });
+    $(document).ready(function () {
+        var largo = 0;
+        var cantidad = 0;
+        var total = 0;
+        var precio = 0;
+        $('#codigo_id').change(function () {
+            var name = $(this).val();
+            $.ajax({
+                data:{'name': name},
+                url:"{% url 'pedido-ajax-precio-calamina' %}",
+                type:'GET',
+                success: function(data){
+                    if(data){
+                    //alert(data[0]['id']);
+                    $('#tipocalamina').html(data[0]['tipo__tipo']);
+                    $('#preciocalamina').html(data[0]['precio']);
+                    $('#espesorcalamina').html(data[0]['espesor']);
+                    $('#anchocalamina').html(data[0]['ancho']);
+                    $('#colorcalamina').html(data[0]['color__color']);
+                    precio = data[0]['precio'];
+                    $('#preciocalamina_id').val(data[0]['id']);
+                }
+                else{
+                    $('#id_direccion').val(null);
+                    $('#id_representante').val(null);
+                    $('#id_telefono').val(null);
+                    $('#id_email').val(null);
+                    $('#id_nit').val(null);
+                }
+            },
+            failure: function(data){
+                console.log('error')
+            }
+        });
+        });
+        $('#largo_id').keyup(function () {
+            largo = $('#largo_id').val();
+            if(cantidad > 0){
+                total = cantidad * largo;
+                $('#preciototalcalamina').html(total * precio);
+            }
+        });
+        $('#cantidad_id').keyup(function () {
+            cantidad = $('#cantidad_id').val();
+            if(largo > 0){
+                total = cantidad * largo;
+                $('#preciototalcalamina').html(total * precio);
+            }
+        });
+    });
+    </script>
+    {% endblock %}

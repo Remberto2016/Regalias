@@ -16,7 +16,7 @@ Materias Primas
                 </a></li>
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>
-                <li><a class="close-link" href=""><i class="fa fa-close"></i></a>
+                <li><a class="close-link" ><i class="fa fa-close"></i></a>
                 </li>
             </ul>
             <div class="clearfix"></div>
@@ -27,7 +27,7 @@ Materias Primas
             </div>
 
             <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="x_panel tile fixed_height_320 overflow_hidden">
+              <div class="x_panel tile  overflow_hidden">
                 <div class="x_title">
                   <h2>Informacion de Proveedor</h2>
                   <div class="clearfix"></div>
@@ -51,15 +51,17 @@ Materias Primas
     </div>
     <div class="row">
         <div class="col-md-12">
-            <table class="table striped hovered border bordered">
+            <table class="table striped hovered border bordered" width="100%">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>Fecha</th>
+                        <th>Codigo</th>
                         <th>Marca</th>
                         <th>Detalle</th>
                         <th>Peso</th>
                         <th>Costo</th>
+                        <th></th>
 
                     </tr>
                 </thead>
@@ -67,12 +69,85 @@ Materias Primas
                     {% for material in materiales %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{material.fecha}}</td>
+                        <td>{{ material.fecha }}</td>
+                        <td>{{ material.codigo }}</td>
                         <td>{{ material.marca }}</td>
                         <td>{{ material.detalle }}</td>
                         <td>{{ material.peso }} {{ material.medida }}</td>
                         <td>{{material.precioc}} Bs.</td>
+                        <td>
+                            <button type="button" class="btn btn-primary openmodal btn-xs" data-toggle="modal" data-target=".bs-example-modal-lg{{ material.id }}" title="Detalle de Bibina">
+                                <i class="fa fa-info-circle"></i>
+                            </button>
+                            <div class="modal fade bs-example-modal-lg{{ material.id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                                <div class="modal-dialog modal-md-12" role="document" >
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title " align="center">{{material.detalle}}</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-12" >
+                                                    <table >
+                                                        <tbody >
+                                                            <tr>
+                                                                <td width="30px;"></td>
+                                                                <td><h5> <strong> Codigo: </strong></h5>
+                                                                    <h5> <strong> Unidad: </strong></h5>
+                                                                    <h5> <strong> Nun. Serie: </strong> </h5>
+                                                                    <h5> <strong> Marca: </strong> </h5>
+                                                                    <h5> <strong> Cantidad: </strong> </h5>
+                                                                    <h5> <strong> Espesor: </strong> </h5>
+                                                                    <h5> <strong> Ancho: </strong> </h5>
+                                                                </td>
+                                                                <td width="30px;"></td>
+                                                                <td>
+                                                                    <h5> {{ material.codigo }}</h5>
+                                                                    <h5> {{ material.unidad }}</h5>
+                                                                    <h5> {{ material.nro_serie }}</h5>
+                                                                    <h5> {{ material.marca }}</h5>
+                                                                    <h5> {{ material.cantidad }}</h5>
+                                                                    <h5> {{ material.espesor }}(mm) </h5>
+                                                                    <h5> {{ material.ancho}}</h5>
+                                                                </td>
+                                                                <td width="30px;"></td>
 
+                                                                <td>
+                                                                    <h5> <strong> Peso: </strong></h5>
+                                                                    <h5> <strong> Longitud Aprox.: </strong> </h5>
+                                                                    <h5> <strong> M.L. Disponibles: </strong></h5>
+                                                                    <h5> <strong> Color: </strong> </h5>
+                                                                    <h5> <strong> Fecha: </strong> </h5>
+                                                                    <h5> <strong> Precio: </strong> </h5>
+                                                                    <h5> <strong> Proveedor: </strong> </h5>
+                                                                </td>
+                                                                <td width="30px;"></td>
+                                                                <td>
+
+                                                                    <h5> {{ material.peso }} {{ material.medida}}</h5>
+                                                                    <h5> {{ material.longitud }} ml.</h5>
+                                                                    <h5> {{ material.stock}} ml.</h5>
+                                                                    <h5> {{ material.color }}</h5>
+                                                                    <h5> {{ material.fecha }}</h5>
+                                                                    <h5> {{ material.precioc }} </h5>
+                                                                    <h5> {{  material.proveedor}}</h5>
+                                                                </td>
+                                                            </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer" >
+                                            <div class="" align="center">
+                                                <button  style="" type="submit" class="btn btn-success btn-default" data-dismiss="modal">Aceptar</button></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

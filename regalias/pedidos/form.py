@@ -20,6 +20,7 @@ class DetallePedidoForm(ModelForm):
     total_m = forms.FloatField(label='Total Metros', help_text='En Metros Lineales')
     class Meta:
         model = DetallePedido
+        
         fields = ['calamina', 'color', 'anchocalamina', 'unidad', 'largo', 'cantidad', 'total_m', 'costo_u', 'costo_t']
         widgets = {
             'costo_u':TextInput(attrs={'readonly': 'readonly'}),
@@ -29,4 +30,5 @@ class DetallePedidoForm(ModelForm):
 class ConfirmForm(ModelForm):
     class Meta:
         model = Pedido
+        exclude = ['usuario']
         fields = ['plazo', 'entrega', 'persona_entrega', 'telefono_ref']

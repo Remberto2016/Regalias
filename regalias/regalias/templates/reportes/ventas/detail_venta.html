@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 
 {% block title %}
@@ -5,41 +6,53 @@ Detalle Venta
 {% endblock %}
 
 {% block content %}
-<div class="row">
-<div class="col-md-12">
-    <a href="{% url 'venta-pdf-detail' venta.id %}" class="btn btn-info" target="_blank">
-        <i class="fa fa-file-pdf"></i> Pasar a PDF
-    </a>
-</div>
-</div>
-{% include 'includes/__info_venta.html' %}
-<div class="row">
-    <h3>Materiales Agregados</h3>
-    <div class="col-md-12">
-        <table class="table striped hovered table-bordered">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Material</th>
-                    <th>Descripcion</th>
-                    <th>Cantidad</th>
-                    <th>Costo U.</th>
-                    <th>Costo T.</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for detalle in detalles %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ detalle.material }}</td>
-                        <td>{{ detalle.descripcion }}</td>
-                        <td>{{ detalle.cantidad }}</td>
-                        <td>{{ detalle.costo_u }}</td>
-                        <td>{{ detalle.costo_t }}</td>
-                    </tr>                
-                {% endfor %}
-            </tbody>
-        </table>
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="dashboard_graph x_panel">
+    <div class="row x_title">
+      <div class="col-md-6">
+        <a href="{% url 'venta-pdf-detail' venta.id %}" class="btn btn-info" target="_blank">
+            <i class="fa fa-file-pdf-o"></i> Pasar a PDF
+        </a>
+    </div>
+    <div class="col-md-6">
+
     </div>
 </div>
+{% include 'includes/__info_venta.html' %}
+<h3 class="app">Materiales Agregados</h3>
+<div class="col-md-12">
+    <table class="table striped hovered table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Material</th>
+                <th>Descripcion</th>
+                <th>Cantidad</th>
+                <th>Costo U.</th>
+                <th>Costo T.</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detalle in detalles %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                {% if detalle.unidad == 'Calamina' %}
+                    <td>Calamina</td>
+                {% else %}
+                    <td>Clavos</td>
+                {% endif %}
+                
+                <td>{{ detalle.descripcion }}</td>
+                <td>{{ detalle.cantidad }}</td>
+                <td>{{ detalle.costo_u }}</td>
+                <td>{{ detalle.costo_t }}</td>
+            </tr>                
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+
+
 {% endblock %}

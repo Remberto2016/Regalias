@@ -1,7 +1,8 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 from clientes.models import Cliente
-from materiales.models import MateriaPrima
+from materiales.models import MateriaPrima, PrecioCalamina
 
 class Pedido(models.Model):
     fecha = models.DateField(auto_now_add=True)
@@ -14,6 +15,8 @@ class Pedido(models.Model):
     nro_pedido = models.IntegerField(null=True)
     persona_entrega = models.CharField(max_length=100, null=True, verbose_name='Nombres y Apellidos', help_text='Persona de referencia para entrega')
     telefono_ref = models.IntegerField(verbose_name='Telefono Persona Referencia', null=True)
+    usuario = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
+    
     def __unicode__(self):
         return '%s %s'%(self.fecha, self.cliente)
     def __str__(self):
@@ -34,6 +37,8 @@ MATERIALUNIDAD = (
 )
 
 class DetallePedido(models.Model):
+    preciocalamina = models.ForeignKey(PrecioCalamina, models.PROTECT, null=True)
+
     unidad = models.CharField(max_length=50, verbose_name='Unidad de Medida', default='Unidad', choices=MATERIALUNIDAD)
     descripcion = models.TextField(verbose_name='Descripcion Pedido')
     cantidad = models.IntegerField()
@@ -46,7 +51,8 @@ class DetallePedido(models.Model):
     ancho = models.FloatField(null=True)
     totalm = models.FloatField(null=True)
     tipo = models.CharField(max_length=50, null=True)
-    #materiap = models.ForeignKey(MateriaPrima, on_delete=models.PROTECT(), null=True)
+
+    #materiap = models.ForeignKey(MateriaPrima, on_delete=models.PROTECT, null=True)
     def __unicode__(self):
         return '%s: %s'%(self.pedido.id, self.cantidad)
     def __str__(self):

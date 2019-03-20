@@ -5,19 +5,25 @@ Ventas Mensuales
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-12">
-        <a href="{% url 'reporte-pdf-ventas-mes' fecha.year fecha.month %}" class="btn btn-info" target="_blank">
-            <i class="fa fa-file-pdf"></i> Pasar A PDF
-        </a>
-    </div>
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="dashboard_graph x_panel">
+    <div class="row x_title">
+      <div class="col-md-6">
+       <a href="{% url 'reporte-pdf-ventas-mes' fecha.year fecha.month %}" class="btn btn-info" target="_blank">
+        <i class="fa fa-file-pdf-o"></i> Pasar A PDF
+    </a>
 </div>
+<div class="col-md-6">
+
+</div>
+</div>
+
 {# incluir formulario busqueda #}
 {% include 'includes/__form_get.html' %}
-<div class="row">
-    <h1>Ventas en la Gestion: {{ fecha.year }} Mes: {{ fecha|date:"F" }}</h1>
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <h3>Ventas en la Gestion: {{ fecha.year }} Mes: {{ fecha|date:"F" }}</h3>
     <div class="col-md-12">
-        <table class="table striped hovered">
+        <table class="table striped hovered" width="100%">
             <thead>
                 <tr>
                     <th width="30px">#</th>
@@ -31,22 +37,24 @@ Ventas Mensuales
             </thead>
             <tbody>
                 {% for venta in ventas %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ venta.fecha|date:"d-M-Y" }}</td>
-                        <td>{{ venta.cliente.razon }}</td>
-                        <td>{{ venta.cliente.nit }}</td>
-                        <td>{{ venta.detalleventa_set.select_related.count }}</td>
-                        <td>{{ venta.costo }}</td>
-                        <td>
-                            <a href="{% url 'reporte-venta-detail' venta.id %}" class="btn btn-info btn-xs" title="Detalle Venta">
-                                <i class="fa fa-info-circle"></i>
-                            </a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ venta.fecha|date:"d-M-Y" }}</td>
+                    <td>{{ venta.cliente.razon }}</td>
+                    <td>{{ venta.cliente.nit }}</td>
+                    <td>{{ venta.detalleventa_set.select_related.count }}</td>
+                    <td>{{ venta.costo }}</td>
+                    <td>
+                        <a href="{% url 'reporte-venta-detail' venta.id %}" class="btn btn-info btn-xs" title="Detalle Venta">
+                            <i class="fa fa-info-circle"></i>
+                        </a>
+                    </td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+</div>
+</div>
 </div>
 {% endblock %}

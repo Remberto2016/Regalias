@@ -1,0 +1,24 @@
+{% extends '__form_popup.html' %}
+{% block title %}
+Modificar Precio
+{% endblock %}
+
+{% block legend %}
+Modificar Precio
+{% endblock %}
+
+{% block submit %}
+Modificar
+{% endblock %}
+
+{% block js %}
+<script>
+$(document).ready(function () {
+    var html = '<option>------</option>';
+    {% for color in colores %}
+        html += '<option value="{{ color.color }}">{{ color.color }}</option>';
+    {% endfor %}
+    $('#id_color').html(html);
+});
+</script>
+{% endblock %}

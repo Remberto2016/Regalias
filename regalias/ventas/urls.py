@@ -29,10 +29,16 @@ urlpatterns = [
     path('calamina/new/clientes', views.calamina_new_list_cliente, name='venta-list-clientes-calamina'),
     path('calamina/new/<int:cliente_id>/', views.calamina_new_venta, name='venta-new-calamina'),
     path('calamina/new/<int:venta_id>/detail', views.calamina_new_detail_venta, name='venta-new-detail-calamina'),
+
+    path('calamina/add/new/material/<int:venta_id>/calamina', views.add_new_material_calamina, name='venta-new-add-material-calamina-new'),
+
     path('calamina/new/<int:venta_id>/add/material', views.calamina_add_material, name='venta-new-add-material-calamina'),
     path('calamina/<int:detalle_id>/delete', views.calamina_delete_material, name='venta-delete-calamina'),
 
     path('ajax/calamina/precio/', views.ajax_get_precio_calamina, name='pedido-ajax-precio-calamina'),
     path('ajax/calamina/material/color', views.ajax_get_materiales_calamina, name='pedido-ajax-material-calamina'),
+
+
+    path('ajax/preiciocalamina/material', views.ajax_precio_calamina, name='pedido-ajax-precio-calamina'),
 
 ]

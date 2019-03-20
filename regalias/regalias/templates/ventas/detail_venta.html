@@ -5,52 +5,69 @@ Detalle Venta
 {% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        {% include 'includes/__info_venta.html' %}
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+              <div class="x_title">
+                <h2 class="app">Materiales Agregados</h2>
+                <ul class="nav navbar-right panel_toolbox">
 
-<div class="col-md-3">
-    <a href="{% url 'venta-pdf-detail' venta.id %}" class="btn btn-info" target="_blank">
-        <i class="fa fa-file-pdf-o"></i> Pasar a PDF
-    </a>
-</div>
-<div class="col-md-3">
-    <a href="{% url 'venta-pdf-recibo' venta.id %}" class="btn btn-warning" target="_blank">
-        <i class="fa fa-list-alt"></i> Recibo
-    </a>
-</div>
-<div class="col-md-3">
-    <a href="{% url 'venta-pdf-factura' venta.id %}" class="btn btn-danger" target="_blank">
-        <i class="fa fa-credit-card"></i> Factura
-    </a>
-</div>
-</div>
-{% include 'includes/__info_venta.html' %}
-<div class="row">
-    <h3>Materiales Agregados</h3>
-    <div class="col-md-12">
-        <table class="table striped hovered table-bordered">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Material</th>
-                    <th>Descripcion</th>
-                    <th>Cantidad</th>
-                    <th>Costo U.</th>
-                    <th>Costo T.</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for detalle in detalles %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ detalle.material }}</td>
-                        <td>{{ detalle.descripcion }}</td>
-                        <td>{{ detalle.cantidad }}</td>
-                        <td>{{ detalle.costo_u }}</td>
-                        <td>{{ detalle.costo_t }}</td>
-                    </tr>                
-                {% endfor %}
-            </tbody>
-        </table>
+                    <li><a href="{% url 'venta-pdf-detail' venta.id %}" class="btn btn-info " target="_blank" data-toggle="tooltip" title="Orden de Producción!"><strong style="color:black;">Pasar a PDF </strong>
+                        <strong style="color:black;"><i class="fa fa-file-pdf-o"></i></strong>
+                    </a></li>
+                    <li><a href="{% url 'venta-pdf-recibo' venta.id %}" class="btn btn-warning " target="_blank" data-toggle="tooltip" title="Recibo!"><strong style="color:black;">Recibo </strong>
+                        <strong style="color:black;"><i class="fa fa-list-alt"></i></strong>
+                    </a></li>
+                    <li><a href="{% url 'venta-pdf-factura' venta.id %}" class="btn btn-danger " target="_blank" data-toggle="tooltip" title="Factura!"><strong style="color:black;">Factura </strong>
+                        <strong style="color:black;"><i class="fa fa-list-alt"></i></strong>
+                    </a></li>
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <div class="col colspan12">
+                <div class="col colspan12">
+                    <table class="table striped hovered table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Material</th>
+                                <th>Descripcion</th>
+                                <th>Cantidad</th>
+                                <th>Costo U.</th>
+                                <th>Costo T.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for detalle in detalles %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                {% if detalle.unidad == 'Kilos' %}
+                                <td>{{detalle.precioclavos.codigo}} Clavos</td>
+                                {% else %}
+
+                                <td>{{ detalle.preciocalamina.codigo }} </td>
+                                {% endif %}
+                                
+                                <td>{{ detalle.descripcion }}</td>
+                                <td>{{ detalle.cantidad }}</td>
+                                <td>{{ detalle.costo_u }}</td>
+                                <td>{{ detalle.costo_t }}</td>
+                            </tr>                
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+</div>
 </div>
 {% endblock %}

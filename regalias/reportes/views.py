@@ -24,7 +24,9 @@ def ventas_fecha(request):
     if form.is_valid():
         fecha = form.cleaned_data['fecha']
     ventas = Venta.objects.filter(fecha=fecha)
+    
     return render(request, 'reportes/ventas/ventasfecha.html', {
+        
         'fecha':fecha,
         'ventas':ventas,
         'form':form,
@@ -43,6 +45,7 @@ def detalle_venta(request, venta_id):
 def pdf_ventas_fecha(request, year, month, day):
     fecha = datetime.date(year, month, day)
     ventas = Venta.objects.filter(fecha=fecha)
+    print(ventas)
     html = render_to_string('reportes/ventas/pdf_ventasfecha.html', {
         'ventas':ventas,
         'fecha':fecha,
@@ -107,7 +110,7 @@ def salida_material(request):
         fecha = form.cleaned_data['fecha']
         material = form.cleaned_data['material']
     ventas = Venta.objects.filter(estado=True, fecha=fecha)
-    detalles = DetalleVenta.objects.filter(tipo=material, venta_id__in = ventas.values('id')).order_by('venta__fecha', 'material')
+    detalles = DetalleVenta.objects.filter(venta_id__in=ventas.values('id')).order_by('venta__fecha')
     return render(request, 'reportes/material/salida_material_fecha.html', {
         'detalles':detalles,
         'fecha':fecha,
@@ -119,7 +122,7 @@ def salida_material(request):
 def pdf_salida_material(request, year, month, day, material):
     fecha = datetime.date(int(year), int(month), int(day))
     ventas = Venta.objects.filter(estado=True, fecha=fecha)
-    detalles = DetalleVenta.objects.filter(material=material, venta_id__in=ventas.values('id')).order_by('venta__fecha', 'material')
+    detalles = DetalleVenta.objects.filter(venta_id__in=ventas.values('id')).order_by('venta__fecha')
     html = render_to_string('reportes/material/pdf_salida_material_fecha.html', {
         'detalles': detalles,
         'fecha': fecha,

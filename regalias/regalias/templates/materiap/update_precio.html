@@ -8,18 +8,105 @@ Modificar Precio
 Modificar Precio
 {% endblock %}
 
-{% block submit %}
-Modificar
+{% block cuerpo-form %}
+{% for field in form %}
+<div class="form-group">
+    {% if field.errors %}
+        <div class="mypadding2 bg-red fg-white margin10 no-margin-right no-margin-left">
+            <i class="fa fa-exclamation-triangle"></i>{{ field.errors }}
+        </div>
+    {% endif %}
+    {{ field.label_tag }}
+    {% if field.html_name == 'precio' %}
+        <div class="col-sm-9 col-md-9 col-lg-9">
+            {{ field }}
+            {% if field.help_text %}
+            <small class="fg-green block padding10 no-padding-top">
+                <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+            </small>
+            {% endif %}
+        </div>
+    {% elif field.html_name == 'codigo' %}
+        <div class="col-sm-8 col-md-8 col-lg-8">
+            {{ field }}
+            {% if field.help_text %}
+            <small class="fg-green block padding10 no-padding-top">
+                <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+            </small>
+            {% endif %}
+        </div>
+        <div class="col-sm-1" style="line-height: 30px">
+            <a href="{% url 'precio-codigo-calamina-popup' %}" class="btn btn-success add-another" title="Registrar Ciudad" id="{{ field.auto_id }}">
+                <i class="fa fa-plus-circle "></i>
+            </a>
+        </div>
+    {% elif field.html_name == 'tipo' %}
+        <div class="col-sm-8 col-md-8 col-lg-8">
+            {{ field }}
+            {% if field.help_text %}
+            <small class="fg-green block padding10 no-padding-top">
+                <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+            </small>
+            {% endif %}
+        </div>
+        <div class="col-sm-1" style="line-height: 30px">
+            <a href="{% url 'precio-tipo-calamina-popup' %}" class="btn btn-success add-another" title="Registrar Ciudad" id="{{ field.auto_id }}">
+                <i class="fa fa-plus-circle "></i>
+            </a>
+        </div>
+    {% elif field.html_name == 'color' %}
+        <div class="col-sm-7">
+            {{ field }}
+            {% if field.help_text %}
+            <small class="fg-green block padding10 no-padding-top">
+                <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+            </small>
+            {% endif %}
+        </div>
+        <div class="col-sm-1" style="line-height: 30px">
+            <a href="{% url 'color-new-popup' %}" class="btn btn-success add-another" title="Registrar {{ field.html_name }}" id="{{ field.auto_id }}">
+                <i class="fa fa-plus-circle "></i>
+            </a>
+        </div>
+        <div class="col-sm-1" style="border-radius: 5px; border: 1px solid;height: 33px;" id="informarioncolor">
+        </div>
+    {% else %}
+        <div class="col-sm-9 col-md-9 col-lg-9">
+            {{ field }}
+            {% if field.help_text %}
+            <small class="fg-green block padding10 no-padding-top">
+                <i class="fa fa-info-circle"></i> {{ field.help_text|safe }}
+            </small>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endfor %}
 {% endblock %}
 
 {% block js %}
-<script>
+    {% include '__popup_script.html' %}
+    <script>
 $(document).ready(function () {
     var html = '<option>------</option>';
-    {% for color in colores %}
-        html += '<option value="{{ color.color }}">{{ color.color }}</option>';
+    {% for color in coloresss %}
+    html += '<option value="{{ color.color }}" id="{{ color.codigo }}">{{ color.color }}</option>';
     {% endfor %}
-    $('#id_color').html(html);
+    //hiden();
+    $('#id_color').change(function () {
+        var color = $(this).val();
+        $.ajax({
+            data:{'id': color},
+            url:"{% url 'material-ajax-color-colored' %}",
+            type:'GET',
+            success: function(data){
+                $('#informarioncolor').css('background-color', data[0].codigo)
+            },
+            failure: function(data){
+                console.log('error')
+            }
+        });
+    })
 });
 </script>
 {% endblock %}

@@ -16,7 +16,7 @@ from users.models import Empresa
 from clientes.models import Cliente
 from pedidos.models import Pedido, DetallePedido
 from ventas.models import Venta, DetalleVenta
-from materiales.models import PrecioClavos, Precio, MateriaPrima
+from materiales.models import PrecioClavos, Precio, MateriaPrima, PrecioCalamina
 
 from ventas.form import DetalleVentaForm
 
@@ -31,6 +31,7 @@ def index(request):
 @login_required(login_url='/login/')
 def new_list_cliente(request):
     clientes = Cliente.objects.filter(estado=True)
+    messages.warning(request, 'Selecione Clente Para la venta')
     return render(request, 'ventas/new_list_clientes.html', {
         'clientes':clientes,
     })
@@ -40,6 +41,7 @@ def new_venta(request, cliente_id):
     cliente = get_object_or_404(Cliente, pk = cliente_id)
     venta = Venta.objects.create(
         cliente=cliente,
+        user=request.user,
     )
     venta.save()
     admin_log_addition(request, venta, 'Venta Creada')
@@ -67,7 +69,7 @@ def add_material(request, venta_id):
             detalle.venta = venta
             detalle.costo_t = detalle.cantidad * detalle.costo_u
             detalle.precio_id = precioclavo.id
-            detalle.tipo = detalle.material
+            #detalle.tipo = detalle.material
             detalle.save()
             venta.costo = venta.costo + detalle.costo_t
             venta.save()
@@ -137,7 +139,7 @@ def delete_venta(request, venta_id):
     for d in detalle:
         d.delete()
     venta.delete()
-    messages.error(request, 'Pedido Eliminado')
+    messages.error(request, 'Venta Eliminado')
     return HttpResponseRedirect(reverse(ventas_no_confirmados))
 
 @login_required(login_url='/login/')
@@ -166,7 +168,7 @@ def detail_pedido_venta(request, pedido_id):
         'detalles': detalles,
     })
 
-@login_required(login_url='/login/')
+@login_required(login_url='/login/') 
 def venta_pedido(request, pedido_id):
     pedido = get_object_or_404(Pedido, pk=pedido_id)
     detalles = DetallePedido.objects.filter(pedido=pedido)
@@ -181,20 +183,25 @@ def venta_pedido(request, pedido_id):
         costo=pedido.costo,
         estado=True,
         nro_venta=nro,
+        user=request.user,
     )
-    admin_log_addition(request, venta, 'Venta Pedido')
+    admin_log_addition(request, venta, 'Venta Pedido') 
     venta.save()
     for d in detalles:
+        preciocalamina = d.preciocalamina
         detalle = DetalleVenta.objects.create(
-            material='Largo: %s ml- Ancho: %s ml'%(d.largo, d.ancho),
-            descripcion=d.descripcion,
-            cantidad=d.cantidad,
-            costo_u=d.costo_u,
-            costo_t=d.costo_t,
+            preciocalamina=d.preciocalamina,
             venta=venta,
-            unidad=d.unidad,
+            costo_t=int(d.cantidad) * float(d.largo) * preciocalamina.precio,
+            precio_id=preciocalamina.precio,
+            tipo=preciocalamina.tipo.tipo,
+            cantidad=int(d.cantidad),
+            costo_u=preciocalamina.precio,
             largo=d.largo,
-            tipo=d.tipo,
+            unidad='Calamina',
+            descripcion=preciocalamina.tipo.tipo,
+            totalm=d.totalm,
+
         )
         detalle.save()
         admin_log_addition(request, detalle, 'Material Agregado')
@@ -257,7 +264,7 @@ def factura_pdf(request, venta_id):
             'qr_text': qr_text,
             'literal_amount': literal_amount,
             'decimal_amount': decimal_amount,
-            'limit_date': limit_date,
+            'limit_date': limit_date, 
         })
 
         return render_pdf(html_string)
@@ -279,6 +286,7 @@ def pdf_recibo_venta(request, venta_id):
 @login_required(login_url='/login/')
 def calamina_new_list_cliente(request):
     clientes = Cliente.objects.filter(estado=True)
+    messages.warning(request, 'Selecione Clente Para la venta')
     return render(request, 'ventas/calamina/new_list_clientes.html', {
         'clientes':clientes,
     })
@@ -288,6 +296,7 @@ def calamina_new_venta(request, cliente_id):
     cliente = get_object_or_404(Cliente, pk = cliente_id)
     venta = Venta.objects.create(
         cliente=cliente,
+        user=request.user,
     )
     venta.save()
     admin_log_addition(request, venta, 'Venta Creada')
@@ -298,9 +307,11 @@ def calamina_new_venta(request, cliente_id):
 def calamina_new_detail_venta(request, venta_id):
     venta =  get_object_or_404(Venta, pk = venta_id)
     detalles = DetalleVenta.objects.filter(venta=venta)
+    precios = PrecioCalamina.objects.filter(estado=True)
     return render(request, 'ventas/calamina/new_detail_venta.html', {
         'venta':venta,
         'detalles':detalles,
+        'precios':precios,
     })
 
 from pedidos.form import DetallePedidoForm
@@ -420,8 +431,8 @@ def update_material(request, pedido_id, detalle_id):
 def ajax_get_precio_calamina(request):
     if request.is_ajax():
         id = request.GET['precio_id']
-        precio = get_object_or_404(Precio, pk = id)
-        precios = Precio.objects.filter(pk = id).values('precio', 'color', 'espesor', 'materia__ancho', 'materia__cantidad', 'materia__longitud', 'materia_id', 'materia__stock')
+        #precio = get_object_or_404(Precio, pk = id)
+        precios = PrecioCalamina.objects.filter(pk = id).values('id', 'precio', 'color', 'espesor', 'materia__ancho', 'materia__cantidad', 'materia__longitud', 'materia_id', 'materia__stock', 'tipo__tipo')
         #return JsonResponse(precio.precio, safe=False)
         return JsonResponse(list(precios), safe=False)
     else:
@@ -443,8 +454,9 @@ def ajax_get_materiales_calamina(request):
 def calamina_delete_material(request, detalle_id):
     detalle = get_object_or_404(DetalleVenta, pk = detalle_id)
     pedido = Venta.objects.get(pk = detalle.venta.id)
-    material = MateriaPrima.objects.get(id = detalle.materia_id.id)
-    material.stock = material.stock + (detalle.cantidad * detalle.largo)
+    detallem = detalle.material.first()
+    material = MateriaPrima.objects.get(id=detallem.id)
+    material.stock = material.stock + detalle.totalm
     material.save()
     pedido.costo = pedido.costo - detalle.costo_t
     pedido.save()
@@ -452,3 +464,63 @@ def calamina_delete_material(request, detalle_id):
     admin_log_change(request, pedido, 'Costo Modificado')
     messages.error(request, 'Material Eliminado')
     return HttpResponseRedirect(reverse(calamina_new_detail_venta, args={pedido.id, }))
+
+###NUevas Funciones
+@login_required(login_url='/login')
+def ajax_precio_calamina(request):
+    if request.is_ajax():
+        codigo = request.GET['name']
+        precio = PrecioCalamina.objects.filter(codigo__codigo=codigo)
+        q1 = precio.values('id', 'tipo__tipo', 'precio', 'espesor', 'ancho', 'color__color')
+        return JsonResponse(list(q1), safe=False)
+    else:
+        raise Http404
+
+@login_required(login_url='/login')
+def add_new_material_calamina(request, venta_id):
+    venta = get_object_or_404(Venta, pk=venta_id)
+    if request.method == 'POST':
+        stock = 0
+        codigo = request.POST['preciocalamina_id']  # PrecioCalamina_id
+        preciocalamina = get_object_or_404(PrecioCalamina, pk=codigo)
+        cantidad = request.POST['cantidad_id']
+        largo = request.POST['largo_id']
+        totalm = float(cantidad) * float(largo)
+        materials = MateriaPrima.objects.filter(estado=True, color=preciocalamina.color.color,
+                                                ancho=preciocalamina.ancho, stock__gte=float(totalm))
+        # =color, stock__gte=float(totalm), ancho=materia_id.ancho)
+        if not materials:
+            messages.error(request, 'No Exite Materia Prima Disponible')
+            return HttpResponseRedirect(reverse(calamina_new_detail_venta, args={venta.id, }))
+        else:
+            detalle = DetalleVenta.objects.create(
+                preciocalamina=preciocalamina,
+                venta = venta,
+                costo_t = int(cantidad) * float(largo) * preciocalamina.precio,
+                precio_id = preciocalamina.precio,
+                tipo = preciocalamina.tipo.tipo,
+                cantidad=int(cantidad),
+                costo_u=preciocalamina.precio,
+                largo=largo,
+                unidad='Calamina',
+                descripcion=preciocalamina.tipo.tipo,
+                totalm=totalm,
+            )
+            for materia in materials:
+                stock += materia.stock
+                stock += materia.stock
+                if stock >= totalm:
+                    detalle.material.add(materia)
+                    materia.salida = materia.salida + totalm
+                    materia.stock = materia.stock - totalm
+                    materia.save()
+                    break
+            detalle.save()
+            venta.costo = venta.costo + detalle.costo_t
+            venta.save()
+            admin_log_addition(request, detalle, 'Detalle Venta Creado')
+            admin_log_change(request, venta, 'Costo Modificado')
+            messages.success(request, 'Material Agredado Correctemente')
+            return HttpResponseRedirect(reverse(calamina_new_detail_venta, args={venta.id, }))
+    else:
+        return HttpResponseRedirect(reverse(calamina_new_detail_venta, args={venta.id, }))

@@ -8,7 +8,7 @@ from ventas.models import DetalleVenta
 @register.simple_tag
 def salidamaterial(material):
     print(material)
-    detalle = DetalleVenta.objects.filter(material='Clavos', precio_id=material.id)
+    detalle = DetalleVenta.objects.filter(precio_id=material.id)
     if detalle:
         sum = detalle.aggregate(Sum('cantidad'))
         return sum['cantidad__sum']
@@ -18,3 +18,4 @@ def salidamaterial(material):
 @register.simple_tag
 def sumita(largo, cantidad):
     return float(largo) * float(cantidad)
+

@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
@@ -17,6 +18,13 @@ urlpatterns = [
     path('<int:user_id>/permission/', views.permisos, name='user-permission'),
     path('add/<int:grupo_id>/<int:user_id>/permission/', views.add_grupo, name='user-add-permission'),
     path('remove/<int:grupo_id>/<int:user_id>/permission/', views.remove_grupo, name='user-remove-permission'),
+
+
+    path('user/<int:user_id>/ventas', views.ventas_user, name='user-ventas'),
+    path('user/<int:user_id>/pdf/<int:iyear>/<int:imonth>/<int:iday>/ventas/<int:fyear>/<int:fmonth>/<int:fday>', views.pdf_ventas_user, name='user-pdf-ventas-fechas'),
+
+    path('mis/ventas', views.mis_ventas, name='mis-ventas'),
+    path('mis/ventas/pdf/<int:iyear>/<int:imonth>/<int:iday>/ventas/<int:fyear>/<int:fmonth>/<int:fday>', views.pdf_misventas, name='user-pdf-mis_ventas-fechas'),
 
     path('empresa', views.info_empresa, name='empresa_info'),
     path('empresa/new', views.new_empresa, name='empresa_new'),

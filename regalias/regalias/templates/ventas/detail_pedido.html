@@ -5,41 +5,63 @@ Detalle Pedido
 {% endblock %}
 
 {% block content %}
-{% include 'includes/__info_pedido.html' %}
 <div class="row">
-    <div class="col-md-6">
-        <a href="{% url 'venta-pedido-vent' pedido.id %}" class="btn btn-success">
-            <i class="fa fa-plus-circle"></i> Crear Venta
-        </a>
+   <div class="x_panel">
+    {% include 'includes/__info_pedido.html' %}
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2 class="app">Materiales Agregados</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li><a href="{% url 'venta-pedido-vent' pedido.id %}" class="btn btn-success "data-toggle="tooltip" title="Crear Venta!"><strong style="color:black;">Crear Venta </strong>
+                    <strong style="color:black;"></i></strong>
+                </a></li>
+                <li><a href="{% url 'pedido-pdf-detail' pedido.id %}" class="btn btn-info " target="_blank" data-toggle="tooltip" title="Orden de Producción!"><strong style="color:black;">Orden De Producción </strong>
+                    <strong style="color:black;"><i class="fa fa-file-pdf-o"></i></strong>
+                </a></li>
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <div class="col colspan12">
+            <div class="row">
+                <div class="col colspan12">
+                    <table class="table striped hovered border bordered" width="100%">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Material</th>
+                                <th>Tipo</th>
+                                <th>Descripcion</th>
+                                <th>Cantidad</th>
+                                <th>Costo U.</th>
+                                <th>Costo T.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for detalle in detalles %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td> {{ detalle.preciocalamina.codigo}}</td>
+                                <td>{{ detalle.descripcion }}</td>
+                                <td>Ancho: {{ detalle.ancho }} - Largo: {{ detalle.largo }}</td>
+                                <td>{{ detalle.cantidad }}</td>
+                                <td>{{ detalle.costo_u }}</td>
+                                <td>{{ detalle.costo_t }} Bs.</td>
+                            </tr>                
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<div class="row">
-    <h3>Materiales Agregados</h3>
-    <div class="col colspan12">
-        <table class="table striped hovered border bordered">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Material</th>
-                    <th>Descripcion</th>
-                    <th>Cantidad</th>
-                    <th>Costo U.</th>
-                    <th>Costo T.</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for detalle in detalles %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ detalle.descripcion }}</td>
-                        <td>Ancho: {{ detalle.ancho }} - Largo: {{ detalle.largo }}</td>
-                        <td>{{ detalle.cantidad }}</td>
-                        <td>{{ detalle.costo_u }}</td>
-                        <td>{{ detalle.costo_t }}</td>
-                    </tr>                
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+</div>
+</div>
 </div>
 {% endblock %}

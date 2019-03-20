@@ -112,11 +112,11 @@
               <td>{{ venta.detalleventa_set.count }}</td>
               <td>{{ venta.costo }}</td>
               <td>
-                {% if user.is_superuser %} 
+                
                 <a href="{% url 'venta-detail' venta.id %}" class="btn btn-info btn-xs" title="Detalle Venta">
                   <i class="fa fa-info-circle"></i>
                 </a>
-                {% endif %}
+                
               </td>
             </tr>
             {% endfor %}

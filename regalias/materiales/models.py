@@ -2,8 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from clientes.models import Ciudad
+from users.models import Color
 
 class Proveedor(models.Model):
+    nit = models.IntegerField(verbose_name='NIT', null=True)
     proveedor = models.CharField(max_length=100, verbose_name='Nombre Proveedor')
     telefono = models.CharField(max_length=10)
     direccion = models.CharField(max_length=100)
@@ -40,8 +42,17 @@ UNIDADCHOICES = (
     ('Alambron', 'Alambron'),
 )
 
+class CodigoMateriaPrima(models.Model):
+    codigo = models.CharField(max_length=50, verbose_name='Codigo Materia Prima', unique=True)
+    def __unicode__(self):
+        return '%s' % self.codigo
+
+    def __str__(self):
+        return '%s' % self.codigo
+
 class MateriaPrima(models.Model):
     tipo = models.CharField(max_length=10, verbose_name='Tipo Material', default='Calamina', choices=TIPOCHOICES)
+    codigo = models.ForeignKey(CodigoMateriaPrima, models.PROTECT, null=True)
     nro_serie = models.CharField(max_length=100, verbose_name='Numero de Serie', null=True)
     marca = models.CharField(max_length=100, verbose_name='Marca Producto')
     cantidad = models.IntegerField(verbose_name='Cantidad', default='1')
@@ -59,6 +70,7 @@ class MateriaPrima(models.Model):
     precioc = models.FloatField(default=0, verbose_name='Precio de Compra', help_text='En Bolivianos')
     stock = models.FloatField(default=0)
     proveedor = models.ForeignKey(Proveedor, null=True, on_delete=models.PROTECT)
+    
     def __unicode__(self):
         return '%s: %s de   %smm de espesor * %sml de ancho' % (
             self.unidad, self.color, self.espesor, self.ancho)
@@ -96,8 +108,17 @@ TIPESCLAVOS = (
     ('Caja', 'Caja'),
 )
 
+class CodigoClavo(models.Model):
+    codigo = models.CharField(max_length=50, verbose_name='Codigo De Clavo', unique=True)
+
+    def __unicode__(self):
+        return '%s' % self.codigo
+
+    def __str__(self):
+        return '%s' % self.codigo
+
 class PrecioClavos(models.Model):
-    codigo = models.CharField(max_length=10, verbose_name='Codigo')
+    codigo = models.ForeignKey(CodigoClavo, on_delete=models.Model)
     tipo = models.CharField(max_length=20, null=True, choices=TIPESCLAVOS)
     descripcion = models.CharField(max_length=200, verbose_name='Descripcion')
     precio = models.FloatField(verbose_name='Precio Kilo.', help_text='En Bolivianos')
@@ -113,11 +134,48 @@ class PrecioClavos(models.Model):
         verbose_name_plural = 'Tabla de Precios Clavos'
         ordering = ['precio']
 
+
+
 class DetallePrecioClavo(models.Model):
     fecha = models.DateField(auto_now_add=True)
     cantidad = models.IntegerField()
-    precioclavo = models.ForeignKey(PrecioClavos, on_delete=models.Model)
+    precioclavo = models.ForeignKey(PrecioClavos, on_delete=models.Model) 
     def __unicode__(self):
         return '%s'% self.precioclavo
     def __str__(self):
         return '%s' % self.precioclavo
+
+
+class TipoCalamina(models.Model):
+    tipo = models.CharField(max_length=50, verbose_name='Tipo De Calamina', unique=True)
+    def __unicode__(self):
+        return  '%s' % self.tipo
+    def __str__(self):
+        return '%s' % self.tipo
+
+class CodigoCalamina(models.Model):
+    codigo = models.CharField(max_length=50, verbose_name='Codigo De Calamina', unique=True)
+
+    def __unicode__(self):
+        return '%s' % self.codigo
+
+    def __str__(self):
+        return '%s' % self.codigo
+
+class PrecioCalamina(models.Model):
+    tipo = models.ForeignKey(TipoCalamina, on_delete=models.PROTECT)
+    codigo = models.ForeignKey(CodigoCalamina, on_delete=models.PROTECT)
+    color = models.ForeignKey(Color, on_delete=models.PROTECT)
+    nro_codigo = models.CharField(max_length=50, null=True)
+    precio = models.FloatField(verbose_name='Precio Metro L.', help_text='En Bolivianos')
+    espesor = models.FloatField(verbose_name='Espesor', help_text='En Milimetros (mm)', null=True)
+    ancho = models.FloatField(verbose_name='Ancho', help_text='En Metros Lineales (ml)')
+    estado = models.BooleanField(default=True)
+    def __unicode__(self):
+        return '%s - %s - %s Bs.' % (self.codigo, self.tipo, self.precio)
+    def __str__(self):
+        return '%s - %s - %s Bs.' % (self.codigo, self.tipo, self.precio)
+    class Meta:
+        verbose_name = 'Precio de Calamina'
+        verbose_name_plural = 'Precios de Calamina'
+        ordering = ['tipo', 'color', 'codigo']

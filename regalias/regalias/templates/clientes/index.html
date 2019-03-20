@@ -7,33 +7,35 @@ Nuestros Clientes
 <div class="col-md-12 col-sm-12 col-xs-12">
   <div class="x_panel">
     <div class="x_title">
-      <h2 class="app">Lista de clientes </h2>
+      <h2 class="app">Clientes <small style="font-family:arial">Lista de Clientes</small> </h2>
       <ul class="nav navbar-right panel_toolbox">
         <li><a href="{% url 'cliente-pdf' %}" class="btn btn-danger " target="_blank" data-toggle="tooltip" title="Psar a PDF!">
             <strong style="color:black;">PDF <i class="fa fa-file-pdf-o"></i></strong>
         </a></li>
-        <li><a href="{% url 'cliente-new' %}" type="button" href="" class="btn btn-success" data-toggle="tooltip" title="Nuevo Cliente!"><span class="glyphicon glyphicon-plus" ></span></a></li>
-        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-        </li>
-        <li><a class="close-link" href=""><i class="fa fa-close"></i></a>
-        </li>
-    </ul>
-    <div class="clearfix"></div>
+        <li><a href="{% url 'cliente-new-popup' %}" type="button" href="" class="btn btn-success add-another" data-toggle="tooltip" title="Nuevo Cliente!" id="register_cliente">
+          <strong style="color:black">AGREGAR <span style="color:black;" class="glyphicon glyphicon-plus" ></span> </strong></a>
+      </li>
+      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+      </li>
+      <li><a class="close-link" href=""><i class="fa fa-close"></i></a>
+      </li>
+  </ul>
+  <div class="clearfix"></div>
 </div>
 <div class="x_content">
   <p class="text-muted font-13 m-b-30">
     Este es una tabla donde contiene los datos de los clientes registrados.
 </p>
 <div class="row col-md-12" id="imprimir">
-    <table class="table striped hovered border bordered">
+    <table class="table striped hovered border bordered" width="100%">
         <thead>
             <tr>
                 <th width="30px">#</th>
-                <th>NIT</th>
-                <th>Razon Social</th>
-                <th>Telefono</th>
-                <th>Direccion</th>
-                <th>Pais/Ciudad</th>
+                <th>C.I./NIT</th>
+                <th>NOMBRE O RAZON SOCIÁL</th>
+                <th>TELÉFONO</th>
+                <th>DIRECCÓN</th>
+                <th>PAÍS / CIUDAD</th>
                 <th></th>
             </tr>
         </thead>
@@ -42,10 +44,10 @@ Nuestros Clientes
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ cliente.nit }}</td>
-                <td>{{ cliente.razon }}</td>
-                <td>{{ cliente.telefono }}</td>
-                <td>{{ cliente.direccion }}</td>
-                <td>{{ cliente.ciudad.pais}}/{{ cliente.ciudad }}</td>
+                <td>{{ cliente.razon |upper}}</td>
+                <td>{{ cliente.telefono |upper}}</td>
+                <td>{{ cliente.direccion |upper}}</td>
+                <td>{{ cliente.ciudad.pais |upper}} / {{ cliente.ciudad |upper}}</td>
                 <td>
                     <a href="{% url 'cliente-update' cliente.id %}" class="btn btn-warning btn-xs" title="Editar Cliente">
                         <i class="fa fa-pencil-square"></i>
@@ -57,7 +59,7 @@ Nuestros Clientes
                         <i class="fa fa-times-circle"></i>
                     </a>
                     <div class="modal fade bs-example-modal-lg{{ cliente.id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-                        <div class="modal-dialog modal-md" role="document">
+                        <div class="modal-dialog modal-md" role="document" >
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -93,6 +95,20 @@ Nuestros Clientes
                                                             <h4> {{ cliente.ciudad.pais }} / {{ cliente.ciudad }}</h4>
                                                         </td>
                                                     </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>
+                                                            <div class="x_content">
+                                                                <a href="{% url 'cliente-baja' cliente.id %}" type="button" class="btn btn-danger add-another " data-toggle="tooltip" title="Dar Baja!">
+                                                                    <span class="fa fa-times-circle" ></span> Baja Cliente
+                                                                </a>
+                                                                <td>
+                                                                    <a href="{% url 'update_cliente_popup' cliente.id%}" type="button" class="btn btn-warning add-another" data-toggle="tooltip" title="Modificar Cliente!" id="modificar_cliente" ><i class="fa fa-pencil-square"></i> Editar Cliente
+                                                                    </a>
+                                                                </td>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
 
                                                 </tbody>
                                             </table>
@@ -121,6 +137,85 @@ Nuestros Clientes
 
 {% block js %}
 <script>
+$(document).ready(function() {
+    $( '.add-another' ).click(function(e) {
+        e.preventDefault(  );
+        showAddAnotherPopup( $( this ) );
+    });
+});
+
+/* Credit: django.contrib.admin (BSD) */
+
+function showAddAnotherPopup(triggeringLink) {
+    /*
+
+    Pause here with Firebug's script debugger.
+
+    */
+    var name = triggeringLink.attr( 'id' ).replace(/^add_/, '');
+    name = id_to_windowname(name);
+    href = triggeringLink.attr( 'href' );
+
+    if (href.indexOf('?') == -1) {
+        href += '?popup=1';
+    } else {
+        href += '&popup=1';
+    }
+
+    href += '&winName=' + name;
+
+    var win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
+    win.focus();
+
+    return false;
+}
+
+function dismissAddAnotherPopup(win, newId, newRepr) {
+    // newId and newRepr are expected to have previously been escaped by
+    newId = html_unescape(newId);
+    newRepr = html_unescape(newRepr);
+    var name = windowname_to_id(win.name);
+    var elem = document.getElementById(name);
+
+    if (elem) {
+        if (elem.nodeName == 'SELECT') {
+            var o = new Option(newRepr, newId);
+            elem.options[elem.options.length] = o;
+            o.selected = true;
+        }
+    } else {
+        console.log("Could not get input id for win " + name);
+    }
+
+    win.close();
+    location.reload();
+}
+
+function html_unescape(text) {
+ // Unescape a string that was escaped using django.utils.html.escape.
+ text = text.replace(/</g, '');
+ text = text.replace(/"/g, '"');
+ text = text.replace(/'/g, "'");
+ text = text.replace(/&/g, '&');
+ return text;
+}
+
+// IE doesn't accept periods or dashes in the window name, but the element IDs
+// we use to generate popup window names may contain them, therefore we map them
+// to allowed characters in a reversible way so that we can locate the correct
+// element when the popup window is dismissed.
+function id_to_windowname(text) {
+    text = text.replace(/\./g, '__dot__');
+    text = text.replace(/\-/g, '__dash__');
+    text = text.replace(/\[/g, '__braceleft__');
+    text = text.replace(/\]/g, '__braceright__');
+    return text;
+}
+
+function windowname_to_id(text) {
+    return text;
+}
+
 function pruebaDivAPdf() {
     var pdf = new jsPDF('p', 'pt', 'letter');
     source = $('#imprimir')[0];
