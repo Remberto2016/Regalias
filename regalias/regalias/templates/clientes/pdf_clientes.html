@@ -5,6 +5,7 @@ Clientes
 {% endblock %}
 
 {% block cuerpo %}
+<<<<<<< HEAD
 <h2 align="center">DETALLE DE CLIENTES</h2>
 <table >
     {% for cliente in clientes  %}
@@ -46,3 +47,33 @@ Clientes
 </table>
 
 {% endblock %}
+=======
+    <h1>Nuestros Clientes</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th width="30px">#</th>
+                <th>NIT/C.I.</th>
+                <th>Razon Social</th>
+                <th>Telefono</th>
+                <th>Direccion</th>
+                <th>Pais</th>
+                <th>Ciudad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ cliente.nit }}</td>
+                    <td>{{ cliente.razon }}</td>
+                    <td>{{ cliente.telefono }}</td>
+                    <td>{{ cliente.direccion }}</td>
+                    <td>{{ cliente.ciudad.pais }}</td>
+                    <td>{{ cliente.ciudad }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+>>>>>>> 66b263533cbf5e22e17576ad6e498250ff9f5ea6
