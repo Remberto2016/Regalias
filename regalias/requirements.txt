@@ -22,7 +22,7 @@ django-six==1.0.4
 django-unixdatetimefield==0.1.6
 django-widget-tweaks==1.4.1
 django-wkhtmltopdf==3.1.0
-djangorestframework==3.7.7
+djangorestframework==3.11.2
 et-xmlfile==1.0.1
 html5lib==1.0b10
 httplib2==0.10.3
